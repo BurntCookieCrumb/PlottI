@@ -68,7 +68,6 @@ public:
 
   virtual void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
   static void SetPosition(TPave* obj, Float_t x1, Float_t x2, Float_t y1, Float_t y2);
-  static void SetPosition(TPave* obj, Int_t x1, Int_t x2, Int_t y1, Int_t y2);
 
   void SetLegendPositions(TString* pos);
   void SetMode(Mode m);
@@ -81,7 +80,7 @@ protected:
   void SetRangesAuto(TH1* hist);
   void SetPositionAuto(TLegend* obj);
   void SetUpPad(TPad* pad);
-  void DrawArray(TObjArray* array);
+  void DrawArray(TObjArray* array, Int_t offset = 0);
 
   TPad    *mainPad;
   TCanvas *canvas;
@@ -176,6 +175,8 @@ TString*  Plot::positions {nullptr};
 
 void Plot::SetCanvasStyle(TH1* mainHist){
 
+  /** Set general style features of the Canvas and Pads **/
+
   mainHist->SetTitle("");
   mainHist->SetTitleFont(43);
   mainHist->SetTitleSize(0);
@@ -197,6 +198,8 @@ void Plot::SetCanvasStyle(TH1* mainHist){
 
 void Plot::SetPadStyle(TH1* mainHist, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
 
+  /** Set style aspects of the pads **/
+
   mainHist->GetXaxis()->SetRangeUser(xLow, xUp);
   mainHist->GetYaxis()->SetRangeUser(yLow, yUp);
   mainHist->SetXTitle(xTitle);
@@ -205,6 +208,8 @@ void Plot::SetPadStyle(TH1* mainHist, TString xTitle, TString yTitle, Float_t xU
 }
 
 void Plot::SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_t size){
+
+  /** Set style properties of a Histogram **/
 
   hist->SetMarkerColor(color);
   hist->SetMarkerStyle(style);
@@ -217,16 +222,20 @@ void Plot::SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_
 
 void Plot::SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t size){
 
+  /** Set style properties of a Function **/
+
   func->SetMarkerColor(color);
   func->SetMarkerStyle(style);
   func->SetMarkerSize(size);
-  
+
   func->SetLineWidth(2);
   func->SetLineColor(color);
 
 }
 
 void Plot::SetProperties(TObject* obj,  Int_t index){
+
+  /** Manages setting of properties for all plottable objects **/
 
   if (obj->InheritsFrom("TH1") && markers) {
     SetHistogramProperties((TH1*)obj, colors[index], markers[index], sizes[index]);
@@ -243,18 +252,28 @@ void Plot::SetProperties(TObject* obj,  Int_t index){
     if (positions) SetPositionAuto((TLegend*)obj);
   }
 
+  else if (obj->InheritsFrom("TLine")){
+    ((TLine*)obj)->SetLineStyle(markers[index]);
+    ((TLine*)obj)->SetLineWidth(sizes[index]);
+    ((TLine*)obj)->SetLineColor(colors[index]);
+  }
+
   else std::cout << "Missing Class:" << obj->ClassName() << std::endl;
 
 }
 
 void Plot::SetCanvasDimensions(Float_t cWidth, Float_t cHeight){
 
-    width  = cWidth;
-    height = cHeight;
+  /** Set Dimensions of the Canvas **/
+
+  width  = cWidth;
+  height = cHeight;
 
 }
 
 void Plot::SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin){
+
+  /** Set the Margins of the Canvas **/
 
   rightMargin  = rMargin;
   leftMargin   = lMargin;
@@ -265,12 +284,16 @@ void Plot::SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, F
 
 void Plot::SetCanvasOffsets(Float_t xOffset, Float_t yOffset){
 
+  /** Set the Title Offsets **/
+
   offsetX = xOffset;
   offsetY = yOffset;
 
 }
 
 void Plot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
+
+  /** Set the Ranges **/
 
   xRangeUp  = xUp;
   xRangeLow = xLow;
@@ -283,6 +306,8 @@ void Plot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
 
 void Plot::SetRangesAuto(TH1* hist){
 
+  /** Automatically determine good ranges **/
+
   yRangeUp   = 1.1*hist->GetMaximum();
   yRangeLow  = 0.9*hist->GetMinimum();
 
@@ -293,6 +318,8 @@ void Plot::SetRangesAuto(TH1* hist){
 
 void Plot::SetPosition(TPave* obj, Float_t x1, Float_t x2, Float_t y1, Float_t y2){
 
+  /** Set the Position of a Legend in relative coordinates **/
+
   obj->SetX1NDC(x1);
   obj->SetX2NDC(x2);
   obj->SetY1NDC(y1);
@@ -300,16 +327,9 @@ void Plot::SetPosition(TPave* obj, Float_t x1, Float_t x2, Float_t y1, Float_t y
 
 }
 
-void Plot::SetPosition(TPave* obj, Int_t x1, Int_t x2, Int_t y1, Int_t y2){
-
-  obj->SetX1(x1);
-  obj->SetX2(x2);
-  obj->SetY1(y1);
-  obj->SetY2(y2);
-
-}
-
 void Plot::SetLegendPositions(TString* pos){
+
+  /** Set positions of the used Legends in text format **/
 
   positions = pos;
 
@@ -317,12 +337,22 @@ void Plot::SetLegendPositions(TString* pos){
 
 void Plot::SetPositionAuto(TLegend* obj){
 
+  /** Determine automatic placement of Legend based on position strings **/
+
+  Float_t relLegendWidth  = obj->GetX2NDC() - obj->GetX1NDC();
+  Float_t relLegendHeight = obj->GetNRows()*0.05;
+
+  std::cout << relLegendWidth << std::endl;
   std::cout << obj->GetNRows() << std::endl;
-  std::cout << obj->GetNColumns() << std::endl;
+
+  //SetPosition(obj, 0.1, 0.1+relLegendWidth, 0.1, 0.1+relLegendHeight);
+  SetPosition(obj, 0.2, 0.2 + relLegendWidth, 0.85-relLegendHeight, 0.85);
 
 }
 
 void Plot::SetMode(Mode m){
+
+  /** Set the mode of the program, based on what the plots will be used for **/
 
   switch(m){
 
@@ -345,6 +375,8 @@ void Plot::SetMode(Mode m){
 
 void Plot::SetArrays(Color_t *col, Style_t *mark, Size_t *siz){
 
+  /** Set style arrays for the histograms and functions **/
+
   colors  = col;
   markers = mark;
   sizes   = siz;
@@ -353,11 +385,15 @@ void Plot::SetArrays(Color_t *col, Style_t *mark, Size_t *siz){
 
 void Plot::SetOptions(TString opt){
 
+  /** Set the plot options for the histograms **/
+
   options = opt;
 
 }
 
 void Plot::SetUpPad(TPad* pad){
+
+  /** Sets up a Pad for Plotting **/
 
   pad->SetFillStyle(4000);
   pad->SetTopMargin(topMargin);
@@ -369,7 +405,9 @@ void Plot::SetUpPad(TPad* pad){
 
 }
 
-void Plot::DrawArray(TObjArray* array){
+void Plot::DrawArray(TObjArray* array, Int_t offset = 0){
+
+  /** Draws a single TObjArray in the chosen Pad **/
 
   Int_t nPlots = array->GetEntries();
 
@@ -385,8 +423,7 @@ void Plot::DrawArray(TObjArray* array){
       return;
     }
 
-    SetProperties((TH1D*)array->At(plot), plot);
-
+    SetProperties((TH1D*)array->At(plot), plot + offset);
     array->At(plot)->Draw(options.Data());
 
   }
@@ -414,6 +451,8 @@ private:
 
 };
 
+// ---- Cunstructor -----------------------------------------------------------
+
 SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(xTitle, yTitle){
 
   if (!(array->At(0)->InheritsFrom("TH1")) and !(array->At(0)->InheritsFrom("TF1"))){
@@ -431,7 +470,11 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
 
 }
 
+// ---- Static Member Variables -----------------------------------------------
+
 void SquarePlot::Draw(TString outname){
+
+  /** Main function for Drawing **/
 
   std::cout << "----------------------------" << std::endl;
   std::cout << "  Plot Square Canvas:" << std::endl;
@@ -449,10 +492,12 @@ void SquarePlot::Draw(TString outname){
   DrawArray(plotArray);
 
   canvas->SaveAs(outname.Data());
+  delete canvas;
 
   std::cout << "----------------------------" << std::endl;
 
 }
+
 // ----------------------------------------------------------------------------
 //                              RATIO PLOT CLASS
 // ----------------------------------------------------------------------------
@@ -524,6 +569,8 @@ SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TStrin
 
 void SingleRatioPlot::Draw(TString outname){
 
+  /** Main function for Drawing **/
+
   std::cout << "----------------------------" << std::endl;
   std::cout << "  Plot Single Ratio Canvas:" << std::endl;
 
@@ -548,9 +595,10 @@ void SingleRatioPlot::Draw(TString outname){
   DrawArray(plotArray);
 
   ratioPad->cd();
-  DrawArray(ratioArray);
+  DrawArray(ratioArray, 1);
 
   canvas->SaveAs(outname.Data());
+  delete canvas;
 
   std::cout << "----------------------------" << std::endl;
 
@@ -560,11 +608,15 @@ void SingleRatioPlot::Draw(TString outname){
 
 void SingleRatioPlot::SetPadFraction(Double_t frac){
 
+  /** Sets Fraction of the Pad taken by the Ratio **/
+
   padFrac = frac;
 
 }
 
 void SingleRatioPlot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow){
+
+  /** Sets the Ranges for the Pads **/
 
   xRangeUp  = xUp;
   xRangeLow = xLow;
