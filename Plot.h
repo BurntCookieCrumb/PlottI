@@ -33,6 +33,7 @@
 #include "TString.h"
 
 #include <iostream>
+#include <vector>
 #include <typeinfo>
 
 // ----------------------------------------------------------------------------
@@ -56,38 +57,35 @@ public:
 
   virtual void Draw() {}
 
-  void SetCanvasStyle(TH1* mainHist);
-  void SetPadStyle(TH1* mainHist, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
   static void SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_t size);
   static void SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t size);
+  static void SetLineProperties(TLine* line, Color_t color, Style_t style, Size_t size);
   void SetProperties(TObject* obj, Int_t index);
 
   void SetCanvasDimensions(Float_t cWidth, Float_t cHeight);
   void SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin);
   void SetCanvasOffsets(Float_t xOffset, Float_t yOffset);
-
   virtual void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
-  static void SetPosition(TPave* obj, Float_t x1, Float_t x2, Float_t y1, Float_t y2);
 
-  void SetLegendPositions(TString* pos);
   void SetMode(Mode m);
-  void SetArrays(Color_t *col, Style_t *mark, Size_t *siz);
+  void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz);
   void SetOptions(TString opt);
 
 
 protected:
 
+  void SetCanvasStyle(TH1* mainHist);
+  void SetPadStyle(TH1* mainHist, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
   void SetRangesAuto(TH1* hist);
-  void SetPositionAuto(TLegend* obj);
   void SetUpPad(TPad* pad);
-  void DrawArray(TObjArray* array, Int_t offset = 0);
+  void DrawArray(TObjArray* array, Int_t off = 0);
 
   TPad    *mainPad;
   TCanvas *canvas;
 
-  static Color_t *colors;
-  static Style_t *markers;
-  static Size_t  *sizes;
+  static std::vector<Color_t> colors;
+  static std::vector<Style_t> markers;
+  static std::vector<Size_t>  sizes;
 
   TString titleX;
   TString titleY;
@@ -111,7 +109,6 @@ protected:
   static Style_t label;
 
   static TString options;
-  static TString* positions;
 
 };
 
@@ -161,15 +158,14 @@ Plot::Plot(TString xTitle, TString yTitle):
 
 // ---- Static Member Variables -----------------------------------------------
 
-Color_t*  Plot::colors {nullptr};
-Style_t*  Plot::markers {nullptr};
-Size_t*   Plot::sizes {nullptr};
+std::vector<Color_t>  Plot::colors {{}};
+std::vector<Style_t>  Plot::markers {{}};
+std::vector<Size_t>   Plot::sizes {{}};
 
 Style_t   Plot::font {43};
 Style_t   Plot::label {28};
 
 TString   Plot::options {TString("SAME")};
-TString*  Plot::positions {nullptr};
 
 // ---- Member Functions ------------------------------------------------------
 
@@ -233,15 +229,25 @@ void Plot::SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t
 
 }
 
+void Plot::SetLineProperties(TLine* line, Color_t color, Style_t style, Size_t size){
+
+  /** Set style properties of a Line **/
+
+  line->SetLineStyle(style);
+  line->SetLineWidth(size);
+  line->SetLineColor(color);
+
+}
+
 void Plot::SetProperties(TObject* obj,  Int_t index){
 
   /** Manages setting of properties for all plottable objects **/
 
-  if (obj->InheritsFrom("TH1") && markers) {
+  if (obj->InheritsFrom("TH1") && !markers.empty() && (index < markers.size())) {
     SetHistogramProperties((TH1*)obj, colors[index], markers[index], sizes[index]);
   }
 
-  else if (obj->InheritsFrom("TF1") && markers){
+  else if (obj->InheritsFrom("TF1") && !markers.empty() && (index < markers.size())){
     SetFunctionProperties((TF1*)obj, colors[index], markers[index], sizes[index]);
   }
 
@@ -249,16 +255,15 @@ void Plot::SetProperties(TObject* obj,  Int_t index){
     ((TLegend*)obj)->SetTextFont(font);
     ((TLegend*)obj)->SetTextSize(label);
     ((TLegend*)obj)->SetBorderSize(0);
-    if (positions) SetPositionAuto((TLegend*)obj);
   }
 
-  else if (obj->InheritsFrom("TLine")){
-    ((TLine*)obj)->SetLineStyle(markers[index]);
-    ((TLine*)obj)->SetLineWidth(sizes[index]);
-    ((TLine*)obj)->SetLineColor(colors[index]);
+  else if (obj->InheritsFrom("TLine") && (index < markers.size())){
+    SetLineProperties((TLine*)obj, colors[index], markers[index], sizes[index]);
   }
 
-  else std::cout << "Missing Class:" << obj->ClassName() << std::endl;
+  else if (index < markers.size()){
+    std::cout << "Missing Class:" << obj->ClassName() << std::endl;
+  }
 
 }
 
@@ -316,40 +321,6 @@ void Plot::SetRangesAuto(TH1* hist){
 
 }
 
-void Plot::SetPosition(TPave* obj, Float_t x1, Float_t x2, Float_t y1, Float_t y2){
-
-  /** Set the Position of a Legend in relative coordinates **/
-
-  obj->SetX1NDC(x1);
-  obj->SetX2NDC(x2);
-  obj->SetY1NDC(y1);
-  obj->SetY2NDC(y2);
-
-}
-
-void Plot::SetLegendPositions(TString* pos){
-
-  /** Set positions of the used Legends in text format **/
-
-  positions = pos;
-
-}
-
-void Plot::SetPositionAuto(TLegend* obj){
-
-  /** Determine automatic placement of Legend based on position strings **/
-
-  Float_t relLegendWidth  = obj->GetX2NDC() - obj->GetX1NDC();
-  Float_t relLegendHeight = obj->GetNRows()*0.05;
-
-  std::cout << relLegendWidth << std::endl;
-  std::cout << obj->GetNRows() << std::endl;
-
-  //SetPosition(obj, 0.1, 0.1+relLegendWidth, 0.1, 0.1+relLegendHeight);
-  SetPosition(obj, 0.2, 0.2 + relLegendWidth, 0.85-relLegendHeight, 0.85);
-
-}
-
 void Plot::SetMode(Mode m){
 
   /** Set the mode of the program, based on what the plots will be used for **/
@@ -373,13 +344,13 @@ void Plot::SetMode(Mode m){
 
  }
 
-void Plot::SetArrays(Color_t *col, Style_t *mark, Size_t *siz){
+void Plot::SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz){
 
   /** Set style arrays for the histograms and functions **/
 
-  colors  = col;
-  markers = mark;
-  sizes   = siz;
+  colors  = std::move(col);
+  markers = std::move(mark);
+  sizes   = std::move(siz);
 
 }
 
@@ -405,7 +376,7 @@ void Plot::SetUpPad(TPad* pad){
 
 }
 
-void Plot::DrawArray(TObjArray* array, Int_t offset = 0){
+void Plot::DrawArray(TObjArray* array, Int_t off = 0){
 
   /** Draws a single TObjArray in the chosen Pad **/
 
@@ -423,7 +394,7 @@ void Plot::DrawArray(TObjArray* array, Int_t offset = 0){
       return;
     }
 
-    SetProperties((TH1D*)array->At(plot), plot + offset);
+    SetProperties((TH1D*)array->At(plot), plot + off);
     array->At(plot)->Draw(options.Data());
 
   }
@@ -440,20 +411,22 @@ class SquarePlot : public Plot
 public:
 
   SquarePlot(TObjArray* array, TString xTitle, TString yTitle);
-  virtual ~SquarePlot() {};
+  virtual ~SquarePlot() {}
 
   virtual void Draw(TString outname);
 
 private:
 
-  TPad* mainPad;
+  //TPad* mainPad;
   TObjArray* plotArray;
 
 };
 
-// ---- Cunstructor -----------------------------------------------------------
+// ---- Constructor -----------------------------------------------------------
 
-SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(xTitle, yTitle){
+SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(xTitle, yTitle),
+  plotArray(array)
+{
 
   if (!(array->At(0)->InheritsFrom("TH1")) and !(array->At(0)->InheritsFrom("TF1"))){
 
@@ -461,8 +434,6 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
     return;
 
   }
-
-  plotArray = array;
 
   SetCanvasDimensions(1000, 1000);
   SetCanvasMargins(0.07, .15, 0.07, .15);
@@ -491,6 +462,7 @@ void SquarePlot::Draw(TString outname){
 
   DrawArray(plotArray);
 
+
   canvas->SaveAs(outname.Data());
   delete canvas;
 
@@ -513,7 +485,9 @@ public:
   virtual void Draw(TString outname);
 
   void SetPadFraction(Double_t frac);
+  void SetOffset(Int_t off);
   virtual void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow);
+  virtual void DrawRatioArray(TObjArray* array, Int_t off = 1);
 
 private:
 
@@ -530,6 +504,9 @@ private:
   Float_t rRangeUp;
   Float_t rRangeLow;
 
+  Int_t offset;
+  TLine* one;
+
 };
 
 // ---- Static Member Variables -----------------------------------------------
@@ -538,7 +515,17 @@ Float_t SingleRatioPlot::padFrac {0.25};
 
 // ---- Cunstructor -----------------------------------------------------------
 
-SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TString xTitle, TString yTitle, TString rTitle) : Plot(xTitle, yTitle){
+SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TString xTitle, TString yTitle, TString rTitle) : Plot(xTitle, yTitle),
+  mainPad(nullptr),
+  ratioPad(nullptr),
+  ratioTitle(rTitle),
+  plotArray(mainArray),
+  ratioArray(rArray),
+  rRangeUp(1.2),
+  rRangeLow(0.8),
+  offset(1),
+  one(nullptr)
+{
 
   if (!(mainArray->At(0)->InheritsFrom("TH1")) and !(mainArray->At(0)->InheritsFrom("TF1"))){
 
@@ -554,11 +541,6 @@ SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TStrin
 
   }
 
-  ratioTitle = rTitle;
-
-  plotArray = mainArray;
-  ratioArray = rArray;
-
   SetCanvasDimensions(1000, 1200);
   SetCanvasMargins(0.07, .15, 0.07, .3);
   SetCanvasOffsets(4.5, 1.7);
@@ -572,7 +554,7 @@ void SingleRatioPlot::Draw(TString outname){
   /** Main function for Drawing **/
 
   std::cout << "----------------------------" << std::endl;
-  std::cout << "  Plot Single Ratio Canvas:" << std::endl;
+  std::cout << "  Plot Single Ratio Canvas: " << std::endl;
 
   canvas  = new TCanvas("canvas", "SINGLE RATIO", 10, 10, width+10, height+10);
   canvas->cd();
@@ -593,9 +575,8 @@ void SingleRatioPlot::Draw(TString outname){
 
   mainPad->cd();
   DrawArray(plotArray);
-
   ratioPad->cd();
-  DrawArray(ratioArray, 1);
+  DrawRatioArray(ratioArray, offset);
 
   canvas->SaveAs(outname.Data());
   delete canvas;
@@ -614,6 +595,15 @@ void SingleRatioPlot::SetPadFraction(Double_t frac){
 
 }
 
+void SingleRatioPlot::SetOffset(Int_t off){
+
+  /** Sets the offset of the ratio style properties,
+  namely where the ratio markers are in the marker, color and size arrays **/
+
+  offset = off;
+
+}
+
 void SingleRatioPlot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow){
 
   /** Sets the Ranges for the Pads **/
@@ -629,11 +619,165 @@ void SingleRatioPlot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t 
 
 }
 
+void SingleRatioPlot::DrawRatioArray(TObjArray* array, Int_t off = 1){
 
+  /** Draws a single Ratio TObjArray in the chosen Pad **/
 
+  one = new TLine(xRangeLow, 1., xRangeUp, 1.);
+  SetLineProperties(one, kBlack, 9, 2.);
+  array->Add(one);
 
+  DrawArray(array, off);
 
+}
 
+// ----------------------------------------------------------------------------
+//
+//                         LEGEND CLASS
+//
+// ----------------------------------------------------------------------------
+
+class Legend
+{
+public:
+
+  Legend();
+  Legend(TObjArray* array, std::string entries, std::string opt);
+  Legend(std::string obj, std::string entries, std::string opt, Int_t nEntries);
+  Legend(std::string entries, Int_t nEntries);
+  ~Legend() {}
+
+  TLegend* GetLegendPointer(){return legend;};
+  static void SetPosition(TLegend* l, Float_t x1, Float_t x2, Float_t y1, Float_t y2);
+  void SetPositionAuto();
+
+  TLegend* legend;
+  std::vector<TH1*> dummy;
+
+};
+
+// ---- Constructors ----------------------------------------------------------
+
+Legend::Legend():
+  legend(nullptr),
+  dummy(0)
+{
+}
+
+Legend::Legend(TObjArray* array, std::string entr, std::string opt):
+  legend(nullptr),
+  dummy(0)
+{
+
+  legend = new TLegend(0.1, 0.7, 0.3, 0.9);
+
+  std::istringstream entries(entr);
+  std::istringstream options(opt);
+
+  TString* option    = new TString();
+  TString* entryName = new TString();
+
+  TIter iArray(array);
+  while (TObject* obj = iArray()) {
+
+      option->ReadToken(options);
+      entryName->ReadLine(entries);
+
+      legend->AddEntry(obj, entryName->Data(), option->Data());
+
+  }
+
+  array->Add(legend);
+
+}
+
+Legend::Legend(std::string obj, std::string entr, std::string opt, Int_t nEntries):
+legend(nullptr),
+dummy(nEntries)
+{
+
+  legend = new TLegend(0.1, 0.7, 0.3, 0.9);
+
+  std::istringstream objects(obj);
+  std::istringstream entries(entr);
+  std::istringstream options(opt);
+
+  TString* option    = new TString();
+  TString* entryName = new TString();
+  TString* object    = new TString();
+
+  TString* color  = new TString();
+  TString* marker = new TString();
+  TString* size   = new TString();
+
+  for(Int_t entry = 0; entry < nEntries; entry++){
+
+    object->ReadLine(objects);
+    std::istringstream token(object->Data());
+
+    color ->ReadToken(token);
+    marker->ReadToken(token);
+    size  ->ReadToken(token);
+
+    option->ReadToken(options);
+    entryName->ReadLine(entries);
+
+    dummy[entry] = new TH1C();
+    Plot::SetHistogramProperties(dummy[entry], color->Atoi(), marker->Atoi(), size->Atof());
+
+    legend->AddEntry(dummy[entry], entryName->Data(), option->Data());
+
+  }
+
+}
+
+Legend::Legend(std::string entr, Int_t nEntries):
+legend(nullptr),
+dummy(nEntries)
+{
+
+  legend = new TLegend(0.1, 0.7, 0.3, 0.9);
+
+  std::istringstream entries(entr);
+  TString* entryName = new TString();
+
+  for(Int_t entry = 0; entry < nEntries; entry++){
+
+    entryName->ReadLine(entries);
+
+    legend->AddEntry((TObject*)0x0, entryName->Data(), "");
+
+  }
+
+}
+
+// ---- Member Functions ------------------------------------------------------
+
+void Legend::SetPosition(TLegend* l, Float_t x1, Float_t x2, Float_t y1, Float_t y2){
+
+  /** Set the Position of a Legend in relative coordinates **/
+
+  l->SetX1(x1);
+  l->SetX2(x2);
+  l->SetY1(y1);
+  l->SetY2(y2);
+
+}
+
+void Legend::SetPositionAuto(){
+
+  /** Determine automatic placement of Legend based on position strings **/
+
+  Float_t relLegendWidth  = legend->GetX2NDC() - legend->GetX1NDC();
+  Float_t relLegendHeight = legend->GetNRows()*0.05;
+
+  std::cout << relLegendWidth << std::endl;
+  std::cout << legend->GetNRows() << std::endl;
+
+  //SetPosition(obj, 0.1, 0.1+relLegendWidth, 0.1, 0.1+relLegendHeight);
+  //SetPosition(0.2, 0.2 + relLegendWidth, 0.85-relLegendHeight, 0.85);
+
+}
 
 
 
