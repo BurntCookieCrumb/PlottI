@@ -37,7 +37,9 @@
 #include <typeinfo>
 
 // ----------------------------------------------------------------------------
-//                              PLOT BASE CLASS
+//
+//                         PLOT BASE CLASS
+//
 // ----------------------------------------------------------------------------
 
 class Plot
@@ -58,6 +60,7 @@ public:
   virtual void Draw() {}
 
   static void SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_t size);
+  static void CleanUpHistogram(TH1* hist, Double_t factor = 2.);
   static void SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t size);
   static void SetLineProperties(TLine* line, Color_t color, Style_t style, Size_t size);
   void SetProperties(TObject* obj, Int_t index);
@@ -214,6 +217,62 @@ void Plot::SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_
   hist->SetLineWidth(2);
   hist->SetLineColor(color);
 
+  Double_t content, error;
+
+  for(Int_t bin = 0; bin <= hist->GetNbinsX(); bin++){
+
+    content = hist->GetBinContent(bin);
+    error   = hist->GetBinError(bin);
+
+    if (error/content > .4) {
+      hist->SetBinContent(bin, 0.0);
+      hist->SetBinError(bin, 0.0);
+    }
+
+  }
+
+}
+
+
+void Plot::CleanUpHistogram(TH1* hist, Double_t factor = 2.){
+
+  /** Sets bin contents of bins with too large uncertainties to 0 **/
+
+  if (!hist){
+    std::cout << "Error: histogram does not exist!" << std::endl;
+    return;
+  }
+
+  //std::cout << hist << std::endl;
+
+
+  // if (hist->IsZombie()){
+  //   std::cout << "Error: histogram is broken!" << std::endl;
+  //   return;
+  // }
+  //
+  // std::cout << hist->GetName() << std::endl;
+  // std::cout << hist->GetXaxis()->GetNbins() << std::endl;
+  // std::cout << hist->GetNbinsX() << std::endl;
+  //
+  // Double_t content, error;
+  //
+  // for(Int_t bin = 0; bin <= hist->GetNbinsX(); bin++){
+  //
+  //   std::cout << bin << std::endl;
+  //
+  //   content = hist->GetBinContent(bin);
+  //   error   = hist->GetBinError(bin);
+  //
+  //   std::cout << bin << std::endl;
+  //
+  //   if (error/content > factor) {
+  //     hist->SetBinContent(bin, 0.0);
+  //     hist->SetBinError(bin, 0.0);
+  //   }
+  //
+  // }
+
 }
 
 void Plot::SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t size){
@@ -239,12 +298,13 @@ void Plot::SetLineProperties(TLine* line, Color_t color, Style_t style, Size_t s
 
 }
 
-void Plot::SetProperties(TObject* obj,  Int_t index){
+void Plot::SetProperties(TObject* obj, Int_t index){
 
   /** Manages setting of properties for all plottable objects **/
 
   if (obj->InheritsFrom("TH1") && !markers.empty() && (index < markers.size())) {
     SetHistogramProperties((TH1*)obj, colors[index], markers[index], sizes[index]);
+    CleanUpHistogram((TH1*)obj, .5);
   }
 
   else if (obj->InheritsFrom("TF1") && !markers.empty() && (index < markers.size())){
@@ -394,7 +454,7 @@ void Plot::DrawArray(TObjArray* array, Int_t off = 0){
       return;
     }
 
-    SetProperties((TH1D*)array->At(plot), plot + off);
+    SetProperties(array->At(plot), plot + off);
     array->At(plot)->Draw(options.Data());
 
   }
@@ -462,7 +522,7 @@ void SquarePlot::Draw(TString outname){
 
   DrawArray(plotArray);
 
-
+  canvas->Update();
   canvas->SaveAs(outname.Data());
   delete canvas;
 
@@ -504,7 +564,7 @@ private:
   Float_t rRangeUp;
   Float_t rRangeLow;
 
-  Int_t offset;
+  static Int_t offset;
   TLine* one;
 
 };
@@ -512,6 +572,7 @@ private:
 // ---- Static Member Variables -----------------------------------------------
 
 Float_t SingleRatioPlot::padFrac {0.25};
+Int_t   SingleRatioPlot::offset  {1};
 
 // ---- Cunstructor -----------------------------------------------------------
 
@@ -523,7 +584,6 @@ SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TStrin
   ratioArray(rArray),
   rRangeUp(1.2),
   rRangeLow(0.8),
-  offset(1),
   one(nullptr)
 {
 
@@ -542,7 +602,7 @@ SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TStrin
   }
 
   SetCanvasDimensions(1000, 1200);
-  SetCanvasMargins(0.07, .15, 0.07, .3);
+  SetCanvasMargins(0.07, .15, 0.07, .4);
   SetCanvasOffsets(4.5, 1.7);
 
 }
@@ -578,6 +638,7 @@ void SingleRatioPlot::Draw(TString outname){
   ratioPad->cd();
   DrawRatioArray(ratioArray, offset);
 
+  canvas->Update();
   canvas->SaveAs(outname.Data());
   delete canvas;
 
@@ -624,10 +685,10 @@ void SingleRatioPlot::DrawRatioArray(TObjArray* array, Int_t off = 1){
   /** Draws a single Ratio TObjArray in the chosen Pad **/
 
   one = new TLine(xRangeLow, 1., xRangeUp, 1.);
-  SetLineProperties(one, kBlack, 9, 2.);
   array->Add(one);
 
   DrawArray(array, off);
+  SetLineProperties(one, kBlack, 9, 2.);
 
 }
 
@@ -684,7 +745,6 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt):
       entryName->ReadLine(entries);
 
       legend->AddEntry(obj, entryName->Data(), option->Data());
-
   }
 
   array->Add(legend);
