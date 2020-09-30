@@ -1,0 +1,114 @@
+
+
+ /*! \mainpage
+
+ PlottI - Plotting Interface for easy plotting of your data.
+
+ \section Canvasses Canvasses
+
+ For your perfect plot you first need a Canvas, that will display your beautiful data.
+
+ The (virtual) base class Plot includes most basic plotting functionalities. It provides a canvas and a default main pad, as well as basic set up variables such as canvas dimensions.
+ For your very own plot you should one of the provided derived classes that implement one type of plot, e.g. a simple SquarePlot or a SingleRatioPlot, or derive your own class. The basic dimensions and offsets are already predefined but can be changed manually with the corresponding methods.
+ You create a canvas by calling the corresponding constructor with one or more TObjArrays containing the objects you want to plot and the corresponding axis titles. After the construction you can adjust your canvas or histogram settings (cf. section \ref cSettings) and plot everything with the Draw method (this will automatically save the canvas with the given name).
+
+ \section cSettings Settings for Canvasses
+
+ The following options are available for Canvasses:
+ - Setting canvas dimension, offsets and Margin
+ - Setting a Mode that will determine text size* and style*
+ - Setting the draw options*
+ - Setting color-, marker-, or size arrays* used for Histogram customization (cf. section \ref hSettings)
+ - Setting the Ranges of the different axis
+
+ Settings marked with * are static and will be used for all following canvasses (in your macro) as well until they are manually changed.
+
+ \section hSettings Settings for Histograms
+
+ You can choose the style and colors of the plotted objects by either calling the Set<Object>Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed).
+ You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot.
+
+ \section legends Legends
+
+ The Legend class can be used to automatically create a legend from data or text.
+ You have the following options
+- Generate Legend from
+    + a TObjArray with your plottable objects
+    + a string containing the entry names like "entry number 1\n entry number 2\n"
+    + and a string containing the display options like "lp lp"
+- Create an informative Legend containing just text without symbols from
+    + a string containing the information to be displayed (entires) like "entry number 1\n entry number 2\n"
+    + the number of entries
+- Create a legend with dummy markers from
+    + a string containing the marker options like "23 23 23\n 24 24 24\n"
+    + a string containing the entry names like "entry number 1\n entry number 2\n"
+    + a string containing the options like "lp p"
+    + the number of entries
+
+\remark Unfortunately it is not possible for the second option to use the corresponding enumerators like kBlack for the colors and such, but the actual number has to be used. It is however possible to use functions like Format to print the value of kBlack into a string and then use this string.
+
+ \section example Example Code
+
+ The following example will demonstrate the basic syntax of the interface. Assume you have two histograms called black and white and a ratio called grey.
+
+         TH1D* black = new TH1D("black", "", 100, -3, 3);
+         black->Sumw2();
+         black->FillRandom("gaus", 10000);
+
+         TH1D* white = new TH1D("white", "", 100, -3, 3);
+         white->Sumw2();
+         white->FillRandom("gaus", 10000);
+
+         TH1D* grey = (TH1D*)black->Clone("grey");
+         grey->Divide(white);
+
+First create two object arrays for the main plot and the ratio.
+
+         TObjArray* main = new TObjArray();
+         main->Add(black);
+         main->Add(white);
+
+         TObjArray* ratio = new TObjArray();
+         ratio->Add(grey);
+
+Now we generate legends for this plot:
+
+         TLegend* l = Legend(main, "Black Histo\n White Histo\n", "lp lp").GetLegendPointer();
+
+         TString info = TString("Black and White Histogram\n");
+         info.Append("Example");
+         TLegend* lInfo = Legend(info.Data(), 2).GetLegendPointer();
+         main->Add(lInfo);
+
+Then we define marker colors and styles.
+The ones for the ratios will be added after the ones for the main pad.
+
+         vector<Color_t> colors = {kBlack, kBlack, kBlack+3};
+         vector<Style_t> markers = {kFullCircle, kOpenCircle, kFullCircle};
+         vector<Size_t>  sizes = {2., 2., 2.};
+
+Adjusting the legend position:
+
+         Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75);
+         Legend::SetPosition(l, 0.43, 0.6, 0.2, 0.32);
+
+And finally create the Canvasses:
+
+         SquarePlot square = SquarePlot(main, "x", "count");
+         square.SetStyle(colors, markers, sizes);
+         square.SetMode(Plot::Presentation);
+         square.SetRanges(3, -3, 400, 0);
+         square.Draw(TString("Square.pdf"));
+
+         SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
+         rat.SetOffset(2); // determines where the ratio entries start in the style arrays
+         rat.SetRanges(3, -3, 400, -10, 3.2, 0.5);
+         rat.Draw(TString("Ratio.pdf"));
+
+
+Results:
+
+\image html Square.png "Square Plot" width=5cm
+\image html Ratio.png "Ratio Plot" width=5cm
+
+ */
