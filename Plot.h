@@ -6,6 +6,7 @@
 //
 // ----------------------------------------------------------------------------
 
+#ifndef Plotting
 #define Plotting
 
 // --- INCLUDES ---------------------------------------------------------------
@@ -57,7 +58,7 @@ public:
   Plot(TString xTitle, TString yTitle);
   virtual ~Plot() {}
 
-  virtual void Draw() {}
+  /*virtual*/ void Draw() {}
 
   static void SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_t size);
   static void CleanUpHistogram(TH1* hist, Double_t factor = 2.);
@@ -68,7 +69,7 @@ public:
   void SetCanvasDimensions(Float_t cWidth, Float_t cHeight);
   void SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin);
   void SetCanvasOffsets(Float_t xOffset, Float_t yOffset);
-  virtual void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
+  /*virtual*/ void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp);
 
   void SetMode(Mode m);
   void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz);
@@ -234,7 +235,7 @@ void Plot::SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_
 }
 
 
-void Plot::CleanUpHistogram(TH1* hist, Double_t factor = 2.){
+void Plot::CleanUpHistogram(TH1* hist, Double_t factor){
 
   /** Sets bin contents of bins with too large uncertainties to 0 **/
 
@@ -311,8 +312,8 @@ void Plot::SetProperties(TObject* obj, Int_t index){
     SetFunctionProperties((TF1*)obj, colors[index], markers[index], sizes[index]);
   }
 
-  else if (obj->InheritsFrom("TLegend")){
-    ((TLegend*)obj)->SetTextFont(font);
+  else if (obj->InheritsFrom("TPave")){ //TLegend
+    ((TLegend*)obj)->SetTextFont(font); 
     ((TLegend*)obj)->SetTextSize(label);
     ((TLegend*)obj)->SetBorderSize(0);
   }
@@ -356,7 +357,7 @@ void Plot::SetCanvasOffsets(Float_t xOffset, Float_t yOffset){
 
 }
 
-void Plot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
+void Plot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp){
 
   /** Set the Ranges **/
 
@@ -473,11 +474,10 @@ public:
   SquarePlot(TObjArray* array, TString xTitle, TString yTitle);
   virtual ~SquarePlot() {}
 
-  virtual void Draw(TString outname);
+  /*virtual*/ void Draw(TString outname);
 
 private:
 
-  //TPad* mainPad;
   TObjArray* plotArray;
 
 };
@@ -542,12 +542,12 @@ public:
   SingleRatioPlot(TObjArray* mainArray, TObjArray* ratioArray, TString xTitle, TString yTitle, TString ratioTitle);
   virtual ~SingleRatioPlot() {};
 
-  virtual void Draw(TString outname);
+  /*virtual*/ void Draw(TString outname);
 
   void SetPadFraction(Double_t frac);
   void SetOffset(Int_t off);
-  virtual void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow);
-  virtual void DrawRatioArray(TObjArray* array, Int_t off = 1);
+  /*virtual*/ void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow);
+  /*virtual*/ void DrawRatioArray(TObjArray* array, Int_t off = 1);
 
 private:
 
@@ -665,7 +665,7 @@ void SingleRatioPlot::SetOffset(Int_t off){
 
 }
 
-void SingleRatioPlot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow){
+void SingleRatioPlot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp){
 
   /** Sets the Ranges for the Pads **/
 
@@ -680,7 +680,7 @@ void SingleRatioPlot::SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t 
 
 }
 
-void SingleRatioPlot::DrawRatioArray(TObjArray* array, Int_t off = 1){
+void SingleRatioPlot::DrawRatioArray(TObjArray* array, Int_t off){
 
   /** Draws a single Ratio TObjArray in the chosen Pad **/
 
@@ -847,6 +847,6 @@ void Legend::SetPositionAuto(){
 
 
 
-
+#endif
 
 //

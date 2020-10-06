@@ -117,9 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6bc85e720f8938b7eec9e22e28f73bbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bc85e720f8938b7eec9e22e28f73bbf"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Plot</b> (TString xTitle, TString yTitle)</td></tr>
 <tr class="separator:a6bc85e720f8938b7eec9e22e28f73bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d16146c23459345bb1d9c1cafcf591d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d16146c23459345bb1d9c1cafcf591d"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</td></tr>
-<tr class="separator:a7d16146c23459345bb1d9c1cafcf591d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c92135ad4df08abf14a73a8c78dc9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06c92135ad4df08abf14a73a8c78dc9b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</td></tr>
+<tr class="separator:a06c92135ad4df08abf14a73a8c78dc9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52db33876ca1dc43ef39f4322b80d9c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a52db33876ca1dc43ef39f4322b80d9c7">SetProperties</a> (TObject *obj, Int_t index)</td></tr>
 <tr class="separator:a52db33876ca1dc43ef39f4322b80d9c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70c20090376d80e22d10e1e470616226"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a70c20090376d80e22d10e1e470616226">SetCanvasDimensions</a> (Float_t cWidth, Float_t cHeight)</td></tr>
@@ -128,8 +128,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</
 <tr class="separator:ac1a93b80a21da2eda97223f51c595266"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ff9111551a971da6871561732ed33f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8ff9111551a971da6871561732ed33f2">SetCanvasOffsets</a> (Float_t xOffset, Float_t yOffset)</td></tr>
 <tr class="separator:a8ff9111551a971da6871561732ed33f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37a8a532af87fe49e0e3be3ace869bc1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a37a8a532af87fe49e0e3be3ace869bc1">SetRanges</a> (Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow)</td></tr>
-<tr class="separator:a37a8a532af87fe49e0e3be3ace869bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87738bc3e41ece3729c7048334d4210f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a87738bc3e41ece3729c7048334d4210f">SetRanges</a> (Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp)</td></tr>
+<tr class="separator:a87738bc3e41ece3729c7048334d4210f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a455b737cff13cf869e7a3328ee09851f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a455b737cff13cf869e7a3328ee09851f">SetMode</a> (Mode m)</td></tr>
 <tr class="separator:a455b737cff13cf869e7a3328ee09851f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a717bd61e91dff86e912fd8a407e84809"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a717bd61e91dff86e912fd8a407e84809">SetStyle</a> (std::vector&lt; Color_t &gt; col, std::vector&lt; Style_t &gt; mark, std::vector&lt; Size_t &gt; siz)</td></tr>
@@ -692,22 +692,13 @@ static TString&#160;</td><td class="memItemRight" valign="bottom"><b>options</b>
 
 </div>
 </div>
-<a class="anchor" id="a37a8a532af87fe49e0e3be3ace869bc1"></a>
+<a class="anchor" id="a87738bc3e41ece3729c7048334d4210f"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Plot::SetRanges </td>
           <td>(</td>
-          <td class="paramtype">Float_t&#160;</td>
-          <td class="paramname"><em>xUp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">Float_t&#160;</td>
           <td class="paramname"><em>xLow</em>, </td>
         </tr>
@@ -715,13 +706,19 @@ static TString&#160;</td><td class="memItemRight" valign="bottom"><b>options</b>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Float_t&#160;</td>
-          <td class="paramname"><em>yUp</em>, </td>
+          <td class="paramname"><em>xUp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Float_t&#160;</td>
-          <td class="paramname"><em>yLow</em>&#160;</td>
+          <td class="paramname"><em>yLow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Float_t&#160;</td>
+          <td class="paramname"><em>yUp</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -729,11 +726,6 @@ static TString&#160;</td><td class="memItemRight" valign="bottom"><b>options</b>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Set the Ranges </p>
 
