@@ -7,6 +7,7 @@ var searchData=
   ['setfunctionproperties',['SetFunctionProperties',['../classPlot.html#af4af99bf106afdca8b9138cd47220720',1,'Plot']]],
   ['sethistogramproperties',['SetHistogramProperties',['../classPlot.html#aae08e3262885e6bebf74e83c35edc2a9',1,'Plot']]],
   ['setlineproperties',['SetLineProperties',['../classPlot.html#a5dc40f6433c998d474f70f62486477b1',1,'Plot']]],
+  ['setlog',['SetLog',['../classPlot.html#a4d881697ea376886903925f89131ffb2',1,'Plot']]],
   ['setmode',['SetMode',['../classPlot.html#a455b737cff13cf869e7a3328ee09851f',1,'Plot']]],
   ['setoffset',['SetOffset',['../classSingleRatioPlot.html#ad4823839ece8e26d7e3f9082c098d26d',1,'SingleRatioPlot']]],
   ['setoptions',['SetOptions',['../classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1',1,'Plot']]],
@@ -18,7 +19,7 @@ var searchData=
   ['setranges',['SetRanges',['../classPlot.html#a87738bc3e41ece3729c7048334d4210f',1,'Plot::SetRanges()'],['../classSingleRatioPlot.html#aebf0fb58cb681121bc94654549107713',1,'SingleRatioPlot::SetRanges()']]],
   ['setrangesauto',['SetRangesAuto',['../classPlot.html#a480916e54c18617759995c02962a79d3',1,'Plot']]],
   ['setstyle',['SetStyle',['../classPlot.html#a717bd61e91dff86e912fd8a407e84809',1,'Plot']]],
-  ['setuppad',['SetUpPad',['../classPlot.html#ad8c34c16ea55bf8f0ac29dce32b2e424',1,'Plot']]],
+  ['setuppad',['SetUpPad',['../classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0',1,'Plot']]],
   ['singleratioplot',['SingleRatioPlot',['../classSingleRatioPlot.html',1,'']]],
   ['squareplot',['SquarePlot',['../classSquarePlot.html',1,'']]]
 ];

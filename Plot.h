@@ -69,6 +69,7 @@ public:
   void SetCanvasDimensions(Float_t cWidth, Float_t cHeight);
   void SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin);
   void SetCanvasOffsets(Float_t xOffset, Float_t yOffset);
+  /*virtual*/ void SetLog(Bool_t xLog = kFALSE, Bool_t yLog = kTRUE);
   /*virtual*/ void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp);
 
   void SetMode(Mode m);
@@ -81,11 +82,11 @@ protected:
   void SetCanvasStyle(TH1* mainHist);
   void SetPadStyle(TH1* mainHist, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
   void SetRangesAuto(TH1* hist);
-  void SetUpPad(TPad* pad);
+  void SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog);
   void DrawArray(TObjArray* array, Int_t off = 0);
 
-  TPad    *mainPad;
-  TCanvas *canvas;
+  TPad    *mainPad {nullptr};
+  TCanvas *canvas {nullptr};
 
   static std::vector<Color_t> colors;
   static std::vector<Style_t> markers;
@@ -94,20 +95,22 @@ protected:
   TString titleX;
   TString titleY;
 
-  Float_t width;
-  Float_t height;
-  Float_t offsetX;
-  Float_t offsetY;
-  Float_t rightMargin;
-  Float_t leftMargin;
-  Float_t topMargin;
-  Float_t bottomMargin;
+  Float_t width {0};
+  Float_t height {0};
+  Float_t offsetX {0};
+  Float_t offsetY {0};
+  Float_t rightMargin {0};
+  Float_t leftMargin {0};
+  Float_t topMargin {0};
+  Float_t bottomMargin {0};
+  Bool_t  logX {kFALSE};
+  Bool_t  logY {kFALSE};
 
-  Float_t yRangeLow;
-  Float_t yRangeUp;
-  Float_t xRangeLow;
-  Float_t xRangeUp;
-  Bool_t  ranges;
+  Float_t yRangeLow {0};
+  Float_t yRangeUp {100};
+  Float_t xRangeLow {0};
+  Float_t xRangeUp {100};
+  Bool_t  ranges {kFALSE};
 
   static Style_t font;
   static Style_t label;
@@ -118,45 +121,13 @@ protected:
 
 // ---- Constructors ----------------------------------------------------------
 
-Plot::Plot():
-  mainPad(nullptr),
-  canvas(nullptr),
-  titleX(""),
-  titleY(""),
-  width(0),
-  height(0),
-  offsetX(0),
-  offsetY(0),
-  rightMargin(0),
-  leftMargin(0),
-  topMargin(0),
-  bottomMargin(0),
-  yRangeLow(0),
-  yRangeUp(100),
-  xRangeLow(0),
-  xRangeUp(100),
-  ranges(kFALSE)
+Plot::Plot()
 {
 }
 
 Plot::Plot(TString xTitle, TString yTitle):
-  mainPad(nullptr),
-  canvas(nullptr),
   titleX(xTitle),
-  titleY(yTitle),
-  width(0),
-  height(0),
-  offsetX(0),
-  offsetY(0),
-  rightMargin(0),
-  leftMargin(0),
-  topMargin(0),
-  bottomMargin(0),
-  yRangeLow(0),
-  yRangeUp(100),
-  xRangeLow(0),
-  xRangeUp(100),
-  ranges(kFALSE)
+  titleY(yTitle)
 {
 }
 
@@ -238,6 +209,7 @@ void Plot::SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_
 void Plot::CleanUpHistogram(TH1* hist, Double_t factor){
 
   /** Sets bin contents of bins with too large uncertainties to 0 **/
+  // \todo{Get it to work}
 
   if (!hist){
     std::cout << "Error: histogram does not exist!" << std::endl;
@@ -280,11 +252,7 @@ void Plot::SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t
 
   /** Set style properties of a Function **/
 
-  func->SetMarkerColor(color);
-  func->SetMarkerStyle(style);
-  func->SetMarkerSize(size);
-
-  func->SetLineWidth(2);
+  func->SetLineWidth(3);
   func->SetLineColor(color);
 
 }
@@ -313,7 +281,7 @@ void Plot::SetProperties(TObject* obj, Int_t index){
   }
 
   else if (obj->InheritsFrom("TPave")){ //TLegend
-    ((TLegend*)obj)->SetTextFont(font); 
+    ((TLegend*)obj)->SetTextFont(font);
     ((TLegend*)obj)->SetTextSize(label);
     ((TLegend*)obj)->SetBorderSize(0);
   }
@@ -357,6 +325,15 @@ void Plot::SetCanvasOffsets(Float_t xOffset, Float_t yOffset){
 
 }
 
+void Plot::SetLog(Bool_t xLog, Bool_t yLog){
+
+  /** Sets wether X and/or Y axis will be displayed logarithmically **/
+
+  logX = xLog;
+  logY = yLog;
+
+}
+
 void Plot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp){
 
   /** Set the Ranges **/
@@ -373,6 +350,8 @@ void Plot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp){
 void Plot::SetRangesAuto(TH1* hist){
 
   /** Automatically determine good ranges **/
+  // \todo{implement possibility for ranges to be negative}
+
 
   yRangeUp   = 1.1*hist->GetMaximum();
   yRangeLow  = 0.9*hist->GetMinimum();
@@ -423,7 +402,7 @@ void Plot::SetOptions(TString opt){
 
 }
 
-void Plot::SetUpPad(TPad* pad){
+void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
   /** Sets up a Pad for Plotting **/
 
@@ -434,6 +413,15 @@ void Plot::SetUpPad(TPad* pad){
   pad->SetLeftMargin(leftMargin);
   pad->SetTickx(1);
   pad->SetTicky(1);
+
+  if (xLog){
+    if (xRangeLow > 0) pad->SetLogx(1);
+    else std::cout << "\033[1;31mERROR:\033[0m X-Ranges must be above zero! Logarithm not set!!" << std::endl;
+  }
+  if (yLog){
+    if (yRangeLow > 0) pad->SetLogy(1);
+    else std::cout << "\033[1;31mERROR:\033[0m Y-Ranges must be above zero! Logarithm not set!!" << std::endl;
+  }
 
 }
 
@@ -507,14 +495,15 @@ void SquarePlot::Draw(TString outname){
 
   /** Main function for Drawing **/
 
-  std::cout << "----------------------------" << std::endl;
-  std::cout << "  Plot Square Canvas:" << std::endl;
+  std::cout << "-----------------------------" << std::endl;
+  std::cout << "     Plot Square Canvas:" << std::endl;
+  std::cout << "-----------------------------" << std::endl;
 
   canvas  = new TCanvas("canvas", "SQUARE", 10, 10, width+10, height+10);
   canvas->cd();
 
   mainPad = new TPad("mainPad", "Distribution", 0, 0, 1, 1);
-  SetUpPad(mainPad);
+  SetUpPad(mainPad, logX, logY);
   if (!ranges) SetRangesAuto((TH1D*)plotArray->At(0));
   SetPadStyle((TH1*)plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
   mainPad->Draw();
@@ -526,7 +515,7 @@ void SquarePlot::Draw(TString outname){
   canvas->SaveAs(outname.Data());
   delete canvas;
 
-  std::cout << "----------------------------" << std::endl;
+  std::cout << "-----------------------------" << std::endl << std::endl;
 
 }
 
@@ -553,19 +542,19 @@ private:
 
   static Float_t padFrac;
 
-  TPad* mainPad;
-  TPad* ratioPad;
+  TPad* mainPad {nullptr};
+  TPad* ratioPad {nullptr};
 
   TString ratioTitle;
 
   TObjArray* plotArray;
   TObjArray* ratioArray;
 
-  Float_t rRangeUp;
-  Float_t rRangeLow;
+  Float_t rRangeUp {1.2};
+  Float_t rRangeLow {0.8};
 
   static Int_t offset;
-  TLine* one;
+  TLine* one {nullptr};
 
 };
 
@@ -577,14 +566,9 @@ Int_t   SingleRatioPlot::offset  {1};
 // ---- Cunstructor -----------------------------------------------------------
 
 SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TString xTitle, TString yTitle, TString rTitle) : Plot(xTitle, yTitle),
-  mainPad(nullptr),
-  ratioPad(nullptr),
   ratioTitle(rTitle),
   plotArray(mainArray),
-  ratioArray(rArray),
-  rRangeUp(1.2),
-  rRangeLow(0.8),
-  one(nullptr)
+  ratioArray(rArray)
 {
 
   if (!(mainArray->At(0)->InheritsFrom("TH1")) and !(mainArray->At(0)->InheritsFrom("TF1"))){
@@ -613,21 +597,22 @@ void SingleRatioPlot::Draw(TString outname){
 
   /** Main function for Drawing **/
 
-  std::cout << "----------------------------" << std::endl;
+  std::cout << "-----------------------------" << std::endl;
   std::cout << "  Plot Single Ratio Canvas: " << std::endl;
+  std::cout << "-----------------------------" << std::endl;
 
   canvas  = new TCanvas("canvas", "SINGLE RATIO", 10, 10, width+10, height+10);
   canvas->cd();
 
   mainPad = new TPad("mainPad", "Distribution", 0, padFrac, 1, 1);
-  SetUpPad(mainPad);
+  SetUpPad(mainPad, logX, logY);
   mainPad->SetBottomMargin(0.);
   if (!ranges) SetRangesAuto((TH1D*)plotArray->At(0));
   SetPadStyle((TH1*)plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
   mainPad->Draw();
 
   ratioPad = new TPad("ratioPad", "Ratio", 0, 0, 1, padFrac);
-  SetUpPad(ratioPad);
+  SetUpPad(ratioPad, logX, kFALSE);
   ratioPad->SetTopMargin(0.);
   if (!ranges) SetRangesAuto((TH1D*)ratioArray->At(0));
   SetPadStyle((TH1*)ratioArray->At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow);
@@ -642,7 +627,7 @@ void SingleRatioPlot::Draw(TString outname){
   canvas->SaveAs(outname.Data());
   delete canvas;
 
-  std::cout << "----------------------------" << std::endl;
+  std::cout << "-----------------------------" << std::endl << std::endl;
 
 }
 
@@ -741,10 +726,12 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt):
   TIter iArray(array);
   while (TObject* obj = iArray()) {
 
-      option->ReadToken(options);
-      entryName->ReadLine(entries);
+    if (obj->InheritsFrom("TPave")) continue;
 
-      legend->AddEntry(obj, entryName->Data(), option->Data());
+    option->ReadToken(options);
+    entryName->ReadLine(entries);
+
+    legend->AddEntry(obj, entryName->Data(), option->Data());
   }
 
   array->Add(legend);
@@ -827,6 +814,8 @@ void Legend::SetPosition(TLegend* l, Float_t x1, Float_t x2, Float_t y1, Float_t
 void Legend::SetPositionAuto(){
 
   /** Determine automatic placement of Legend based on position strings **/
+
+  // \todo{Get it to work}
 
   Float_t relLegendWidth  = legend->GetX2NDC() - legend->GetX1NDC();
   Float_t relLegendHeight = legend->GetNRows()*0.05;

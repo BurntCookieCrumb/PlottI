@@ -62,12 +62,12 @@ void exPlottI(){
   SquarePlot square = SquarePlot(main, "x", "count");
   square.SetStyle(colors, markers, sizes);
   square.SetMode(Plot::Presentation);
-  square.SetRanges(3, -3, 400, 0);
+  square.SetRanges(-3, 3, .1, 400);
   square.Draw(TString("Square.png"));
 
   SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
   rat.SetOffset(2); // determines where the ratio entries start in the style arrays
-  rat.SetRanges(3, -3, 400, -10, 3.2, 0.5);
+  rat.SetRanges(-3, 3, -10, 400, 0.5, 3.2);
   rat.Draw(TString("Ratio.png"));
 
 
