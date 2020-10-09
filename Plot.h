@@ -425,7 +425,7 @@ void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
 }
 
-void Plot::DrawArray(TObjArray* array, Int_t off = 0){
+void Plot::DrawArray(TObjArray* array, Int_t off){
 
   /** Draws a single TObjArray in the chosen Pad **/
 
