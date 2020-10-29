@@ -60,10 +60,10 @@ public:
 
   /*virtual*/ void Draw() {}
 
-  static void SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_t size);
+  template <class PO> static void SetLineProperties(PO* pobj, Color_t color, Style_t lstyle, Size_t lwid = 2.);
+  template <class PO> static void SetMarkerProperties(PO* pobj, Color_t color, Style_t mstyle, Size_t msize = 3.);
+  template <class PO> static void SetPlottjectProperties(PO* pobj, Color_t color, Style_t mstyle, Size_t msize = 3., Style_t lstyle = 1, Size_t lwid= 2., std::string title = "");
   static void CleanUpHistogram(TH1* hist, Double_t factor = 2.);
-  static void SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t size);
-  static void SetLineProperties(TLine* line, Color_t color, Style_t style, Size_t size);
   void SetProperties(TObject* obj, Int_t index);
 
   void SetCanvasDimensions(Float_t cWidth, Float_t cHeight);
@@ -71,17 +71,20 @@ public:
   void SetCanvasOffsets(Float_t xOffset, Float_t yOffset);
   /*virtual*/ void SetLog(Bool_t xLog = kFALSE, Bool_t yLog = kTRUE);
   /*virtual*/ void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp);
+  void SetOffset(Int_t off);
 
   void SetMode(Mode m);
-  void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz);
+  void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz = {}, std::vector<Style_t> lstyl = {}, std::vector<Size_t> lwid = {});
   void SetOptions(TString opt);
 
 
 protected:
 
-  void SetCanvasStyle(TH1* mainHist);
-  void SetPadStyle(TH1* mainHist, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
-  void SetRangesAuto(TH1* hist);
+  void EnsureAxes(TObject* first, std::string arrayName = "");
+  template <class AO> void SetCanvasStyle(AO* first);
+  template <class AO> void SetPadStyle(AO* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
+  template <class AO> void SetRangesAuto(AO* first);
+  void SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
   void SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog);
   void DrawArray(TObjArray* array, Int_t off = 0);
 
@@ -90,7 +93,9 @@ protected:
 
   static std::vector<Color_t> colors;
   static std::vector<Style_t> markers;
+  static std::vector<Style_t> lstyles;
   static std::vector<Size_t>  sizes;
+  static std::vector<Size_t>  lwidths;
 
   TString titleX;
   TString titleY;
@@ -110,12 +115,17 @@ protected:
   Float_t yRangeUp {100};
   Float_t xRangeLow {0};
   Float_t xRangeUp {100};
+
   Bool_t  ranges {kFALSE};
+  Bool_t  broken {kFALSE};
+
+  static Bool_t  styles;
 
   static Style_t font;
   static Style_t label;
 
   static TString options;
+  static Int_t   mOffset;
 
 };
 
@@ -133,78 +143,77 @@ Plot::Plot(TString xTitle, TString yTitle):
 
 // ---- Static Member Variables -----------------------------------------------
 
-std::vector<Color_t>  Plot::colors {{}};
-std::vector<Style_t>  Plot::markers {{}};
-std::vector<Size_t>   Plot::sizes {{}};
+std::vector<Color_t>  Plot::colors;
+std::vector<Style_t>  Plot::markers;
+std::vector<Style_t>  Plot::lstyles;
+std::vector<Size_t>   Plot::sizes;
+std::vector<Size_t>   Plot::lwidths;
 
-Style_t   Plot::font {43};
-Style_t   Plot::label {28};
+Style_t Plot::font {43};
+Style_t Plot::label {28};
 
-TString   Plot::options {TString("SAME")};
+Bool_t  Plot::styles {kFALSE};
+
+TString Plot::options {TString("SAME")};
+Int_t   Plot::mOffset {0};
 
 // ---- Member Functions ------------------------------------------------------
 
-void Plot::SetCanvasStyle(TH1* mainHist){
+template <class AO>
+void Plot::SetCanvasStyle(AO* first){
 
   /** Set general style features of the Canvas and Pads **/
 
-  mainHist->SetTitle("");
-  mainHist->SetTitleFont(43);
-  mainHist->SetTitleSize(0);
-  mainHist->GetXaxis()->SetTitleOffset(offsetX);
-  mainHist->GetYaxis()->SetTitleOffset(offsetY);
-  mainHist->GetXaxis()->SetTickSize(0.03);
-  mainHist->GetYaxis()->SetTickSize(0.03);
-  mainHist->SetTitleSize(label, "X");
-  mainHist->SetTitleSize(label, "Y");
-  mainHist->SetTitleFont(font,  "X");
-  mainHist->SetTitleFont(font,  "Y");
-  mainHist->SetLabelFont(font,  "X");
-  mainHist->SetLabelFont(font,  "Y");
-  mainHist->SetLabelSize(label, "X");
-  mainHist->SetLabelSize(label, "Y");
-  mainHist->SetStats(kFALSE);
+  first->GetXaxis()->SetTitleOffset(offsetX);
+  first->GetYaxis()->SetTitleOffset(offsetY);
+  first->GetXaxis()->SetTickSize(0.03);
+  first->GetYaxis()->SetTickSize(0.03);
+  first->GetXaxis()->SetTitleSize(label);
+  first->GetYaxis()->SetTitleSize(label);
+  first->GetXaxis()->SetTitleFont(font);
+  first->GetYaxis()->SetTitleFont(font);
+  first->GetXaxis()->SetLabelFont(font);
+  first->GetYaxis()->SetLabelFont(font);
+  first->GetXaxis()->SetLabelSize(label);
+  first->GetYaxis()->SetLabelSize(label);
 
 }
 
-void Plot::SetPadStyle(TH1* mainHist, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
+template <class AO>
+void Plot::SetPadStyle(AO* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
 
   /** Set style aspects of the pads **/
 
-  mainHist->GetXaxis()->SetRangeUser(xLow, xUp);
-  mainHist->GetYaxis()->SetRangeUser(yLow, yUp);
-  mainHist->SetXTitle(xTitle);
-  mainHist->SetYTitle(yTitle);
+  if (first->InheritsFrom("TGraph")) first->GetXaxis()->SetLimits(xLow, xUp);
+  else first->GetXaxis()->SetRangeUser(xLow, xUp);
+  first->GetYaxis()->SetRangeUser(yLow, yUp);
+  first->GetXaxis()->SetTitle(xTitle);
+  first->GetYaxis()->SetTitle(yTitle);
 
 }
 
-void Plot::SetHistogramProperties(TH1* hist, Color_t color, Style_t style, Size_t size){
+void Plot::SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
 
-  /** Set style properties of a Histogram **/
+  /* Set Style aspects of pad and canvas */
 
-  hist->SetMarkerColor(color);
-  hist->SetMarkerStyle(style);
-  hist->SetMarkerSize(size);
-
-  hist->SetLineWidth(2);
-  hist->SetLineColor(color);
-
-  Double_t content, error;
-
-  for(Int_t bin = 0; bin <= hist->GetNbinsX(); bin++){
-
-    content = hist->GetBinContent(bin);
-    error   = hist->GetBinError(bin);
-
-    if (error/content > .4) {
-      hist->SetBinContent(bin, 0.0);
-      hist->SetBinError(bin, 0.0);
-    }
-
+  if (first->InheritsFrom("TH1")){
+    if (!ranges) SetRangesAuto((TH1*)first);
+    SetPadStyle((TH1*)first, xTitle, yTitle, xUp, xLow, yUp, yLow);
+    SetCanvasStyle((TH1*)first);
+    ((TH1*)first)->SetStats(kFALSE);
+  }
+  else if (first->InheritsFrom("TF1")){
+    if (!ranges) SetRangesAuto((TF1*)first);
+    SetPadStyle((TF1*)first, xTitle, yTitle, xUp, xLow, yUp, yLow);
+    SetCanvasStyle((TF1*)first);
+  }
+  else if (first->InheritsFrom("TMultiGraph")){
+    SetPadStyle((TMultiGraph*)first, xTitle, yTitle, xUp, xLow, yUp, yLow);
+    SetCanvasStyle((TMultiGraph*)first);
   }
 
-}
 
+}
 
 void Plot::CleanUpHistogram(TH1* hist, Double_t factor){
 
@@ -212,86 +221,85 @@ void Plot::CleanUpHistogram(TH1* hist, Double_t factor){
   // \todo{Get it to work}
 
   if (!hist){
-    std::cout << "Error: histogram does not exist!" << std::endl;
+    std::cout << "\033[1;31mERROR:\033[0m histogram to be cleaned up does not exist!" << std::endl;
     return;
   }
 
-  //std::cout << hist << std::endl;
+}
 
+template <class PO>
+void Plot::SetLineProperties(PO* pobj, Color_t color, Style_t lstyle, Size_t lwid){
 
-  // if (hist->IsZombie()){
-  //   std::cout << "Error: histogram is broken!" << std::endl;
-  //   return;
-  // }
-  //
-  // std::cout << hist->GetName() << std::endl;
-  // std::cout << hist->GetXaxis()->GetNbins() << std::endl;
-  // std::cout << hist->GetNbinsX() << std::endl;
-  //
-  // Double_t content, error;
-  //
-  // for(Int_t bin = 0; bin <= hist->GetNbinsX(); bin++){
-  //
-  //   std::cout << bin << std::endl;
-  //
-  //   content = hist->GetBinContent(bin);
-  //   error   = hist->GetBinError(bin);
-  //
-  //   std::cout << bin << std::endl;
-  //
-  //   if (error/content > factor) {
-  //     hist->SetBinContent(bin, 0.0);
-  //     hist->SetBinError(bin, 0.0);
-  //   }
-  //
-  // }
+  /** Set style properties of lines **/
+
+  pobj->SetLineStyle(lstyle);
+  pobj->SetLineWidth(lwid);
+  pobj->SetLineColor(color);
 
 }
 
-void Plot::SetFunctionProperties(TF1* func, Color_t color, Style_t style, Size_t size){
+template <class PO>
+void Plot::SetMarkerProperties(PO* pobj, Color_t color, Style_t mstyle, Size_t msize){
 
-  /** Set style properties of a Function **/
+  /** Set style properties of markers **/
 
-  func->SetLineWidth(3);
-  func->SetLineColor(color);
+  pobj->SetMarkerColor(color);
+  pobj->SetMarkerStyle(mstyle);
+  pobj->SetMarkerSize(msize);
 
 }
 
-void Plot::SetLineProperties(TLine* line, Color_t color, Style_t style, Size_t size){
+template <class PO>
+void Plot::SetPlottjectProperties(PO* pobj, Color_t color, Style_t mstyle, Size_t msize, Style_t lstyle, Size_t lwid, std::string title){
 
-  /** Set style properties of a Line **/
+  /** Set style properties of plottable objects **/
 
-  line->SetLineStyle(style);
-  line->SetLineWidth(size);
-  line->SetLineColor(color);
+  pobj->SetTitle(title.data());
+  SetMarkerProperties(pobj, color, mstyle, msize);
+  SetLineProperties(pobj, color, lstyle, lwid);
 
 }
 
 void Plot::SetProperties(TObject* obj, Int_t index){
 
-  /** Manages setting of properties for all plottable objects **/
+  /** Manages internal setting of properties for all plottable objects **/
 
-  if (obj->InheritsFrom("TH1") && !markers.empty() && (index < markers.size())) {
-    SetHistogramProperties((TH1*)obj, colors[index], markers[index], sizes[index]);
-    CleanUpHistogram((TH1*)obj, .5);
-  }
+  Double_t size, lwidth; Int_t lstyle;
+  size   = !(sizes.empty())   ? sizes[index]   : 2.;
+  lstyle = !(lstyles.empty()) ? lstyles[index] : 1;
+  lwidth = !(lwidths.empty()) ? lwidths[index] : 2.;
 
-  else if (obj->InheritsFrom("TF1") && !markers.empty() && (index < markers.size())){
-    SetFunctionProperties((TF1*)obj, colors[index], markers[index], sizes[index]);
-  }
-
-  else if (obj->InheritsFrom("TPave")){ //TLegend
+  if (obj->InheritsFrom("TPave")){ //TLegend
     ((TLegend*)obj)->SetTextFont(font);
     ((TLegend*)obj)->SetTextSize(label);
     ((TLegend*)obj)->SetBorderSize(0);
   }
 
-  else if (obj->InheritsFrom("TLine") && (index < markers.size())){
-    SetLineProperties((TLine*)obj, colors[index], markers[index], sizes[index]);
-  }
+  else if (!styles) return;
+  else if (index >= markers.size()) return;
 
-  else if (index < markers.size()){
-    std::cout << "Missing Class:" << obj->ClassName() << std::endl;
+  else if (obj->InheritsFrom("TH1")) {
+    SetPlottjectProperties((TH1*)obj, colors[index], markers[index], size, lstyle, lwidth);
+  }
+  else if (obj->InheritsFrom("TF1")){
+    SetPlottjectProperties((TF1*)obj, colors[index], markers[index], size, lstyle, lwidth);
+  }
+  else if (obj->InheritsFrom("TGraph")){
+    SetPlottjectProperties((TGraph*)obj, colors[index], markers[index], size, lstyle, lwidth);
+  }
+  else if (obj->InheritsFrom("TMultiGraph")){
+    TIter iMultiGraph(((TMultiGraph*)obj)->GetListOfGraphs());
+    while (TObject* graph = iMultiGraph()){
+      if (index >= markers.size()) break;
+      SetPlottjectProperties((TGraph*)obj, colors[index], markers[index], size, lstyle, lwidth);
+      index++;
+    }
+  }
+  else if (obj->InheritsFrom("TLine")){
+    SetLineProperties((TLine*)obj, colors[index], lstyle, lwidth);
+  }
+  else{
+    std::cout << "\033[1;34mMissing Class \033[0m" << obj->ClassName() << std::endl;
   }
 
 }
@@ -347,17 +355,27 @@ void Plot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp){
 
 }
 
-void Plot::SetRangesAuto(TH1* hist){
+void Plot::SetOffset(Int_t off){
+
+  /** Sets the offset of the style properties markers **/
+
+  mOffset = off;
+
+}
+
+template <class AO>
+void Plot::SetRangesAuto(AO* first){
 
   /** Automatically determine good ranges **/
   // \todo{implement possibility for ranges to be negative}
+  // \todo{implement for TF1 and TGraph}
 
 
-  yRangeUp   = 1.1*hist->GetMaximum();
-  yRangeLow  = 0.9*hist->GetMinimum();
+  yRangeUp   = 1.1*first->GetMaximum();
+  yRangeLow  = 0.9*first->GetMinimum();
 
-  xRangeUp   = 1.1*hist->GetBinCenter(0);
-  xRangeLow  = 0.9*hist->GetBinCenter(hist->GetNbinsX());
+  // xRangeUp   = 1.1*first->GetBinCenter(0);
+  // xRangeLow  = 0.9*first->GetBinCenter(first->GetNbinsX());
 
 }
 
@@ -384,13 +402,21 @@ void Plot::SetMode(Mode m){
 
  }
 
-void Plot::SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz){
+void Plot::SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz, std::vector<Style_t> lstyl, std::vector<Size_t> lwid){
 
   /** Set style arrays for the histograms and functions **/
 
   colors  = std::move(col);
   markers = std::move(mark);
-  sizes   = std::move(siz);
+
+  if (!siz.empty())    sizes   = std::move(siz);
+  else sizes.clear();  //??
+  if (!lstyl.empty())  lstyles = std::move(lstyl);
+  else lstyles.clear();  //??
+  if (!lwid.empty())   lwidths = std::move(lwid);
+  else lwidths.clear();  //??
+
+  styles = kTRUE;
 
 }
 
@@ -425,13 +451,25 @@ void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
 }
 
+void Plot::EnsureAxes(TObject* first, std::string arrayName){
+
+  /* Ensure that first object in array to be plotted has well defined axes */
+
+  if (!(first->InheritsFrom("TH1")) && !(first->InheritsFrom("TF1")) && !(first->InheritsFrom("TMultiGraph"))){
+
+    std::cout << "\033[1;33mFATAL ERROR:\033[0m First entry in array must have axes "
+    << "\033[1;36m(" << arrayName << ")\033[0m" << std::endl;
+    broken = kTRUE;
+
+  }
+
+}
+
 void Plot::DrawArray(TObjArray* array, Int_t off){
 
   /** Draws a single TObjArray in the chosen Pad **/
 
   Int_t nPlots = array->GetEntries();
-
-  SetCanvasStyle((TH1D*)array->At(0));
 
   for (Int_t plot = 0; plot < nPlots; plot++){
 
@@ -439,8 +477,8 @@ void Plot::DrawArray(TObjArray* array, Int_t off){
               << array->At(plot)->GetName() << std::endl;
 
     if(!array->At(plot)) {
-      std::cout << "Plot object No " << plot << " is broken!" << std::endl;
-      return;
+      std::cout << "\033[1;31mERROR:\033[0m Plot object No " << plot << " is broken! Will be skipped." << std::endl;
+      continue;
     }
 
     SetProperties(array->At(plot), plot + off);
@@ -476,12 +514,7 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
   plotArray(array)
 {
 
-  if (!(array->At(0)->InheritsFrom("TH1")) and !(array->At(0)->InheritsFrom("TF1"))){
-
-    std::cout << "First entry in Array should be a Histogram or Function" << std::endl;
-    return;
-
-  }
+  EnsureAxes(array->At(0), "Main Array");
 
   SetCanvasDimensions(1000, 1000);
   SetCanvasMargins(0.07, .15, 0.07, .15);
@@ -489,7 +522,7 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
 
 }
 
-// ---- Static Member Variables -----------------------------------------------
+// ---- Member Functions ------------------------------------------------------
 
 void SquarePlot::Draw(TString outname){
 
@@ -499,17 +532,22 @@ void SquarePlot::Draw(TString outname){
   std::cout << "     Plot Square Canvas:" << std::endl;
   std::cout << "-----------------------------" << std::endl;
 
+  if (broken){
+    std::cout << "Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn" << std::endl;
+    std::cout << "-----------------------------" << std::endl << std::endl;
+    return;
+  }
+
   canvas  = new TCanvas("canvas", "SQUARE", 10, 10, width+10, height+10);
   canvas->cd();
 
   mainPad = new TPad("mainPad", "Distribution", 0, 0, 1, 1);
   SetUpPad(mainPad, logX, logY);
-  if (!ranges) SetRangesAuto((TH1D*)plotArray->At(0));
-  SetPadStyle((TH1*)plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
+  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
   mainPad->Draw();
   mainPad->cd();
 
-  DrawArray(plotArray);
+  DrawArray(plotArray, mOffset);
 
   canvas->Update();
   canvas->SaveAs(outname.Data());
@@ -520,10 +558,104 @@ void SquarePlot::Draw(TString outname){
 }
 
 // ----------------------------------------------------------------------------
-//                              RATIO PLOT CLASS
+//                              RATIO ONLY PLOT CLASS
 // ----------------------------------------------------------------------------
 
-class SingleRatioPlot : public Plot
+class RatioPlot : public Plot
+{
+
+public:
+
+  RatioPlot(TObjArray* rArray, TString xTitle, TString yTitle);
+  virtual ~RatioPlot() {};
+
+  /*virtual*/ void Draw(TString outname);
+  /*virtual*/ void DrawRatioArray(TObjArray* array, Int_t off);
+  void SetUpperOneLimit(Double_t up);
+
+protected:
+
+  TObjArray* plotArray;
+
+  TLine*   one {nullptr};
+  Double_t oneUp {0};
+
+};
+
+// ---- Constructor -----------------------------------------------------------
+
+RatioPlot::RatioPlot(TObjArray* rArray, TString xTitle, TString yTitle) : Plot(xTitle, yTitle),
+  plotArray(rArray)
+{
+
+  EnsureAxes(rArray->At(0), "Main Array");
+
+  SetCanvasDimensions(1000, 600);
+  SetCanvasMargins(0.07, .15, 0.07, .25);
+  SetCanvasOffsets(1., .8);
+
+}
+
+// ---- Member Functions ------------------------------------------------------
+
+void RatioPlot::Draw(TString outname){
+
+  /** Main function for Drawing **/
+
+  std::cout << "-----------------------------" << std::endl;
+  std::cout << "     Plot Ratio Canvas:" << std::endl;
+  std::cout << "-----------------------------" << std::endl;
+
+  if (broken){
+    std::cout << "Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn" << std::endl;
+    std::cout << "-----------------------------" << std::endl << std::endl;
+    return;
+  }
+
+  canvas  = new TCanvas("canvas", "RATIO", 10, 10, width+10, height+10);
+  canvas->cd();
+
+  mainPad = new TPad("mainPad", "Ratio", 0, 0, 1, 1);
+  SetUpPad(mainPad, logX, logY);
+  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
+  mainPad->Draw();
+  mainPad->cd();
+
+  DrawRatioArray(plotArray, mOffset);
+
+  canvas->Update();
+  canvas->SaveAs(outname.Data());
+  delete canvas;
+
+  std::cout << "-----------------------------" << std::endl << std::endl;
+
+}
+
+void RatioPlot::DrawRatioArray(TObjArray* array, Int_t off){
+
+  /** Draws a single Ratio TObjArray in the chosen Pad **/
+
+  one = new TLine(xRangeLow, 1., (oneUp ? oneUp : xRangeUp), 1.);
+  array->Add(one);
+
+  DrawArray(array, off);
+  SetLineProperties(one, kBlack, 9, 3.);
+
+}
+
+void RatioPlot::SetUpperOneLimit(Double_t up){
+
+  /* Sets upper limit on line in ratio at value one */
+
+  oneUp = up;
+
+}
+
+// ----------------------------------------------------------------------------
+//                         SINGLE RATIO PLOT CLASS
+// ----------------------------------------------------------------------------
+
+class SingleRatioPlot : public RatioPlot
 {
 
 public:
@@ -534,56 +666,40 @@ public:
   /*virtual*/ void Draw(TString outname);
 
   void SetPadFraction(Double_t frac);
-  void SetOffset(Int_t off);
+  void SetOffset(Int_t off, Int_t roff);
   /*virtual*/ void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow);
-  /*virtual*/ void DrawRatioArray(TObjArray* array, Int_t off = 1);
+
 
 private:
 
   static Float_t padFrac;
 
-  TPad* mainPad {nullptr};
   TPad* ratioPad {nullptr};
-
   TString ratioTitle;
 
-  TObjArray* plotArray;
   TObjArray* ratioArray;
 
   Float_t rRangeUp {1.2};
   Float_t rRangeLow {0.8};
 
-  static Int_t offset;
-  TLine* one {nullptr};
+  static Int_t rOffset;
 
 };
 
 // ---- Static Member Variables -----------------------------------------------
 
 Float_t SingleRatioPlot::padFrac {0.25};
-Int_t   SingleRatioPlot::offset  {1};
+Int_t   SingleRatioPlot::rOffset  {1};
 
 // ---- Cunstructor -----------------------------------------------------------
 
-SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TString xTitle, TString yTitle, TString rTitle) : Plot(xTitle, yTitle),
+SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TString xTitle, TString yTitle, TString rTitle) : RatioPlot(mainArray, xTitle, yTitle),
   ratioTitle(rTitle),
-  plotArray(mainArray),
   ratioArray(rArray)
 {
 
-  if (!(mainArray->At(0)->InheritsFrom("TH1")) and !(mainArray->At(0)->InheritsFrom("TF1"))){
-
-    std::cout << "First entry in Main Array should be a Histogram or Function" << std::endl;
-    return;
-
-  }
-
-  if (!(rArray->At(0)->InheritsFrom("TH1")) and !(rArray->At(0)->InheritsFrom("TF1"))){
-
-    std::cout << "First entry in Ratio Array should be a Histogram or Function" << std::endl;
-    return;
-
-  }
+  EnsureAxes(mainArray->At(0), "Main Array");
+  EnsureAxes(rArray->At(0), "Ratio Array");
 
   SetCanvasDimensions(1000, 1200);
   SetCanvasMargins(0.07, .15, 0.07, .4);
@@ -601,27 +717,31 @@ void SingleRatioPlot::Draw(TString outname){
   std::cout << "  Plot Single Ratio Canvas: " << std::endl;
   std::cout << "-----------------------------" << std::endl;
 
+  if (broken){
+    std::cout << "Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn" << std::endl;
+    std::cout << "-----------------------------" << std::endl << std::endl;
+    return;
+  }
+
   canvas  = new TCanvas("canvas", "SINGLE RATIO", 10, 10, width+10, height+10);
   canvas->cd();
 
   mainPad = new TPad("mainPad", "Distribution", 0, padFrac, 1, 1);
   SetUpPad(mainPad, logX, logY);
+  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
   mainPad->SetBottomMargin(0.);
-  if (!ranges) SetRangesAuto((TH1D*)plotArray->At(0));
-  SetPadStyle((TH1*)plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
   mainPad->Draw();
 
   ratioPad = new TPad("ratioPad", "Ratio", 0, 0, 1, padFrac);
   SetUpPad(ratioPad, logX, kFALSE);
   ratioPad->SetTopMargin(0.);
-  if (!ranges) SetRangesAuto((TH1D*)ratioArray->At(0));
-  SetPadStyle((TH1*)ratioArray->At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow);
+  SetUpStyle(ratioArray->At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow);
   ratioPad->Draw();
 
   mainPad->cd();
-  DrawArray(plotArray);
+  DrawArray(plotArray, mOffset);
   ratioPad->cd();
-  DrawRatioArray(ratioArray, offset);
+  DrawRatioArray(ratioArray, rOffset);
 
   canvas->Update();
   canvas->SaveAs(outname.Data());
@@ -631,8 +751,6 @@ void SingleRatioPlot::Draw(TString outname){
 
 }
 
-// ------ Member Functions ----------------------------------------------------
-
 void SingleRatioPlot::SetPadFraction(Double_t frac){
 
   /** Sets Fraction of the Pad taken by the Ratio **/
@@ -641,12 +759,13 @@ void SingleRatioPlot::SetPadFraction(Double_t frac){
 
 }
 
-void SingleRatioPlot::SetOffset(Int_t off){
+void SingleRatioPlot::SetOffset(Int_t off, Int_t roff){
 
   /** Sets the offset of the ratio style properties,
   namely where the ratio markers are in the marker, color and size arrays **/
 
-  offset = off;
+  mOffset = off;
+  rOffset = roff;
 
 }
 
@@ -665,18 +784,6 @@ void SingleRatioPlot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t
 
 }
 
-void SingleRatioPlot::DrawRatioArray(TObjArray* array, Int_t off){
-
-  /** Draws a single Ratio TObjArray in the chosen Pad **/
-
-  one = new TLine(xRangeLow, 1., xRangeUp, 1.);
-  array->Add(one);
-
-  DrawArray(array, off);
-  SetLineProperties(one, kBlack, 9, 2.);
-
-}
-
 // ----------------------------------------------------------------------------
 //
 //                         LEGEND CLASS
@@ -688,7 +795,7 @@ class Legend
 public:
 
   Legend();
-  Legend(TObjArray* array, std::string entries, std::string opt);
+  Legend(TObjArray* array, std::string entries, std::string opt, std::string title="");
   Legend(std::string obj, std::string entries, std::string opt, Int_t nEntries);
   Legend(std::string entries, Int_t nEntries);
   ~Legend() {}
@@ -710,7 +817,7 @@ Legend::Legend():
 {
 }
 
-Legend::Legend(TObjArray* array, std::string entr, std::string opt):
+Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string title):
   legend(nullptr),
   dummy(0)
 {
@@ -722,6 +829,8 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt):
 
   TString* option    = new TString();
   TString* entryName = new TString();
+
+  if (title != "") legend->AddEntry((TObject*)0x0, title.data(), "");
 
   TIter iArray(array);
   while (TObject* obj = iArray()) {
@@ -770,7 +879,7 @@ dummy(nEntries)
     entryName->ReadLine(entries);
 
     dummy[entry] = new TH1C();
-    Plot::SetHistogramProperties(dummy[entry], color->Atoi(), marker->Atoi(), size->Atof());
+    Plot::SetPlottjectProperties(dummy[entry], color->Atoi(), marker->Atoi(), size->Atof());
 
     legend->AddEntry(dummy[entry], entryName->Data(), option->Data());
 
