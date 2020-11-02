@@ -63,12 +63,14 @@ void exPlottI(){
   square.SetStyle(colors, markers, sizes);
   square.SetMode(Plot::Presentation);
   square.SetRanges(-3, 3, .1, 400);
-  square.Draw(TString("Square.png"));
+  // square.Draw(TString("Square.png"));
+  square.Draw(TString("Square.pdf"));
 
   SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
-  rat.SetOffset(2); // determines where the ratio entries start in the style arrays
+  rat.SetOffset(0, 2); // determines where the (ratio) entries start in the style arrays
   rat.SetRanges(-3, 3, -10, 400, 0.5, 3.2);
-  rat.Draw(TString("Ratio.png"));
+  // rat.Draw(TString("Ratio.png"));
+  rat.Draw(TString("Ratio.pdf"));
 
 
 

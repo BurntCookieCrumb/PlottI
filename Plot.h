@@ -290,8 +290,9 @@ void Plot::SetProperties(TObject* obj, Int_t index){
   else if (obj->InheritsFrom("TMultiGraph")){
     TIter iMultiGraph(((TMultiGraph*)obj)->GetListOfGraphs());
     while (TObject* graph = iMultiGraph()){
+      if (!graph) continue;
       if (index >= markers.size()) break;
-      SetPlottjectProperties((TGraph*)obj, colors[index], markers[index], size, lstyle, lwidth);
+      SetPlottjectProperties((TGraph*)graph, colors[index], markers[index], size, lstyle, lwidth);
       index++;
     }
   }
@@ -336,6 +337,7 @@ void Plot::SetCanvasOffsets(Float_t xOffset, Float_t yOffset){
 void Plot::SetLog(Bool_t xLog, Bool_t yLog){
 
   /** Sets wether X and/or Y axis will be displayed logarithmically **/
+  /** \todo{Find out why logx sometimes doesnt work} **/
 
   logX = xLog;
   logY = yLog;
@@ -455,11 +457,20 @@ void Plot::EnsureAxes(TObject* first, std::string arrayName){
 
   /* Ensure that first object in array to be plotted has well defined axes */
 
+  if (!first) {
+
+    std::cout << "\033[1;33mFATAL ERROR:\033[0m First entry in array doesn't exist!!" << std::endl;
+    broken = kTRUE;
+    return;
+
+  }
+
   if (!(first->InheritsFrom("TH1")) && !(first->InheritsFrom("TF1")) && !(first->InheritsFrom("TMultiGraph"))){
 
     std::cout << "\033[1;33mFATAL ERROR:\033[0m First entry in array must have axes "
     << "\033[1;36m(" << arrayName << ")\033[0m" << std::endl;
     broken = kTRUE;
+    return;
 
   }
 
@@ -482,7 +493,8 @@ void Plot::DrawArray(TObjArray* array, Int_t off){
     }
 
     SetProperties(array->At(plot), plot + off);
-    array->At(plot)->Draw(options.Data());
+    if (array->At(plot)->InheritsFrom("TGraph")) array->At(plot)->Draw(options.ReplaceAll("SAME","").Data());
+    else array->At(plot)->Draw(options.Data());
 
   }
 
@@ -798,6 +810,8 @@ public:
   Legend(TObjArray* array, std::string entries, std::string opt, std::string title="");
   Legend(std::string obj, std::string entries, std::string opt, Int_t nEntries);
   Legend(std::string entries, Int_t nEntries);
+  Legend(Legend& lgnd);
+  Legend(TLegend* lgnd);
   ~Legend() {}
 
   TLegend* GetLegendPointer(){return legend;};
@@ -905,6 +919,20 @@ dummy(nEntries)
 
   }
 
+}
+
+Legend::Legend(Legend& lgnd):
+  legend(nullptr),
+  dummy(0)
+{
+  /* \todo{Get it to work} */
+}
+
+Legend::Legend(TLegend* lgnd):
+  legend(nullptr),
+  dummy(0)
+{
+/* \todo{Get it to work, maybe derive this class from TLegend to gain access to fPrimitives} */
 }
 
 // ---- Member Functions ------------------------------------------------------
