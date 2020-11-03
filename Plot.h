@@ -200,7 +200,6 @@ void Plot::SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xU
     if (!ranges) SetRangesAuto((TH1*)first);
     SetPadStyle((TH1*)first, xTitle, yTitle, xUp, xLow, yUp, yLow);
     SetCanvasStyle((TH1*)first);
-    ((TH1*)first)->SetStats(kFALSE);
   }
   else if (first->InheritsFrom("TF1")){
     if (!ranges) SetRangesAuto((TF1*)first);
@@ -280,6 +279,7 @@ void Plot::SetProperties(TObject* obj, Int_t index){
 
   else if (obj->InheritsFrom("TH1")) {
     SetPlottjectProperties((TH1*)obj, colors[index], markers[index], size, lstyle, lwidth);
+    ((TH1*)obj)->SetStats(kFALSE);
   }
   else if (obj->InheritsFrom("TF1")){
     SetPlottjectProperties((TF1*)obj, colors[index], markers[index], size, lstyle, lwidth);
@@ -493,7 +493,7 @@ void Plot::DrawArray(TObjArray* array, Int_t off){
     }
 
     SetProperties(array->At(plot), plot + off);
-    if (array->At(plot)->InheritsFrom("TGraph")) array->At(plot)->Draw(options.ReplaceAll("SAME","").Data());
+    if (array->At(plot)->InheritsFrom("TGraph")) array->At(plot)->Draw(options.Copy().ReplaceAll("SAME","").Data());
     else array->At(plot)->Draw(options.Data());
 
   }
