@@ -76,7 +76,9 @@ public:
   void SetMode(Mode m);
   void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz = {}, std::vector<Style_t> lstyl = {}, std::vector<Size_t> lwid = {});
   void SetOptions(TString opt);
-
+  void SetOptions(std::vector<std::string> optns);
+  void SetOptions(std::string optns, std::string postns, Int_t off = 0);
+  void SetOption(std::string opt, Int_t pos);
 
 protected:
 
@@ -86,16 +88,17 @@ protected:
   template <class AO> void SetRangesAuto(AO* first);
   void SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
   void SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog);
-  void DrawArray(TObjArray* array, Int_t off = 0);
+  void DrawArray(TObjArray* array, Int_t off = 0, Int_t offOpt = 0);
 
   TPad    *mainPad {nullptr};
-  TCanvas *canvas {nullptr};
+  TCanvas *canvas  {nullptr};
 
   static std::vector<Color_t> colors;
   static std::vector<Style_t> markers;
   static std::vector<Style_t> lstyles;
   static std::vector<Size_t>  sizes;
   static std::vector<Size_t>  lwidths;
+  std::vector<std::string>    options;
 
   TString titleX;
   TString titleY;
@@ -124,14 +127,15 @@ protected:
   static Style_t font;
   static Style_t label;
 
-  static TString options;
   static Int_t   mOffset;
 
 };
 
 // ---- Constructors ----------------------------------------------------------
 
-Plot::Plot()
+Plot::Plot():
+  titleX(""),
+  titleY("")
 {
 }
 
@@ -153,8 +157,6 @@ Style_t Plot::font {43};
 Style_t Plot::label {28};
 
 Bool_t  Plot::styles {kFALSE};
-
-TString Plot::options {TString("SAME")};
 Int_t   Plot::mOffset {0};
 
 // ---- Member Functions ------------------------------------------------------
@@ -211,13 +213,12 @@ void Plot::SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xU
     SetCanvasStyle((TMultiGraph*)first);
   }
 
-
 }
 
 void Plot::CleanUpHistogram(TH1* hist, Double_t factor){
 
   /** Sets bin contents of bins with too large uncertainties to 0 **/
-  // \todo{Get it to work}
+  /** \todo{Get it to work} **/
 
   if (!hist){
     std::cout << "\033[1;31mERROR:\033[0m histogram to be cleaned up does not exist!" << std::endl;
@@ -369,8 +370,8 @@ template <class AO>
 void Plot::SetRangesAuto(AO* first){
 
   /** Automatically determine good ranges **/
-  // \todo{implement possibility for ranges to be negative}
-  // \todo{implement for TF1 and TGraph}
+  /** \todo{implement possibility for ranges to be negative}
+      \todo{implement for TF1 and TGraph} **/
 
 
   yRangeUp   = 1.1*first->GetMaximum();
@@ -424,9 +425,57 @@ void Plot::SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::ve
 
 void Plot::SetOptions(TString opt){
 
-  /** Set the plot options for the histograms **/
+  /** Set one plot option for all plottjects **/
 
-  options = opt;
+  Int_t size = options.size();
+  options.clear();
+  options.resize(size, opt.Data());
+
+}
+
+void Plot::SetOptions(std::vector<std::string> optns){
+
+  /** Set the plot options for the plottjects,
+      mind that any legend or pave object must also be included **/
+
+  options = std::move(optns);
+
+}
+
+void Plot::SetOptions(std::string optns, std::string postns, Int_t off){
+
+  /** Set the plot options \p optns for a few specific plottjects at positions \p postns,
+      \p off will be an offset added to all individual positions;
+      mind that any legend or pave object is also included in the options **/
+
+  std::istringstream options(optns);
+  std::istringstream positions(postns);
+
+  TString* opt = new TString();
+  TString* pos = new TString();
+
+  opt->ReadLine(options);
+  pos->ReadToken(positions);
+
+  while(!opt->IsNull() && !pos->IsNull()) {
+
+    SetOption(opt->Data(), pos->Atoi() + off);
+    std::cout << "- " << opt->Data() << " " << pos->Data() << std::endl;
+
+    opt->ReadLine(options);
+    pos->ReadToken(positions);
+
+  }
+
+}
+
+void Plot::SetOption(std::string opt, Int_t pos){
+
+  /** Set the plot option for a specific plottject
+      mind that any legend or pave object is also included in the options **/
+
+  if (pos < options.size()) options[pos] = opt;
+  else std::cout << "\033[1;31mERROR in Set Options:\033[0m Position \033[1;34m" << pos << "\033[0m is out of range!" << std::endl;
 
 }
 
@@ -444,11 +493,11 @@ void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
   if (xLog){
     if (xRangeLow > 0) pad->SetLogx(1);
-    else std::cout << "\033[1;31mERROR:\033[0m X-Ranges must be above zero! Logarithm not set!!" << std::endl;
+    else std::cout << "\033[1;31mERROR in SetLog:\033[0m X-Ranges must be above zero! Logarithm not set!!" << std::endl;
   }
   if (yLog){
     if (yRangeLow > 0) pad->SetLogy(1);
-    else std::cout << "\033[1;31mERROR:\033[0m Y-Ranges must be above zero! Logarithm not set!!" << std::endl;
+    else std::cout << "\033[1;31mERROR in SetLog:\033[0m Y-Ranges must be above zero! Logarithm not set!!" << std::endl;
   }
 
 }
@@ -476,25 +525,28 @@ void Plot::EnsureAxes(TObject* first, std::string arrayName){
 
 }
 
-void Plot::DrawArray(TObjArray* array, Int_t off){
+void Plot::DrawArray(TObjArray* array, Int_t off, Int_t offOpt){
 
   /** Draws a single TObjArray in the chosen Pad **/
 
   Int_t nPlots = array->GetEntries();
+  std::string opt;
 
   for (Int_t plot = 0; plot < nPlots; plot++){
-
-    std::cout << " -> Draw " << array->At(plot)->ClassName() << ": "
-              << array->At(plot)->GetName() << std::endl;
 
     if(!array->At(plot)) {
       std::cout << "\033[1;31mERROR:\033[0m Plot object No " << plot << " is broken! Will be skipped." << std::endl;
       continue;
     }
 
+    if (array->At(plot)->InheritsFrom("TGraph")) opt = TString(options[plot+offOpt]).ReplaceAll("SAME","").Data();
+    else opt = options[plot+offOpt].data();
+
+    std::cout << " -> Draw " << array->At(plot)->ClassName() << ": "
+              << array->At(plot)->GetName() << " as " << opt << std::endl;
+
     SetProperties(array->At(plot), plot + off);
-    if (array->At(plot)->InheritsFrom("TGraph")) array->At(plot)->Draw(options.Copy().ReplaceAll("SAME","").Data());
-    else array->At(plot)->Draw(options.Data());
+    array->At(plot)->Draw(opt.data());
 
   }
 
@@ -531,6 +583,8 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
   SetCanvasDimensions(1000, 1000);
   SetCanvasMargins(0.07, .15, 0.07, .15);
   SetCanvasOffsets(1.3, 1.5);
+
+  options = std::vector<std::string> (array->GetEntries(), "SAME");
 
 }
 
@@ -582,7 +636,7 @@ public:
   virtual ~RatioPlot() {};
 
   /*virtual*/ void Draw(TString outname);
-  /*virtual*/ void DrawRatioArray(TObjArray* array, Int_t off);
+  /*virtual*/ void DrawRatioArray(TObjArray* array, Int_t off, Int_t offOpt = 0);
   void SetUpperOneLimit(Double_t up);
 
 protected:
@@ -605,6 +659,8 @@ RatioPlot::RatioPlot(TObjArray* rArray, TString xTitle, TString yTitle) : Plot(x
   SetCanvasDimensions(1000, 600);
   SetCanvasMargins(0.07, .15, 0.07, .25);
   SetCanvasOffsets(1., .8);
+
+  options = std::vector<std::string>(rArray->GetEntries(), "SAME");
 
 }
 
@@ -643,14 +699,14 @@ void RatioPlot::Draw(TString outname){
 
 }
 
-void RatioPlot::DrawRatioArray(TObjArray* array, Int_t off){
+void RatioPlot::DrawRatioArray(TObjArray* array, Int_t off, Int_t offOpt){
 
   /** Draws a single Ratio TObjArray in the chosen Pad **/
 
   one = new TLine(xRangeLow, 1., (oneUp ? oneUp : xRangeUp), 1.);
   array->Add(one);
 
-  DrawArray(array, off);
+  DrawArray(array, off, offOpt);
   SetLineProperties(one, kBlack, 9, 3.);
 
 }
@@ -680,7 +736,7 @@ public:
   void SetPadFraction(Double_t frac);
   void SetOffset(Int_t off, Int_t roff);
   /*virtual*/ void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow);
-
+  void SetOptions(std::string optns, std::string postns);
 
 private:
 
@@ -716,6 +772,8 @@ SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TStrin
   SetCanvasDimensions(1000, 1200);
   SetCanvasMargins(0.07, .15, 0.07, .4);
   SetCanvasOffsets(4.5, 1.7);
+
+  options = std::vector<std::string>(mainArray->GetEntries()+rArray->GetEntries(), "SAME");
 
 }
 
@@ -753,7 +811,7 @@ void SingleRatioPlot::Draw(TString outname){
   mainPad->cd();
   DrawArray(plotArray, mOffset);
   ratioPad->cd();
-  DrawRatioArray(ratioArray, rOffset);
+  DrawRatioArray(ratioArray, rOffset, plotArray->GetEntries());
 
   canvas->Update();
   canvas->SaveAs(outname.Data());
@@ -793,6 +851,28 @@ void SingleRatioPlot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t
   rRangeLow = rLow;
 
   ranges = kTRUE;
+
+}
+
+void SingleRatioPlot::SetOptions(std::string optns, std::string postns){
+
+  /** Set the plot options for a few specific plottjects,
+      mind that any legend or pave object is also included in the options
+      \b \c ; will seperate different arrays **/
+
+  std::istringstream options(optns);
+  std::istringstream positions(postns);
+
+  TString* opt = new TString();
+  TString* pos = new TString();
+
+  opt->ReadToDelim(options, ';');
+  pos->ReadToDelim(positions, ';');
+  SetOption(opt->Data(), pos->Atoi());
+
+  opt->ReadLine(options);
+  pos->ReadLine(positions);
+  Plot::SetOptions(opt->Data(), pos->Data(), plotArray->GetEntries());
 
 }
 
@@ -925,14 +1005,14 @@ Legend::Legend(Legend& lgnd):
   legend(nullptr),
   dummy(0)
 {
-  /* \todo{Get it to work} */
+  /** \todo{Get it to work} **/
 }
 
 Legend::Legend(TLegend* lgnd):
   legend(nullptr),
   dummy(0)
 {
-/* \todo{Get it to work, maybe derive this class from TLegend to gain access to fPrimitives} */
+/** \todo{Get it to work, maybe derive this class from TLegend to gain access to fPrimitives} **/
 }
 
 // ---- Member Functions ------------------------------------------------------
@@ -952,7 +1032,7 @@ void Legend::SetPositionAuto(){
 
   /** Determine automatic placement of Legend based on position strings **/
 
-  // \todo{Get it to work}
+  /** \todo{Get it to work}**/
 
   Float_t relLegendWidth  = legend->GetX2NDC() - legend->GetX1NDC();
   Float_t relLegendHeight = legend->GetNRows()*0.05;

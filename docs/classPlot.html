@@ -142,6 +142,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</td></tr>
 <tr class="separator:a412b32fcbf4b34941a4149d40a2c20e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
 <tr class="separator:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
+<tr class="separator:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0497d3867a17e84aec2450f27c84bdb0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0497d3867a17e84aec2450f27c84bdb0">SetOptions</a> (std::string optns, std::string postns, Int_t off=0)</td></tr>
+<tr class="separator:a0497d3867a17e84aec2450f27c84bdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ee45f899bf0cdb8aabd50b5603ceb50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a3ee45f899bf0cdb8aabd50b5603ceb50">SetOption</a> (std::string opt, Int_t pos)</td></tr>
+<tr class="separator:a3ee45f899bf0cdb8aabd50b5603ceb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -176,8 +182,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUpStyle</b> (TObje
 <tr class="separator:a4ed44ad2dca0b5c1b959d7bdf02d2d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27aecf9c62f17a2a15ac6985d6cb49c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">SetUpPad</a> (TPad *pad, Bool_t xLog, Bool_t yLog)</td></tr>
 <tr class="separator:a27aecf9c62f17a2a15ac6985d6cb49c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbc393580e8bda10c9d59e597f2770c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#afbc393580e8bda10c9d59e597f2770c7">DrawArray</a> (TObjArray *array, Int_t off=0)</td></tr>
-<tr class="separator:afbc393580e8bda10c9d59e597f2770c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22244e01902db40f4ab9a45e80b76e30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a22244e01902db40f4ab9a45e80b76e30">DrawArray</a> (TObjArray *array, Int_t off=0, Int_t offOpt=0)</td></tr>
+<tr class="separator:a22244e01902db40f4ab9a45e80b76e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -187,6 +193,9 @@ TPad *&#160;</td><td class="memItemRight" valign="bottom"><b>mainPad</b> {nullpt
 <tr class="memitem:af72102b197728726a30caf274368418e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af72102b197728726a30caf274368418e"></a>
 TCanvas *&#160;</td><td class="memItemRight" valign="bottom"><b>canvas</b> {nullptr}</td></tr>
 <tr class="separator:af72102b197728726a30caf274368418e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620a7cfb340f3c35bea98b0acdf694cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a620a7cfb340f3c35bea98b0acdf694cd"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>options</b></td></tr>
+<tr class="separator:a620a7cfb340f3c35bea98b0acdf694cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3875c7a46d9f5ef7617f650db1e2ab2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3875c7a46d9f5ef7617f650db1e2ab2"></a>
 TString&#160;</td><td class="memItemRight" valign="bottom"><b>titleX</b></td></tr>
 <tr class="separator:ac3875c7a46d9f5ef7617f650db1e2ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -268,9 +277,6 @@ static Style_t&#160;</td><td class="memItemRight" valign="bottom"><b>font</b> {4
 <tr class="memitem:a676f7600c2d58b6d88b5b717d6f8c845"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a676f7600c2d58b6d88b5b717d6f8c845"></a>
 static Style_t&#160;</td><td class="memItemRight" valign="bottom"><b>label</b> {28}</td></tr>
 <tr class="separator:a676f7600c2d58b6d88b5b717d6f8c845"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a068186aff6f57cb517c337a6e3cfb2ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a068186aff6f57cb517c337a6e3cfb2ce"></a>
-static TString&#160;</td><td class="memItemRight" valign="bottom"><b>options</b> {TString(&quot;SAME&quot;)}</td></tr>
-<tr class="separator:a068186aff6f57cb517c337a6e3cfb2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cbc79867ba1630b0615c1cfb7b97b59"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2cbc79867ba1630b0615c1cfb7b97b59"></a>
 static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>mOffset</b> {0}</td></tr>
 <tr class="separator:a2cbc79867ba1630b0615c1cfb7b97b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,11 +313,12 @@ static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>mOffset</b> {
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Sets bin contents of bins with too large uncertainties to 0 </p>
+<p>Sets bin contents of bins with too large uncertainties to 0</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>{Get it to work} </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="afbc393580e8bda10c9d59e597f2770c7"></a>
+<a class="anchor" id="a22244e01902db40f4ab9a45e80b76e30"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -328,7 +335,13 @@ static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>mOffset</b> {
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Int_t&#160;</td>
-          <td class="paramname"><em>off</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>off</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>offOpt</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -539,7 +552,7 @@ template&lt;class PO &gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Sets wether X and/or Y axis will be displayed logarithmically</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>{Find out why logx sometimes doesnt work} </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>{Find out why logx sometimes doesnt work} </dd></dl>
 
 </div>
 </div>
@@ -626,6 +639,33 @@ template&lt;class PO &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a3ee45f899bf0cdb8aabd50b5603ceb50"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Plot::SetOption </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>opt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the plot option for a specific plottject mind that any legend or pave object is also included in the options </p>
+
+</div>
+</div>
 <a class="anchor" id="a8b7719901b0d78ce0d853f2ac6cad6c1"></a>
 <div class="memitem">
 <div class="memproto">
@@ -639,7 +679,65 @@ template&lt;class PO &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the plot options for the histograms </p>
+<p>Set one plot option for all plottjects </p>
+
+</div>
+</div>
+<a class="anchor" id="a77f94e7ca514c4b63c0ca91ef1321948"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Plot::SetOptions </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>optns</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the plot options for the plottjects, mind that any legend or pave object must also be included </p>
+
+</div>
+</div>
+<a class="anchor" id="a0497d3867a17e84aec2450f27c84bdb0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Plot::SetOptions </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>optns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>postns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>off</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the plot options <code>optns</code> for a few specific plottjects at positions <code>postns</code>, <code>off</code> will be an offset added to all individual positions; mind that any legend or pave object is also included in the options </p>
 
 </div>
 </div>
@@ -866,7 +964,9 @@ template&lt;class AO &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Automatically determine good ranges </p>
+<p>Automatically determine good ranges</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>{implement possibility for ranges to be negative} </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>{implement for TF1 and TGraph} </dd></dl>
 
 </div>
 </div>
