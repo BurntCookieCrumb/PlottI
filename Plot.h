@@ -394,6 +394,8 @@ void Plot::SetMode(Mode m){
       break;
 
     case Thesis:
+      font = 43; //43
+      label = 30;//37;
       break;
 
     case Auto:
@@ -581,7 +583,12 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
   EnsureAxes(array->At(0), "Main Array");
 
   SetCanvasDimensions(1000, 1000);
-  SetCanvasMargins(0.07, .15, 0.07, .15);
+  if(yTitle.Contains("frac")) {
+    SetCanvasMargins(0.05, .125, 0.05, .1);
+  }
+  else {
+    SetCanvasMargins(0.05, .1, 0.05, .1);
+  }
   SetCanvasOffsets(1.3, 1.5);
 
   options = std::vector<std::string> (array->GetEntries(), "SAME");
