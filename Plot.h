@@ -23,6 +23,7 @@
 #include "TFile.h"
 #include "TGraphErrors.h"
 #include "TGraphAsymmErrors.h"
+#include "TMultiGraph.h"
 #include "TStyle.h"
 #include "TH2.h"
 #include "TF1.h"
