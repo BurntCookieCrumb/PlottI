@@ -2,6 +2,44 @@
 
 // ----------------------------------------------------------------------------
 //
+//                         ADDITIONAL FUNCTIONALITY
+//
+// ----------------------------------------------------------------------------
+
+template <class AO>
+Int_t GetXfirstFilledBin(AO* hst){
+
+  /** Finds the first bin from the left with content > 0,
+      if all bins (except last) are empty 0 is returned **/
+
+  Int_t bin;
+
+  for (bin = 0; bin < hst->GetNbinsX(); bin++){
+    if (hst->GetBinContent(bin) > 0) break;
+  }
+
+  return (bin < hst->GetNbinsX()) ? bin : 0;
+
+}
+
+template <class AO>
+Int_t GetXlastFilledBin(AO* hst){
+
+  /** Finds the first bin from the right with content > 0,
+      if all bins (except first) are empty last bin is returned **/
+
+  Int_t bin;
+
+  for (bin = hst->GetNbinsX(); bin > 0; bin--){
+    if (hst->GetBinContent(bin) > 0) break;
+  }
+
+  return (bin > 0) ? bin : hst->GetNbinsX();
+
+}
+
+// ----------------------------------------------------------------------------
+//
 // Class for basic Plotting functionality
 //
 // ----------------------------------------------------------------------------
@@ -371,15 +409,18 @@ template <class AO>
 void Plot::SetRangesAuto(AO* first){
 
   /** Automatically determine good ranges **/
-  /** \todo{implement possibility for ranges to be negative}
-      \todo{implement for TF1 and TGraph} **/
+  /** \todo{Test for TF1 and TGraph} **/
 
+  yRangeUp  = first->GetMaximum();
+  yRangeUp  = (yRangeUp < 0) ? 0.8*yRangeUp : 1.2*yRangeUp;
 
-  yRangeUp   = 1.1*first->GetMaximum();
-  yRangeLow  = 0.9*first->GetMinimum();
+  yRangeLow = first->GetMinimum();
+  yRangeLow = (yRangeLow < 0) ? 1.2*yRangeLow : 0.8*yRangeLow;
 
-  // xRangeUp   = 1.1*first->GetBinCenter(0);
-  // xRangeLow  = 0.9*first->GetBinCenter(first->GetNbinsX());
+  Int_t binLow  = GetXfirstFilledBin(((TH1*)first));
+  Int_t binHigh = GetXlastFilledBin(((TH1*)first));
+  xRangeUp   = ((TH1*)first)->GetBinCenter(binHigh+2);
+  xRangeLow  = ((TH1*)first)->GetBinCenter(binLow-1);
 
 }
 
@@ -486,7 +527,7 @@ void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
   /** Sets up a Pad for Plotting **/
 
-  pad->SetFillStyle(4000);
+  pad->SetFillStyle(4100); //4000
   pad->SetTopMargin(topMargin);
   pad->SetBottomMargin(bottomMargin);
   pad->SetRightMargin(rightMargin);
@@ -584,12 +625,7 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
   EnsureAxes(array->At(0), "Main Array");
 
   SetCanvasDimensions(1000, 1000);
-  if(yTitle.Contains("frac")) {
-    SetCanvasMargins(0.05, .125, 0.05, .1);
-  }
-  else {
-    SetCanvasMargins(0.05, .1, 0.05, .1);
-  }
+  SetCanvasMargins(0.07, .15, 0.07, .15);
   SetCanvasOffsets(1.3, 1.5);
 
   options = std::vector<std::string> (array->GetEntries(), "SAME");
@@ -713,6 +749,7 @@ void RatioPlot::DrawRatioArray(TObjArray* array, Int_t off, Int_t offOpt){
 
   one = new TLine(xRangeLow, 1., (oneUp ? oneUp : xRangeUp), 1.);
   array->Add(one);
+  options.push_back("SAME");
 
   DrawArray(array, off, offOpt);
   SetLineProperties(one, kBlack, 9, 3.);
@@ -743,7 +780,7 @@ public:
 
   void SetPadFraction(Double_t frac);
   void SetOffset(Int_t off, Int_t roff);
-  /*virtual*/ void SetRanges(Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow);
+  /*virtual*/ void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp);
   void SetOptions(std::string optns, std::string postns);
 
 private:
@@ -764,7 +801,7 @@ private:
 
 // ---- Static Member Variables -----------------------------------------------
 
-Float_t SingleRatioPlot::padFrac {0.25};
+Float_t SingleRatioPlot::padFrac {0.3}; //0.25
 Int_t   SingleRatioPlot::rOffset  {1};
 
 // ---- Cunstructor -----------------------------------------------------------
@@ -794,6 +831,7 @@ void SingleRatioPlot::Draw(TString outname){
   std::cout << "-----------------------------" << std::endl;
   std::cout << "  Plot Single Ratio Canvas: " << std::endl;
   std::cout << "-----------------------------" << std::endl;
+  std::cout << "with ranges: (" << xRangeLow << "," << xRangeUp << ")" << "(" << yRangeLow << "," << yRangeUp << ")" << std::endl;
 
   if (broken){
     std::cout << "Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn" << std::endl;
@@ -806,7 +844,7 @@ void SingleRatioPlot::Draw(TString outname){
 
   mainPad = new TPad("mainPad", "Distribution", 0, padFrac, 1, 1);
   SetUpPad(mainPad, logX, logY);
-  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
+  SetUpStyle(plotArray->At(0), "", titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
   mainPad->SetBottomMargin(0.);
   mainPad->Draw();
 
@@ -923,6 +961,11 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string 
   legend(nullptr),
   dummy(0)
 {
+
+  if (!array) {
+    std::cout << "\033[1;31mERROR:\033[0m Array is empty! Try again!" << std::endl;
+    return;
+  }
 
   legend = new TLegend(0.1, 0.7, 0.3, 0.9);
 
@@ -1052,14 +1095,6 @@ void Legend::SetPositionAuto(){
   //SetPosition(0.2, 0.2 + relLegendWidth, 0.85-relLegendHeight, 0.85);
 
 }
-
-
-
-
-
-
-
-
 
 #endif
 

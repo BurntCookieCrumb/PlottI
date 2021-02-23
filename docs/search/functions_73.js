@@ -17,7 +17,7 @@ var searchData=
   ['setposition',['SetPosition',['../classLegend.html#aafea9fa7a8b2f0c511ad9be46d38fed1',1,'Legend']]],
   ['setpositionauto',['SetPositionAuto',['../classLegend.html#a648638d18d5190c2b24e73c0f78f70c7',1,'Legend']]],
   ['setproperties',['SetProperties',['../classPlot.html#a52db33876ca1dc43ef39f4322b80d9c7',1,'Plot']]],
-  ['setranges',['SetRanges',['../classPlot.html#a87738bc3e41ece3729c7048334d4210f',1,'Plot::SetRanges()'],['../classSingleRatioPlot.html#aebf0fb58cb681121bc94654549107713',1,'SingleRatioPlot::SetRanges()']]],
+  ['setranges',['SetRanges',['../classPlot.html#a87738bc3e41ece3729c7048334d4210f',1,'Plot::SetRanges()'],['../classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c',1,'SingleRatioPlot::SetRanges()']]],
   ['setrangesauto',['SetRangesAuto',['../classPlot.html#abbe7e9d4ed7fa717d174344517774501',1,'Plot']]],
   ['setstyle',['SetStyle',['../classPlot.html#a412b32fcbf4b34941a4149d40a2c20e2',1,'Plot']]],
   ['setuppad',['SetUpPad',['../classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0',1,'Plot']]]

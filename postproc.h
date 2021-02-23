@@ -144,12 +144,14 @@ void GetMeanpT(TH1D *meanpT, TH2D *source, int multBins = 200){
 // -------------------------------------------------------------------------------------
 
 void GetMoment(TH1* hist, Int_t order, Double_t &moment, Double_t &moment_error,
-               Double_t min, Double_t max, bool inv){
+               Double_t min, Double_t max, bool inv, bool mean = true){
 
     /** function to get the \order-th moment and the corresponding error of a one
         dimensional Histogram in range \min to \max containing the yield which has to be
         normalized to bin width.
         \inv = @true means the histogram contains the invariant yield.
+        \mean = @true mean that the result will be the mean, @false means that
+        the result will just be the integral/sum
     **/
 
     if (!hist) exit(0);
@@ -176,7 +178,8 @@ void GetMoment(TH1* hist, Int_t order, Double_t &moment, Double_t &moment_error,
 
     }
 
-    moment = (sum > 0) ? (sumWeighted / sum) : 0;
+    if (mean) moment = (sum > 0) ? (sumWeighted / sum) : 0;
+    else moment = sumWeighted;
 
     // == Error ==
 
@@ -199,7 +202,8 @@ void GetMoment(TH1* hist, Int_t order, Double_t &moment, Double_t &moment_error,
 
     }
 
-    moment_error = (sum > 0) ? (TMath::Sqrt(errSumWeighted) / sum) : 0;
+    if (mean) moment_error = (sum > 0) ? (TMath::Sqrt(errSumWeighted) / sum) : 0;
+    else moment_error = TMath::Sqrt(errSumWeighted);
 
 }
 
@@ -332,13 +336,15 @@ void GetCumulant (TH1* hist, Int_t order, Double_t &cumulant, Double_t &cumulant
 
 void GetMomentHist(TH1D* dest, THnF *source, Int_t func_axis, Int_t var_axis, Char_t measure,
                    Int_t order, Double_t func_min, Double_t func_max, bool norm = false,
-                   bool inv = false){
+                   bool inv = false, bool mean = true){
 
     /** Fill a one dimensional Histogram \dest with the \order-th
         \measure (moment, cumulant, central moment) of each multiplicity bin of a n
         dimensional Histogram \source.
         \norm = @true means that the input histogram is normalized to bin width.
         \inv = @true means that the input histogram is the invariant yield
+        \mean = @true mean that the result will be the mean, @false means that
+        the result will just be the integral/sum
     **/
 
     TH1D *singleMultpT;
@@ -355,7 +361,7 @@ void GetMomentHist(TH1D* dest, THnF *source, Int_t func_axis, Int_t var_axis, Ch
         switch(measure){
 
         case 'M': GetMoment(singleMultpT, order, moment, moment_error, func_min, func_max,
-                            inv); break;
+                            inv, mean); break;
         case 'Z': GetCentralMoment(singleMultpT, order, moment, moment_error, func_min,
                                    func_max, inv); break;
         case 'K': GetCumulant(singleMultpT, order, moment, moment_error, func_min, func_max,
@@ -374,13 +380,15 @@ void GetMomentHist(TH1D* dest, THnF *source, Int_t func_axis, Int_t var_axis, Ch
 }
 
 void GetMomentHist(TH1D* dest, TH2D *source, Char_t measure, Int_t order, Double_t y_min,
-                   Double_t y_max, bool norm = true, bool inv = true){
+                   Double_t y_max, bool norm = true, bool inv = true, bool mean = true){
 
     /** Fill a one dimensional Histogram \dest with the \order-th
         \measure (moment, cumulant, central moment) of each multiplicity bin of a 2
         dimensional Histogram \source
         \norm = @true means that the input histogram is normalized to bin width
         \inv = @true means that the input histogram is the invariant yield
+        \mean = @true mean that the result will be the mean, @false means that
+        the result will just be the integral/sum
     **/
 
     TH1D *singleMultpT;
@@ -395,7 +403,7 @@ void GetMomentHist(TH1D* dest, TH2D *source, Char_t measure, Int_t order, Double
 
         switch(measure) {
 
-        case 'M': GetMoment(singleMultpT, order, moment, moment_error, y_min, y_max, inv);
+        case 'M': GetMoment(singleMultpT, order, moment, moment_error, y_min, y_max, inv, mean);
                   break;
         case 'Z': GetCentralMoment(singleMultpT, order, moment, moment_error, y_min, y_max,
                                    inv);

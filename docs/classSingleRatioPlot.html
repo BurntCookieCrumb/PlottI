@@ -111,8 +111,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa6420963f2615a5129c1daa8ca2ff9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a196226a9d865430efc38d6ccacc942a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleRatioPlot.html#a196226a9d865430efc38d6ccacc942a8">SetOffset</a> (Int_t off, Int_t roff)</td></tr>
 <tr class="separator:a196226a9d865430efc38d6ccacc942a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebf0fb58cb681121bc94654549107713"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleRatioPlot.html#aebf0fb58cb681121bc94654549107713">SetRanges</a> (Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t rUp, Float_t rLow)</td></tr>
-<tr class="separator:aebf0fb58cb681121bc94654549107713"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f613843c99027a42646533eacdfd72c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">SetRanges</a> (Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp)</td></tr>
+<tr class="separator:a6f613843c99027a42646533eacdfd72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9e543c5323cbd0960b769853e2f98bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf">SetOptions</a> (std::string optns, std::string postns)</td></tr>
 <tr class="separator:aa9e543c5323cbd0960b769853e2f98bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classRatioPlot"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classRatioPlot')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classRatioPlot.html">RatioPlot</a></td></tr>
@@ -155,7 +155,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</td></tr>
 <tr class="separator:a8b7719901b0d78ce0d853f2ac6cad6c1 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
 <tr class="separator:a77f94e7ca514c4b63c0ca91ef1321948 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0497d3867a17e84aec2450f27c84bdb0 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0497d3867a17e84aec2450f27c84bdb0">SetOptions</a> (std::string optns, std::string postns, Int_t off=0)</td></tr>
+<tr class="memitem:a0497d3867a17e84aec2450f27c84bdb0 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0497d3867a17e84aec2450f27c84bdb0">SetOptions</a> (std::string optns, std::string postns, Int_t off=0)</td></tr>
 <tr class="separator:a0497d3867a17e84aec2450f27c84bdb0 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ee45f899bf0cdb8aabd50b5603ceb50 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a3ee45f899bf0cdb8aabd50b5603ceb50">SetOption</a> (std::string opt, Int_t pos)</td></tr>
 <tr class="separator:a3ee45f899bf0cdb8aabd50b5603ceb50 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -393,7 +393,7 @@ static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>mOffset</b> {
 
 </div>
 </div>
-<a class="anchor" id="aebf0fb58cb681121bc94654549107713"></a>
+<a class="anchor" id="a6f613843c99027a42646533eacdfd72c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -401,19 +401,13 @@ static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>mOffset</b> {
           <td class="memname">void SingleRatioPlot::SetRanges </td>
           <td>(</td>
           <td class="paramtype">Float_t&#160;</td>
-          <td class="paramname"><em>xUp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Float_t&#160;</td>
           <td class="paramname"><em>xLow</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Float_t&#160;</td>
-          <td class="paramname"><em>yUp</em>, </td>
+          <td class="paramname"><em>xUp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -425,13 +419,19 @@ static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>mOffset</b> {
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Float_t&#160;</td>
-          <td class="paramname"><em>rUp</em>, </td>
+          <td class="paramname"><em>yUp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Float_t&#160;</td>
-          <td class="paramname"><em>rLow</em>&#160;</td>
+          <td class="paramname"><em>rLow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Float_t&#160;</td>
+          <td class="paramname"><em>rUp</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
