@@ -180,14 +180,6 @@ void Legend::SetPositionAuto(){
 
   /** \todo{Get it to work}**/
 
-  // Float_t relLegendWidth  = legend->GetX2NDC() - legend->GetX1NDC();
-  // Float_t relLegendHeight = legend->GetNRows()*0.05;
-
-  // std::cout << relLegendWidth << std::endl;
-  // std::cout << legend->GetNRows() << std::endl;
-
-  //SetPosition(obj, 0.1, 0.1+relLegendWidth, 0.1, 0.1+relLegendHeight);
-  //SetPosition(0.2, 0.2 + relLegendWidth, 0.85-relLegendHeight, 0.85);
 
 }
 
