@@ -313,102 +313,101 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;  Plot Single Ratio Canvas: &quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;with ranges: (&quot;</span> &lt;&lt; xRangeLow &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; xRangeUp &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; yRangeLow &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; yRangeUp &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keywordflow">if</span> (broken){</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  }</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  canvas  = <span class="keyword">new</span> TCanvas(<span class="stringliteral">&quot;canvas&quot;</span>, <span class="stringliteral">&quot;SINGLE RATIO&quot;</span>, 10, 10, width+10, height+10);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  canvas-&gt;cd();</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  mainPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;mainPad&quot;</span>, <span class="stringliteral">&quot;Distribution&quot;</span>, 0, padFrac, 1, 1);</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  <a class="code" href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">SetUpPad</a>(mainPad, logX, logY);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  SetUpStyle(plotArray-&gt;At(0), <span class="stringliteral">&quot;&quot;</span>, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  mainPad-&gt;SetBottomMargin(0.);</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  mainPad-&gt;Draw();</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  ratioPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;ratioPad&quot;</span>, <span class="stringliteral">&quot;Ratio&quot;</span>, 0, 0, 1, padFrac);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  <a class="code" href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">SetUpPad</a>(ratioPad, logX, kFALSE);</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  ratioPad-&gt;SetTopMargin(0.);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  SetUpStyle(ratioArray-&gt;At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow);</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  ratioPad-&gt;Draw();</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  mainPad-&gt;cd();</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  <a class="code" href="classPlot.html#a22244e01902db40f4ab9a45e80b76e30">DrawArray</a>(plotArray, mOffset);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  ratioPad-&gt;cd();</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <a class="code" href="classRatioPlot.html#ac1beb8743fc8c7d5708eb48cbf74f033">DrawRatioArray</a>(ratioArray, rOffset, plotArray-&gt;GetEntries());</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  canvas-&gt;Update();</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  canvas-&gt;SaveAs(outname.Data());</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <span class="keyword">delete</span> canvas;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;}</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
-<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0">  275</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0">SingleRatioPlot::SetPadFraction</a>(Double_t frac){</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;  padFrac = frac;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;}</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#a196226a9d865430efc38d6ccacc942a8">  283</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#a196226a9d865430efc38d6ccacc942a8">SingleRatioPlot::SetOffset</a>(Int_t off, Int_t roff){</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  mOffset = off;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  rOffset = roff;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;}</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
-<div class="line"><a name="l00293"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">  293</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">SingleRatioPlot::SetRanges</a>(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp){</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  xRangeUp  = xUp;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  xRangeLow = xLow;</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  yRangeUp  = yUp;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  yRangeLow = yLow;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  rRangeUp  = rUp;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;  rRangeLow = rLow;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;  ranges = kTRUE;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;}</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf">  308</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf">SingleRatioPlot::SetOptions</a>(std::string optns, std::string postns){</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  std::istringstream options(optns);</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;  std::istringstream positions(postns);</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  TString* opt = <span class="keyword">new</span> TString();</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;  TString* pos = <span class="keyword">new</span> TString();</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  opt-&gt;ReadToDelim(options, <span class="charliteral">&#39;;&#39;</span>);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  pos-&gt;ReadToDelim(positions, <span class="charliteral">&#39;;&#39;</span>);</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  <a class="code" href="classPlot.html#a3ee45f899bf0cdb8aabd50b5603ceb50">SetOption</a>(opt-&gt;Data(), pos-&gt;Atoi());</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  opt-&gt;ReadLine(options);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  pos-&gt;ReadLine(positions);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  <a class="code" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">Plot::SetOptions</a>(opt-&gt;Data(), pos-&gt;Data(), plotArray-&gt;GetEntries());</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;}</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keywordflow">if</span> (broken){</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  }</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  canvas  = <span class="keyword">new</span> TCanvas(<span class="stringliteral">&quot;canvas&quot;</span>, <span class="stringliteral">&quot;SINGLE RATIO&quot;</span>, 10, 10, width+10, height+10);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  canvas-&gt;cd();</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  mainPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;mainPad&quot;</span>, <span class="stringliteral">&quot;Distribution&quot;</span>, 0, padFrac, 1, 1);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  <a class="code" href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">SetUpPad</a>(mainPad, logX, logY);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  SetUpStyle(plotArray-&gt;At(0), <span class="stringliteral">&quot;&quot;</span>, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  mainPad-&gt;SetBottomMargin(0.);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  mainPad-&gt;Draw();</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  ratioPad = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;ratioPad&quot;</span>, <span class="stringliteral">&quot;Ratio&quot;</span>, 0, 0, 1, padFrac);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <a class="code" href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">SetUpPad</a>(ratioPad, logX, kFALSE);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  ratioPad-&gt;SetTopMargin(0.);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  SetUpStyle(ratioArray-&gt;At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  ratioPad-&gt;Draw();</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  mainPad-&gt;cd();</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <a class="code" href="classPlot.html#a22244e01902db40f4ab9a45e80b76e30">DrawArray</a>(plotArray, mOffset);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  ratioPad-&gt;cd();</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  <a class="code" href="classRatioPlot.html#ac1beb8743fc8c7d5708eb48cbf74f033">DrawRatioArray</a>(ratioArray, rOffset, plotArray-&gt;GetEntries());</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  canvas-&gt;Update();</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  canvas-&gt;SaveAs(outname.Data());</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  <span class="keyword">delete</span> canvas;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;}</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
+<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0">  274</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0">SingleRatioPlot::SetPadFraction</a>(Double_t frac){</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  padFrac = frac;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;}</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#a196226a9d865430efc38d6ccacc942a8">  282</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#a196226a9d865430efc38d6ccacc942a8">SingleRatioPlot::SetOffset</a>(Int_t off, Int_t roff){</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  mOffset = off;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  rOffset = roff;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;}</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">  292</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">SingleRatioPlot::SetRanges</a>(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp){</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  xRangeUp  = xUp;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  xRangeLow = xLow;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  yRangeUp  = yUp;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  yRangeLow = yLow;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  rRangeUp  = rUp;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  rRangeLow = rLow;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  ranges = kTRUE;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;}</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00307"></a><span class="lineno"><a class="line" href="classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf">  307</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf">SingleRatioPlot::SetOptions</a>(std::string optns, std::string postns){</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  std::istringstream options(optns);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  std::istringstream positions(postns);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;  TString* opt = <span class="keyword">new</span> TString();</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  TString* pos = <span class="keyword">new</span> TString();</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;  opt-&gt;ReadToDelim(options, <span class="charliteral">&#39;;&#39;</span>);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  pos-&gt;ReadToDelim(positions, <span class="charliteral">&#39;;&#39;</span>);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  <a class="code" href="classPlot.html#a3ee45f899bf0cdb8aabd50b5603ceb50">SetOption</a>(opt-&gt;Data(), pos-&gt;Atoi());</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  opt-&gt;ReadLine(options);</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  pos-&gt;ReadLine(positions);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <a class="code" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">Plot::SetOptions</a>(opt-&gt;Data(), pos-&gt;Data(), plotArray-&gt;GetEntries());</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;}</div>
 <div class="ttc" id="classPlot_html_a8ff9111551a971da6871561732ed33f2"><div class="ttname"><a href="classPlot.html#a8ff9111551a971da6871561732ed33f2">Plot::SetCanvasOffsets</a></div><div class="ttdeci">void SetCanvasOffsets(Float_t xOffset, Float_t yOffset)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:301</div></div>
 <div class="ttc" id="classPlot_html_ac257dabd63abbb370968b42dd1210c05"><div class="ttname"><a href="classPlot.html#ac257dabd63abbb370968b42dd1210c05">Plot::SetLineProperties</a></div><div class="ttdeci">static void SetLineProperties(PO *pobj, Color_t color, Style_t lstyle, Size_t lwid=2.)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:203</div></div>
-<div class="ttc" id="classSingleRatioPlot_html_aa9e543c5323cbd0960b769853e2f98bf"><div class="ttname"><a href="classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf">SingleRatioPlot::SetOptions</a></div><div class="ttdeci">void SetOptions(std::string optns, std::string postns)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:308</div></div>
+<div class="ttc" id="classSingleRatioPlot_html_aa9e543c5323cbd0960b769853e2f98bf"><div class="ttname"><a href="classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf">SingleRatioPlot::SetOptions</a></div><div class="ttdeci">void SetOptions(std::string optns, std::string postns)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:307</div></div>
 <div class="ttc" id="classSingleRatioPlot_html_a73b0248222d3db08097a01d86abcc56f"><div class="ttname"><a href="classSingleRatioPlot.html#a73b0248222d3db08097a01d86abcc56f">SingleRatioPlot::Draw</a></div><div class="ttdeci">void Draw(TString outname)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:232</div></div>
 <div class="ttc" id="classPlot_html"><div class="ttname"><a href="classPlot.html">Plot</a></div><div class="ttdef"><b>Definition:</b> PlotBase.h:18</div></div>
 <div class="ttc" id="classPlot_html_a8b7719901b0d78ce0d853f2ac6cad6c1"><div class="ttname"><a href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">Plot::SetOptions</a></div><div class="ttdeci">void SetOptions(TString opt)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:403</div></div>
-<div class="ttc" id="classSingleRatioPlot_html_a6f613843c99027a42646533eacdfd72c"><div class="ttname"><a href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">SingleRatioPlot::SetRanges</a></div><div class="ttdeci">void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:293</div></div>
+<div class="ttc" id="classSingleRatioPlot_html_a6f613843c99027a42646533eacdfd72c"><div class="ttname"><a href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">SingleRatioPlot::SetRanges</a></div><div class="ttdeci">void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:292</div></div>
 <div class="ttc" id="classSquarePlot_html"><div class="ttname"><a href="classSquarePlot.html">SquarePlot</a></div><div class="ttdef"><b>Definition:</b> PlotDerived.h:8</div></div>
 <div class="ttc" id="classRatioPlot_html"><div class="ttname"><a href="classRatioPlot.html">RatioPlot</a></div><div class="ttdef"><b>Definition:</b> PlotDerived.h:79</div></div>
 <div class="ttc" id="classPlot_html_a22244e01902db40f4ab9a45e80b76e30"><div class="ttname"><a href="classPlot.html#a22244e01902db40f4ab9a45e80b76e30">Plot::DrawArray</a></div><div class="ttdeci">void DrawArray(TObjArray *array, Int_t off=0, Int_t offOpt=0)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:505</div></div>
 <div class="ttc" id="classPlot_html_ac1a93b80a21da2eda97223f51c595266"><div class="ttname"><a href="classPlot.html#ac1a93b80a21da2eda97223f51c595266">Plot::SetCanvasMargins</a></div><div class="ttdeci">void SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:290</div></div>
-<div class="ttc" id="classSingleRatioPlot_html_a196226a9d865430efc38d6ccacc942a8"><div class="ttname"><a href="classSingleRatioPlot.html#a196226a9d865430efc38d6ccacc942a8">SingleRatioPlot::SetOffset</a></div><div class="ttdeci">void SetOffset(Int_t off, Int_t roff)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:283</div></div>
+<div class="ttc" id="classSingleRatioPlot_html_a196226a9d865430efc38d6ccacc942a8"><div class="ttname"><a href="classSingleRatioPlot.html#a196226a9d865430efc38d6ccacc942a8">SingleRatioPlot::SetOffset</a></div><div class="ttdeci">void SetOffset(Int_t off, Int_t roff)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:282</div></div>
 <div class="ttc" id="classPlot_html_a3ee45f899bf0cdb8aabd50b5603ceb50"><div class="ttname"><a href="classPlot.html#a3ee45f899bf0cdb8aabd50b5603ceb50">Plot::SetOption</a></div><div class="ttdeci">void SetOption(std::string opt, Int_t pos)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:449</div></div>
 <div class="ttc" id="classRatioPlot_html_ac1beb8743fc8c7d5708eb48cbf74f033"><div class="ttname"><a href="classRatioPlot.html#ac1beb8743fc8c7d5708eb48cbf74f033">RatioPlot::DrawRatioArray</a></div><div class="ttdeci">void DrawRatioArray(TObjArray *array, Int_t off, Int_t offOpt=0)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:151</div></div>
 <div class="ttc" id="classPlot_html_a27aecf9c62f17a2a15ac6985d6cb49c0"><div class="ttname"><a href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">Plot::SetUpPad</a></div><div class="ttdeci">void SetUpPad(TPad *pad, Bool_t xLog, Bool_t yLog)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:459</div></div>
 <div class="ttc" id="classRatioPlot_html_a0325518d57c4f3eace88c6b999b19b16"><div class="ttname"><a href="classRatioPlot.html#a0325518d57c4f3eace88c6b999b19b16">RatioPlot::Draw</a></div><div class="ttdeci">void Draw(TString outname)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:118</div></div>
-<div class="ttc" id="classSingleRatioPlot_html_aa6420963f2615a5129c1daa8ca2ff9c0"><div class="ttname"><a href="classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0">SingleRatioPlot::SetPadFraction</a></div><div class="ttdeci">void SetPadFraction(Double_t frac)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:275</div></div>
+<div class="ttc" id="classSingleRatioPlot_html_aa6420963f2615a5129c1daa8ca2ff9c0"><div class="ttname"><a href="classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0">SingleRatioPlot::SetPadFraction</a></div><div class="ttdeci">void SetPadFraction(Double_t frac)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:274</div></div>
 <div class="ttc" id="classPlot_html_a70c20090376d80e22d10e1e470616226"><div class="ttname"><a href="classPlot.html#a70c20090376d80e22d10e1e470616226">Plot::SetCanvasDimensions</a></div><div class="ttdeci">void SetCanvasDimensions(Float_t cWidth, Float_t cHeight)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:281</div></div>
 <div class="ttc" id="classSingleRatioPlot_html"><div class="ttname"><a href="classSingleRatioPlot.html">SingleRatioPlot</a></div><div class="ttdef"><b>Definition:</b> PlotDerived.h:176</div></div>
 <div class="ttc" id="classSquarePlot_html_ad98f85420684aa7c10e8164bae02bec6"><div class="ttname"><a href="classSquarePlot.html#ad98f85420684aa7c10e8164bae02bec6">SquarePlot::Draw</a></div><div class="ttdeci">void Draw(TString outname)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:42</div></div>

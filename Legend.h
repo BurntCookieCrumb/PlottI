@@ -13,32 +13,31 @@ class Legend : public TLegend
 public:
 
   Legend();
-  Legend(TObjArray* array, std::string entries, std::string opt, std::string title="");
-  Legend(std::string obj, std::string entries, std::string opt, Int_t nEntries);
-  Legend(std::string entries, Int_t nEntries);
-  Legend(Legend& lgnd);
-  Legend(TLegend* lgnd);
+  Legend(TObjArray* array, std::string entries, std::string opt, std::string title="", std::string name="");
+  Legend(std::string obj, std::string entries, std::string opt, Int_t nEntries, std::string name="");
+  Legend(std::string entries, Int_t nEntries, std::string name="");
+  Legend(Legend& lgnd, std::string name="");
+  Legend(Legend* lgnd, std::string name="");
   ~Legend() {}
 
-  TLegend* GetLegendPointer(){return legend;};
+        Legend* GetLegendPointer()       {return this;}
+  const Legend* GetLegendPointer() const {return this;}
   static void SetPosition(TLegend* l, Float_t x1, Float_t x2, Float_t y1, Float_t y2);
+  void SetPosition(Float_t x1, Float_t x2, Float_t y1, Float_t y2);
   void SetPositionAuto();
 
-  TLegend* legend;
   std::vector<TH1*> dummy;
 
 };
 
 // ---- Constructors ----------------------------------------------------------
 
-Legend::Legend():
-  legend(nullptr),
+Legend::Legend(): TLegend(),
   dummy(0)
 {
 }
 
-Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string title):
-  legend(nullptr),
+Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string title, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   dummy(0)
 {
 
@@ -47,15 +46,14 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string 
     return;
   }
 
-  legend = new TLegend(0.1, 0.7, 0.3, 0.9);
-
   std::istringstream entries(entr);
   std::istringstream options(opt);
 
   TString* option    = new TString();
   TString* entryName = new TString();
 
-  if (title != "") legend->AddEntry((TObject*)0x0, title.data(), "");
+  if (title != "") AddEntry((TObject*)0x0, title.data(), "");
+  if (name  != "") fName = name;
 
   TIter iArray(array);
   while (TObject* obj = iArray()) {
@@ -65,19 +63,18 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string 
     option->ReadToken(options);
     entryName->ReadLine(entries);
 
-    legend->AddEntry(obj, entryName->Data(), option->Data());
+    AddEntry(obj, entryName->Data(), option->Data());
   }
 
-  array->Add(legend);
+  array->Add(this);
 
 }
 
-Legend::Legend(std::string obj, std::string entr, std::string opt, Int_t nEntries):
-legend(nullptr),
+Legend::Legend(std::string obj, std::string entr, std::string opt, Int_t nEntries, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
 dummy(nEntries)
 {
 
-  legend = new TLegend(0.1, 0.7, 0.3, 0.9);
+  if (name  != "") fName = name;
 
   std::istringstream objects(obj);
   std::istringstream entries(entr);
@@ -106,18 +103,17 @@ dummy(nEntries)
     dummy[entry] = new TH1C();
     Plot::SetPlottjectProperties(dummy[entry], color->Atoi(), marker->Atoi(), size->Atof());
 
-    legend->AddEntry(dummy[entry], entryName->Data(), option->Data());
+    AddEntry(dummy[entry], entryName->Data(), option->Data());
 
   }
 
 }
 
-Legend::Legend(std::string entr, Int_t nEntries):
-legend(nullptr),
+Legend::Legend(std::string entr, Int_t nEntries, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
 dummy(nEntries)
 {
 
-  legend = new TLegend(0.1, 0.7, 0.3, 0.9);
+  if (name  != "") fName = name;
 
   std::istringstream entries(entr);
   TString* entryName = new TString();
@@ -126,24 +122,32 @@ dummy(nEntries)
 
     entryName->ReadLine(entries);
 
-    legend->AddEntry((TObject*)0x0, entryName->Data(), "");
+    AddEntry((TObject*)0x0, entryName->Data(), "");
 
   }
 
 }
 
-Legend::Legend(Legend& lgnd):
-  legend(nullptr),
+Legend::Legend(Legend& lgnd, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   dummy(0)
 {
-  /** \todo{Get it to work} **/
+  if (name  != "") fName = name;
+  fPrimitives = new TList();
+  TIter prim(lgnd.fPrimitives);
+  while(TLegendEntry* entry = (TLegendEntry*)prim()){
+    fPrimitives->Add(entry);
+  }
 }
 
-Legend::Legend(TLegend* lgnd):
-  legend(nullptr),
+Legend::Legend(Legend* lgnd, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   dummy(0)
 {
-/** \todo{Get it to work, maybe derive this class from TLegend to gain access to fPrimitives} **/
+  if (name  != "") fName = name;
+  fPrimitives = new TList();
+  TIter prim(lgnd->fPrimitives);
+  while(TLegendEntry* entry = (TLegendEntry*)prim()){
+    fPrimitives->Add(entry);
+  }
 }
 
 // ---- Member Functions ------------------------------------------------------
@@ -159,22 +163,34 @@ void Legend::SetPosition(TLegend* l, Float_t x1, Float_t x2, Float_t y1, Float_t
 
 }
 
+void Legend::SetPosition(Float_t x1, Float_t x2, Float_t y1, Float_t y2){
+
+  /** Set the Position of a Legend in relative coordinates **/
+
+  fX1 = x1;
+  fX2 = x2;
+  fY1 = y1;
+  fY2 = y2;
+
+}
+
 void Legend::SetPositionAuto(){
 
   /** Determine automatic placement of Legend based on position strings **/
 
   /** \todo{Get it to work}**/
 
-  Float_t relLegendWidth  = legend->GetX2NDC() - legend->GetX1NDC();
-  Float_t relLegendHeight = legend->GetNRows()*0.05;
+  // Float_t relLegendWidth  = legend->GetX2NDC() - legend->GetX1NDC();
+  // Float_t relLegendHeight = legend->GetNRows()*0.05;
 
-  std::cout << relLegendWidth << std::endl;
-  std::cout << legend->GetNRows() << std::endl;
+  // std::cout << relLegendWidth << std::endl;
+  // std::cout << legend->GetNRows() << std::endl;
 
   //SetPosition(obj, 0.1, 0.1+relLegendWidth, 0.1, 0.1+relLegendHeight);
   //SetPosition(0.2, 0.2 + relLegendWidth, 0.85-relLegendHeight, 0.85);
 
 }
+
 
 
 //

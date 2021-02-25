@@ -142,25 +142,29 @@ Example Code</h1>
      TObjArray* ratio = new TObjArray();
      ratio-&gt;Add(grey);
 </pre><p>Now we generate legends for this plot: </p>
-<pre class="fragment">     TLegend* l = Legend(main, "Black Histo\n White Histo\n", "lp lp").GetLegendPointer();
+<pre class="fragment">     Legend* l = new Legend(main, "Black Histo\n White Histo\n", "lp lp", "", "l");
+     Legend* ll = new Legend(l, "ll"); //Copy first legend so that we can place it seperately
 
      TString info = TString("Black and White Histogram\n");
-     info.Append("Example");
-     TLegend* lInfo = Legend(info.Data(), 2).GetLegendPointer();
+     info.Append("Example\n");
+     TLegend* lInfo =  new Legend(info.Data(), 2);
      main-&gt;Add(lInfo);
 </pre><p>Then we define marker colors and styles. The ones for the ratios will be added after the ones for the main pad. </p>
 <pre class="fragment">     vector&lt;Color_t&gt; colors = {kBlack, kBlack, kBlack+3};
      vector&lt;Style_t&gt; markers = {kFullCircle, kOpenCircle, kFullCircle};
      vector&lt;Size_t&gt;  sizes = {2., 2., 2.};
 </pre><p>Adjusting the legend position: </p>
-<pre class="fragment">     Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75);
+<pre class="fragment">     Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75); // static function
      Legend::SetPosition(l, 0.43, 0.6, 0.2, 0.32);
+     ll-&gt;SetPosition(0.43, 0.6, 0.05, 0.22); // non-static function
 </pre><p>And finally create the Canvasses: </p>
 <pre class="fragment">     SquarePlot square = SquarePlot(main, "x", "count");
      square.SetStyle(colors, markers, sizes);
      square.SetMode(Plot::Presentation);
      square.SetRanges(3, -3, 400, 0);
      square.Draw(TString("Square.pdf"));
+
+     main-&gt;AddBefore(lInfo, ll); // replace l in main with ll
 
      SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
      rat.SetOffset(2); // determines where the ratio entries start in the style arrays

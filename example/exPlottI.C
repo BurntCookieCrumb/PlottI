@@ -41,11 +41,12 @@ void exPlottI(){
 
   // --- Legends ---------------------------------------------------------------
 
-  TLegend* l = Legend(main, "Black Histo\n White Histo\n", "lp lp").GetLegendPointer();
+  Legend* l = new Legend(main, "Black Histo\n White Histo\n", "lp lp", "", "l");
+  Legend* ll = new Legend(l, "ll"); // copy first legend so that we can place it seperately
 
   TString info = TString("Black and White Histogram\n");
   info.Append("Example\n");
-  TLegend* lInfo = Legend(info.Data(), 2).GetLegendPointer();
+  TLegend* lInfo =  new Legend(info.Data(), 2);
   main->Add(lInfo);
 
   // --- Marker ----------------------------------------------------------------
@@ -56,21 +57,24 @@ void exPlottI(){
 
   // --- Canvasses -------------------------------------------------------------
 
-  Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75);
+  Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75); // static function
   Legend::SetPosition(l, 0.43, 0.6, 0.2, 0.32);
+  ll->SetPosition(0.43, 0.6, 0.05, 0.22); // non-static function
 
   SquarePlot square = SquarePlot(main, "x", "count");
   square.SetStyle(colors, markers, sizes);
   square.SetMode(Plot::Presentation);
   square.SetRanges(-3, 3, .1, 400);
-  // square.Draw(TString("Square.png"));
-  square.Draw(TString("Square.pdf"));
+  square.Draw(TString("Square.png"));
+  // square.Draw(TString("Square.pdf"));
+
+  main->AddBefore(lInfo, ll); //replace l in main with ll
 
   SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
   rat.SetOffset(0, 2); // determines where the (ratio) entries start in the style arrays
   rat.SetRanges(-3, 3, -10, 400, 0.5, 3.2);
-  // rat.Draw(TString("Ratio.png"));
-  rat.Draw(TString("Ratio.pdf"));
+  rat.Draw(TString("Ratio.png"));
+  // rat.Draw(TString("Ratio.pdf"));
 
 
 

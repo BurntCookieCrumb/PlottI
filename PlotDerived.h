@@ -236,7 +236,6 @@ void SingleRatioPlot::Draw(TString outname){
   std::cout << "-----------------------------" << std::endl;
   std::cout << "  Plot Single Ratio Canvas: " << std::endl;
   std::cout << "-----------------------------" << std::endl;
-  std::cout << "with ranges: (" << xRangeLow << "," << xRangeUp << ")" << "(" << yRangeLow << "," << yRangeUp << ")" << std::endl;
 
   if (broken){
     std::cout << "Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn" << std::endl;
