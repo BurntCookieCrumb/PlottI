@@ -236,21 +236,22 @@ void Plot::SetProperties(TObject* obj, Int_t index){
 
   /** Manages internal setting of properties for all plottable objects **/
 
+  if (obj->InheritsFrom("TPave")){ //TLegend
+    ((TLegend*)obj)->SetTextFont(font);
+    ((TLegend*)obj)->SetTextSize(label);
+    ((TLegend*)obj)->SetBorderSize(0);
+    return;
+  }
+
+  if (!styles) return;
+  if (index >= markers.size()) return;
+
   Double_t size, lwidth; Int_t lstyle;
   size   = !(sizes.empty())   ? sizes[index]   : 2.;
   lstyle = !(lstyles.empty()) ? lstyles[index] : 1;
   lwidth = !(lwidths.empty()) ? lwidths[index] : 2.;
 
-  if (obj->InheritsFrom("TPave")){ //TLegend
-    ((TLegend*)obj)->SetTextFont(font);
-    ((TLegend*)obj)->SetTextSize(label);
-    ((TLegend*)obj)->SetBorderSize(0);
-  }
-
-  else if (!styles) return;
-  else if (index >= markers.size()) return;
-
-  else if (obj->InheritsFrom("TH1")) {
+  if (obj->InheritsFrom("TH1")) {
     SetPlottjectProperties((TH1*)obj, colors[index], markers[index], size, lstyle, lwidth);
     ((TH1*)obj)->SetStats(kFALSE);
   }
