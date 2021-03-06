@@ -25,8 +25,10 @@
 
  \section hSettings Settings for Histograms
 
- You can choose the style and colors of the plotted objects by either calling the Set<Object>Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed).
+ You can choose the style and colors of the plotted objects by either calling the Set<Object>Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed) by calling SetStyle.
  You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot.
+ In the case that some of your style arrays are empty or don't contain enough elements, default settings for the markers and lines will be used: marker size and line width 2., line style 1 (straight line), marker style kFullCircle and marker color kBlack.
+ It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC", using SetOptions.
 
  \section legends Legends
 
@@ -37,13 +39,14 @@
     + a string containing the entry names like "entry number 1\n entry number 2\n"
     + and a string containing the display options like "lp lp"
 - Create an informative Legend containing just text without symbols from
-    + a string containing the information to be displayed (entires) like "entry number 1\n entry number 2\n"
+    + a string containing the information to be displayed (entries) like "entry number 1\n entry number 2\n"
     + the number of entries
 - Create a legend with dummy markers from
     + a string containing the marker options like "23 23 23\n 24 24 24\n"
     + a string containing the entry names like "entry number 1\n entry number 2\n"
     + a string containing the options like "lp p"
     + the number of entries
+- Copy an already existing legend
 
 \remark Unfortunately it is not possible for the second option to use the corresponding enumerators like kBlack for the colors and such, but the actual number has to be used. It is however possible to use functions like Format to print the value of kBlack into a string and then use this string.
 
@@ -114,5 +117,23 @@ Results:
 
 \image html Square.png "Square Plot" width=5cm
 \image html Ratio.png "Ratio Plot" width=5cm
+
+  \section Additional Functionality
+
+  The following additional functionalities are currently available (in the file functionality.h):
+  - GetXfirstFilledBin: Finds the first bin from the left with content > 0, if all bins (except last) are empty 0 is returned
+  - GetXlastFilledBin: Finds the first bin from the right with content > 0, if all bins (except first) are empty last bin is returned
+  - CleanUpHistogram: Sets bin contents of bins with too large uncertainties to zero, for specifics please see documentation.
+
+  \section Colors
+
+  Every seperately usable color (namely when you aren't using the palette option) is collected in the
+  <a href="https://root.cern/doc/master/classTColorWheel.html">TColorWheel</a>. Since the colors are grouped
+  by hue and each segment vary only in their brightness and intensity, I feel that you are supposed to (or at least try)
+  to only use colors with the same modifier in one plot. I therefore rearranged the colors in a way, that you can
+  see all the colors with the same modifier in a palette like way.
+
+  \image html mix.png "Mixed Colors" width=5cm
+  \image html bas.png "Base Colors" width=5cm
 
  */

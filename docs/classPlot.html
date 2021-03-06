@@ -71,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -94,15 +94,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Plot Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base class for all plotting functionality.  
+ <a href="classPlot.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="PlotBase_8h_source.html">PlotBase.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Plot:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classPlot.png" usemap="#Plot_map" alt=""/>
   <map id="Plot_map" name="Plot_map">
-<area href="classRatioPlot.html" alt="RatioPlot" shape="rect" coords="0,56,96,80"/>
-<area href="classSquarePlot.html" alt="SquarePlot" shape="rect" coords="106,56,202,80"/>
-<area href="classSingleRatioPlot.html" alt="SingleRatioPlot" shape="rect" coords="0,112,96,136"/>
+<area href="classHeatMapPlot.html" title="Class for plotting a single TH2 (heatmap) and one corresponding legend. " alt="HeatMapPlot" shape="rect" coords="0,56,96,80"/>
+<area href="classRatioPlot.html" title="Class for a rectangle plot displaying ratios. " alt="RatioPlot" shape="rect" coords="106,56,202,80"/>
+<area href="classSquarePlot.html" title="Class for a simple square-format plot. " alt="SquarePlot" shape="rect" coords="212,56,308,80"/>
+<area href="classSingleRatioPlot.html" title="Class for a rectangle plot with the distributions in the upper pad and the ratios in the lower pad..." alt="SingleRatioPlot" shape="rect" coords="106,112,202,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -140,6 +146,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> ()</td></tr>
 <tr class="separator:a455b737cff13cf869e7a3328ee09851f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a412b32fcbf4b34941a4149d40a2c20e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a412b32fcbf4b34941a4149d40a2c20e2">SetStyle</a> (std::vector&lt; Color_t &gt; col, std::vector&lt; Style_t &gt; mark, std::vector&lt; Size_t &gt; siz={}, std::vector&lt; Style_t &gt; lstyl={}, std::vector&lt; Size_t &gt; lwid={})</td></tr>
 <tr class="separator:a412b32fcbf4b34941a4149d40a2c20e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96ebdce4b8f30ae6f52474753c6f2955"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a96ebdce4b8f30ae6f52474753c6f2955">SetPalette</a> (Int_t pal, Bool_t invert=kFALSE)</td></tr>
+<tr class="separator:a96ebdce4b8f30ae6f52474753c6f2955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
 <tr class="separator:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
@@ -160,8 +168,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9"><td class="memTemplParams" colspan="2">template&lt;class PO &gt; </td></tr>
 <tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#a5dd32ef2d7586ef1155db055df9632d9">SetPlottjectProperties</a> (PO *pobj, Color_t color, Style_t mstyle, Size_t msize=3., Style_t lstyle=1, Size_t lwid=2., std::string title=&quot;&quot;)</td></tr>
 <tr class="separator:a5dd32ef2d7586ef1155db055df9632d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e7adfd5378820c0629f1ecf951f0dbf"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a4e7adfd5378820c0629f1ecf951f0dbf">CleanUpHistogram</a> (TH1 *hist, Double_t factor=2.)</td></tr>
-<tr class="separator:a4e7adfd5378820c0629f1ecf951f0dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -253,6 +259,15 @@ Bool_t&#160;</td><td class="memItemRight" valign="bottom"><b>broken</b> {kFALSE}
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
+<tr class="memitem:abc373735daa5169cd04f7475c1698a57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc373735daa5169cd04f7475c1698a57"></a>
+static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>palette</b> {109}</td></tr>
+<tr class="separator:abc373735daa5169cd04f7475c1698a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019cc3d4c675cd7fa83083482390069c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a019cc3d4c675cd7fa83083482390069c"></a>
+static Bool_t&#160;</td><td class="memItemRight" valign="bottom"><b>inversion</b> {kFALSE}</td></tr>
+<tr class="separator:a019cc3d4c675cd7fa83083482390069c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb7a83504c406261cd01218070ec6c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fb7a83504c406261cd01218070ec6c6"></a>
+static Bool_t&#160;</td><td class="memItemRight" valign="bottom"><b>inverted</b> {kFALSE}</td></tr>
+<tr class="separator:a0fb7a83504c406261cd01218070ec6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e446a562f18d4cd1eb3c601bc7d392"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5e446a562f18d4cd1eb3c601bc7d392"></a>
 static std::vector&lt; Color_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>colors</b></td></tr>
 <tr class="separator:aa5e446a562f18d4cd1eb3c601bc7d392"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -281,43 +296,9 @@ static Style_t&#160;</td><td class="memItemRight" valign="bottom"><b>label</b> {
 static Int_t&#160;</td><td class="memItemRight" valign="bottom"><b>mOffset</b> {0}</td></tr>
 <tr class="separator:a2cbc79867ba1630b0615c1cfb7b97b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a4e7adfd5378820c0629f1ecf951f0dbf"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Plot::CleanUpHistogram </td>
-          <td>(</td>
-          <td class="paramtype">TH1 *&#160;</td>
-          <td class="paramname"><em>hist</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t&#160;</td>
-          <td class="paramname"><em>factor</em> = <code>2.</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Sets bin contents of bins with too large uncertainties to 0</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>{Get it to work} </dd></dl>
-
-</div>
-</div>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class for all plotting functionality. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a22244e01902db40f4ab9a45e80b76e30"></a>
 <div class="memitem">
 <div class="memproto">
@@ -551,8 +532,7 @@ template&lt;class PO &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets wether X and/or Y axis will be displayed logarithmically</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>{Find out why logx sometimes doesnt work} </dd></dl>
+<p>Sets wether X and/or Y axis will be displayed logarithmically </p>
 
 </div>
 </div>
@@ -800,6 +780,33 @@ template&lt;class AO &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a96ebdce4b8f30ae6f52474753c6f2955"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Plot::SetPalette </td>
+          <td>(</td>
+          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>pal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Bool_t&#160;</td>
+          <td class="paramname"><em>invert</em> = <code>kFALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the palette that will be used for the plots </p>
+
+</div>
+</div>
 <a class="anchor" id="a5dd32ef2d7586ef1155db055df9632d9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -957,7 +964,7 @@ template&lt;class AO &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Automatically determine good ranges</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>{Test for TF1 and TGraph} </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>{Test for TF1 and TGraph} </dd></dl>
 
 </div>
 </div>

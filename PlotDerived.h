@@ -1,9 +1,29 @@
 
+// ~~ PlotTING CLASS ~~
+
+// ----------------------------------------------------------------------------
+//
+// This file contains the derived classes for the plotting functionalities
+// Currently the following derived classes are available:
+//  - SquarePlot: Simple Plot in Square formmat with one pad
+//  - RatioPlot: Simple Plot in Rectangle format with one pad that is meant
+//               to display Ratios
+//  - SingleRatioPlot: Rectangle Plot with two pads. The upper pads are for the
+//                     distributions while the lower pad is for the
+//                     corresponding ratios
+//  - HeatMapPlot: Simple Plot in Square format for drawing one TH2 (heatmap)
+//                 and one corresponding legend
+//
+// ----------------------------------------------------------------------------
+
+
 #define DERIVED_H
 
 // ----------------------------------------------------------------------------
 //                              SQUARE PLOT CLASS
 // ----------------------------------------------------------------------------
+
+//! Class for a simple square-format plot 
 
 class SquarePlot : public Plot
 {
@@ -75,6 +95,8 @@ void SquarePlot::Draw(TString outname){
 // ----------------------------------------------------------------------------
 //                              RATIO ONLY PLOT CLASS
 // ----------------------------------------------------------------------------
+
+//! Class for a rectangle plot displaying ratios
 
 class RatioPlot : public Plot
 {
@@ -173,6 +195,8 @@ void RatioPlot::SetUpperOneLimit(Double_t up){
 //                         SINGLE RATIO PLOT CLASS
 // ----------------------------------------------------------------------------
 
+//! Class for a rectangle plot with the distributions in the upper pad and the ratios in the lower pad
+
 class SingleRatioPlot : public RatioPlot
 {
 
@@ -185,7 +209,7 @@ public:
 
   void SetPadFraction(Double_t frac);
   void SetOffset(Int_t off, Int_t roff);
-  /*virtual*/ void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp);
+  virtual void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp);
   void SetOptions(std::string optns, std::string postns);
 
 private:
@@ -325,3 +349,188 @@ void SingleRatioPlot::SetOptions(std::string optns, std::string postns){
   Plot::SetOptions(opt->Data(), pos->Data(), plotArray->GetEntries());
 
 }
+
+
+// ----------------------------------------------------------------------------
+//                         HEAT MAP PLOT CLASS
+// ----------------------------------------------------------------------------
+
+//! Class for plotting a single TH2 (heatmap) and one corresponding legend
+
+class HeatMapPlot : public Plot
+{
+
+public:
+  HeatMapPlot(TH2* map, TLegend* l, TString xTitle, TString yTitle, TString zTitle = "count");
+  ~HeatMapPlot() {};
+
+  void Draw(TString outname);
+
+  void SetProperties(TH2* map, std::string title = "");
+  void SetCanvasOffsets(Float_t xOffset, Float_t yOffset, Float_t zOffset);
+  /*virtual*/ void SetLog(Bool_t xLog = kFALSE, Bool_t yLog = kTRUE, Bool_t zLog = kFALSE);
+  virtual void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t zLow, Float_t zUp);
+
+
+private:
+
+  void SetCanvasStyle(TH2* first);
+  void SetPadStyle(TH2* first, TString xTitle, TString yTitle, TString zTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t zUp, Float_t zLow);
+  void SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog = kFALSE);
+
+
+  TString titleZ {"count"};
+
+  Float_t offsetZ {0};
+  Bool_t  logZ {kFALSE};
+  Float_t zRangeUp {0};
+  Float_t zRangeLow {0};
+
+  TH2 *heatmap {nullptr};
+  TLegend *legend {nullptr};
+
+};
+
+// ---- Cunstructor -----------------------------------------------------------
+
+HeatMapPlot::HeatMapPlot(TH2* map, TLegend* l, TString xTitle, TString yTitle, TString zTitle) : Plot(xTitle, yTitle),
+titleZ(zTitle),
+heatmap(map),
+legend(l)
+{
+
+  SetCanvasDimensions(1000, 850);
+  SetCanvasMargins(0.2, .15, 0.07, .15);
+  SetCanvasOffsets(1.3, 1.5, 1.5);
+
+}
+
+// ---- Member Functions ------------------------------------------------------
+
+void HeatMapPlot::Draw(TString outname){
+
+  /** Main function for Drawing **/
+
+  std::cout << "-----------------------------" << std::endl;
+  std::cout << "     Plot Heat Map:" << std::endl;
+  std::cout << "-----------------------------" << std::endl;
+
+  if (broken){
+    std::cout << "Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn" << std::endl;
+    std::cout << "-----------------------------" << std::endl << std::endl;
+    return;
+  }
+
+  canvas  = new TCanvas("canvas", "HEATMAP", 10, 10, width+10, height+10);
+  canvas->cd();
+
+  mainPad = new TPad("mainPad", "Distribution", 0, 0, 1, 1);
+  SetUpPad(mainPad, logX, logY, logZ);
+  SetCanvasStyle(heatmap);
+  SetPadStyle(heatmap, titleX, titleY, titleZ, xRangeUp, xRangeLow, yRangeUp, yRangeLow, zRangeUp, zRangeLow);
+  mainPad->Draw();
+  mainPad->cd();
+
+  std::cout << " -> Draw Map: " << heatmap->GetName() << std::endl;
+  SetProperties(heatmap);
+  heatmap->Draw("SAME COLZ");
+  std::cout << " -> Draw Legend: " << legend->GetName() << std::endl;
+  Plot::SetProperties(legend, 0);
+  legend->Draw("SAME");
+
+  canvas->Update();
+  canvas->SaveAs(outname.Data());
+  delete canvas;
+
+  std::cout << "-----------------------------" << std::endl << std::endl;
+
+
+}
+
+void HeatMapPlot::SetProperties(TH2* map, std::string title){
+
+  /** Manages internal setting of properties for TH2 heatmap plots **/
+
+  map->SetContour(100);
+  map->SetStats(kFALSE);
+  map->SetTitle(title.data());
+
+}
+
+void HeatMapPlot::SetCanvasStyle(TH2* first){
+
+  /** Set general style features of the Canvas and Pads **/
+
+  Plot::SetCanvasStyle(first);
+
+  first->GetZaxis()->SetTitleOffset(offsetZ);
+  first->GetZaxis()->SetTickSize(0.03);
+  first->GetZaxis()->SetTitleSize(label);
+  first->GetZaxis()->SetTitleFont(font);
+  first->GetZaxis()->SetLabelFont(font);
+  first->GetZaxis()->SetLabelSize(label);
+
+}
+
+void HeatMapPlot::SetPadStyle(TH2* first, TString xTitle, TString yTitle, TString zTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t zUp, Float_t zLow){
+
+  /** Set style aspects of the pads **/
+
+  Plot::SetPadStyle(first, xTitle, yTitle, xUp, xLow, yUp, yLow);
+
+  first->GetZaxis()->SetRangeUser(zLow, zUp);
+  first->GetZaxis()->SetTitle(zTitle);
+
+}
+
+void HeatMapPlot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog){
+
+  /** Sets up a Pad for Plotting **/
+
+  Plot::SetUpPad(pad, xLog, yLog);
+
+  // pad->SetTickz(1);
+  if (zLog){
+    if (zRangeLow > 0) pad->SetLogz(1);
+    else std::cout << "\033[1;31mERROR in SetLog:\033[0m Z-Ranges must be above zero! Logarithm not set!!" << std::endl;
+  }
+
+}
+
+void HeatMapPlot::SetCanvasOffsets(Float_t xOffset, Float_t yOffset, Float_t zOffset){
+
+  /** Set the Title Offsets **/
+
+  offsetX = xOffset;
+  offsetY = yOffset;
+  offsetZ = zOffset;
+
+}
+
+void HeatMapPlot::SetLog(Bool_t xLog, Bool_t yLog, Bool_t zLog){
+
+  /** Sets wether X and/or Y axis will be displayed logarithmically **/
+
+  logX = xLog;
+  logY = yLog;
+  logZ = zLog;
+
+}
+
+void HeatMapPlot::SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t zLow, Float_t zUp){
+
+  /** Set the Ranges **/
+
+  xRangeUp  = xUp;
+  xRangeLow = xLow;
+  yRangeUp  = yUp;
+  yRangeLow = yLow;
+  zRangeUp  = zUp;
+  zRangeLow = zLow;
+
+  ranges = kTRUE;
+
+}
+
+
+//

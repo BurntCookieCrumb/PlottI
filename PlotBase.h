@@ -1,9 +1,10 @@
 // ~~ PlotTING CLASS ~~
 
-
 // ----------------------------------------------------------------------------
 //
-// Class for basic Plotting functionality
+// This file contains the base class for all plotting functionality
+// This class is meant to be purely virtual, the derived classes
+// that can be used for plotting can be found in PlotDerived.h.
 //
 // ----------------------------------------------------------------------------
 
@@ -14,6 +15,8 @@
 //                         PLOT BASE CLASS
 //
 // ----------------------------------------------------------------------------
+
+//! Base class for all plotting functionality 
 
 class Plot
 {
@@ -35,18 +38,18 @@ public:
   template <class PO> static void SetLineProperties(PO* pobj, Color_t color, Style_t lstyle, Size_t lwid = 2.);
   template <class PO> static void SetMarkerProperties(PO* pobj, Color_t color, Style_t mstyle, Size_t msize = 3.);
   template <class PO> static void SetPlottjectProperties(PO* pobj, Color_t color, Style_t mstyle, Size_t msize = 3., Style_t lstyle = 1, Size_t lwid= 2., std::string title = "");
-  static void CleanUpHistogram(TH1* hist, Double_t factor = 2.);
   void SetProperties(TObject* obj, Int_t index);
 
   void SetCanvasDimensions(Float_t cWidth, Float_t cHeight);
   void SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin);
   void SetCanvasOffsets(Float_t xOffset, Float_t yOffset);
   /*virtual*/ void SetLog(Bool_t xLog = kFALSE, Bool_t yLog = kTRUE);
-  /*virtual*/ void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp);
+  void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp);
   void SetOffset(Int_t off);
 
   void SetMode(Mode m);
   void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz = {}, std::vector<Style_t> lstyl = {}, std::vector<Size_t> lwid = {});
+  void SetPalette(Int_t pal, Bool_t invert = kFALSE);
   void SetOptions(TString opt);
   void SetOptions(std::vector<std::string> optns);
   void SetOptions(std::string optns, std::string postns, Int_t off = 0);
@@ -65,6 +68,9 @@ protected:
   TPad    *mainPad {nullptr};
   TCanvas *canvas  {nullptr};
 
+  static Int_t palette;
+  static Bool_t inversion;
+  static Bool_t inverted;
   static std::vector<Color_t> colors;
   static std::vector<Style_t> markers;
   static std::vector<Style_t> lstyles;
@@ -118,6 +124,10 @@ Plot::Plot(TString xTitle, TString yTitle):
 }
 
 // ---- Static Member Variables -----------------------------------------------
+
+Int_t  Plot::palette {109};
+Bool_t Plot::inversion {kFALSE};
+Bool_t Plot::inverted  {kFALSE};
 
 std::vector<Color_t>  Plot::colors;
 std::vector<Style_t>  Plot::markers;
@@ -187,18 +197,6 @@ void Plot::SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xU
 
 }
 
-void Plot::CleanUpHistogram(TH1* hist, Double_t factor){
-
-  /** Sets bin contents of bins with too large uncertainties to 0 **/
-  /** \todo{Get it to work} **/
-
-  if (!hist){
-    std::cout << "\033[1;31mERROR:\033[0m histogram to be cleaned up does not exist!" << std::endl;
-    return;
-  }
-
-}
-
 template <class PO>
 void Plot::SetLineProperties(PO* pobj, Color_t color, Style_t lstyle, Size_t lwid){
 
@@ -243,35 +241,37 @@ void Plot::SetProperties(TObject* obj, Int_t index){
     return;
   }
 
-  if (!styles) return;
-  if (index >= markers.size()) return;
+  if (!styles) return; // no arrays were set, properties were set in advance by hand
 
-  Double_t size, lwidth; Int_t lstyle;
-  size   = !(sizes.empty())   ? sizes[index]   : 2.;
-  lstyle = !(lstyles.empty()) ? lstyles[index] : 1;
-  lwidth = !(lwidths.empty()) ? lwidths[index] : 2.;
+  Double_t size, lwidth; Int_t lstyle, color, marker;
+
+  size   = (index < sizes.size())   ? sizes[index]   : 2.;
+  lstyle = (index < lstyles.size()) ? lstyles[index] : 1;
+  lwidth = (index < lwidths.size()) ? lwidths[index] : 2.;
+  color  = (index < colors.size())  ? colors[index] : kBlack;
+  marker = (index < markers.size()) ? markers[index] : kFullCircle;
 
   if (obj->InheritsFrom("TH1")) {
-    SetPlottjectProperties((TH1*)obj, colors[index], markers[index], size, lstyle, lwidth);
+    SetPlottjectProperties((TH1*)obj, color, marker, size, lstyle, lwidth);
     ((TH1*)obj)->SetStats(kFALSE);
   }
   else if (obj->InheritsFrom("TF1")){
-    SetPlottjectProperties((TF1*)obj, colors[index], markers[index], size, lstyle, lwidth);
+    SetPlottjectProperties((TF1*)obj, color, marker, size, lstyle, lwidth);
   }
   else if (obj->InheritsFrom("TGraph")){
-    SetPlottjectProperties((TGraph*)obj, colors[index], markers[index], size, lstyle, lwidth);
+    SetPlottjectProperties((TGraph*)obj, color, marker, size, lstyle, lwidth);
   }
   else if (obj->InheritsFrom("TMultiGraph")){
     TIter iMultiGraph(((TMultiGraph*)obj)->GetListOfGraphs());
     while (TObject* graph = iMultiGraph()){
       if (!graph) continue;
       if (index >= markers.size()) break;
-      SetPlottjectProperties((TGraph*)graph, colors[index], markers[index], size, lstyle, lwidth);
+      SetPlottjectProperties((TGraph*)graph, color, marker, size, lstyle, lwidth);
       index++;
     }
   }
   else if (obj->InheritsFrom("TLine")){
-    SetLineProperties((TLine*)obj, colors[index], lstyle, lwidth);
+    SetLineProperties((TLine*)obj, color, lstyle, lwidth);
   }
   else{
     std::cout << "\033[1;34mMissing Class \033[0m" << obj->ClassName() << std::endl;
@@ -311,7 +311,6 @@ void Plot::SetCanvasOffsets(Float_t xOffset, Float_t yOffset){
 void Plot::SetLog(Bool_t xLog, Bool_t yLog){
 
   /** Sets wether X and/or Y axis will be displayed logarithmically **/
-  /** \todo{Find out why logx sometimes doesnt work} **/
 
   logX = xLog;
   logY = yLog;
@@ -353,8 +352,8 @@ void Plot::SetRangesAuto(AO* first){
 
   Int_t binLow  = GetXfirstFilledBin(((TH1*)first));
   Int_t binHigh = GetXlastFilledBin(((TH1*)first));
-  xRangeUp   = ((TH1*)first)->GetBinCenter(binHigh+2);
-  xRangeLow  = ((TH1*)first)->GetBinCenter(binLow-1);
+  xRangeUp   = ((TH1*)first)->GetXaxis()->GetBinCenter(binHigh+2);
+  xRangeLow  = ((TH1*)first)->GetXaxis()->GetBinCenter(binLow-1);
 
 }
 
@@ -400,6 +399,16 @@ void Plot::SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::ve
   styles = kTRUE;
 
 }
+
+void Plot::SetPalette(Int_t pal, Bool_t invert){
+
+  /** Set the palette that will be used for the plots **/
+
+  palette = pal;
+  inversion = invert;
+
+}
+
 
 void Plot::SetOptions(TString opt){
 
@@ -460,6 +469,12 @@ void Plot::SetOption(std::string opt, Int_t pos){
 void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
   /** Sets up a Pad for Plotting **/
+
+  gStyle->SetPalette(palette);
+  if ((inversion && !inverted) || (!inversion && inverted)){
+     TColor::InvertPalette();
+     inverted = !inverted;
+  }
 
   pad->SetFillStyle(4100); //4000
   pad->SetTopMargin(topMargin);

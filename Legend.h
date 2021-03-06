@@ -1,12 +1,20 @@
 
+// ~~ Legend CLASS ~~
 
 // ----------------------------------------------------------------------------
 //
-//                         LEGEND CLASS
+// This file contains a basic legend class inheriting from TLegend,
+// providing additional constructors, allowing easy legend generation from
+//  - TObjArrays
+//  - plain text (information)
+//  - descriptions of dummy markers
+//  - other legends
 //
 // ----------------------------------------------------------------------------
 
 #define LEGEND_H
+
+//! Class for additional legend functionality, mainly additional constructors
 
 class Legend : public TLegend
 {

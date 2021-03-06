@@ -64,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -82,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1><a class="anchor" id="Canvasses"></a>
 Canvasses</h1>
 <p>For your perfect plot you first need a Canvas, that will display your beautiful data.</p>
-<p>The (virtual) base class <a class="el" href="classPlot.html">Plot</a> includes most basic plotting functionalities. It provides a canvas and a default main pad, as well as basic set up variables such as canvas dimensions. For your very own plot you should one of the provided derived classes that implement one type of plot, e.g. a simple <a class="el" href="classSquarePlot.html">SquarePlot</a> or a <a class="el" href="classSingleRatioPlot.html">SingleRatioPlot</a>, or derive your own class. The basic dimensions and offsets are already predefined but can be changed manually with the corresponding methods. You create a canvas by calling the corresponding constructor with one or more TObjArrays containing the objects you want to plot and the corresponding axis titles. After the construction you can adjust your canvas or histogram settings (cf. section <a class="el" href="index.html#cSettings">Settings for Canvasses</a>) and plot everything with the Draw method (this will automatically save the canvas with the given name).</p>
+<p>The (virtual) base class <a class="el" href="classPlot.html" title="Base class for all plotting functionality. ">Plot</a> includes most basic plotting functionalities. It provides a canvas and a default main pad, as well as basic set up variables such as canvas dimensions. For your very own plot you should one of the provided derived classes that implement one type of plot, e.g. a simple <a class="el" href="classSquarePlot.html" title="Class for a simple square-format plot. ">SquarePlot</a> or a <a class="el" href="classSingleRatioPlot.html" title="Class for a rectangle plot with the distributions in the upper pad and the ratios in the lower pad...">SingleRatioPlot</a>, or derive your own class. The basic dimensions and offsets are already predefined but can be changed manually with the corresponding methods. You create a canvas by calling the corresponding constructor with one or more TObjArrays containing the objects you want to plot and the corresponding axis titles. After the construction you can adjust your canvas or histogram settings (cf. section <a class="el" href="index.html#cSettings">Settings for Canvasses</a>) and plot everything with the Draw method (this will automatically save the canvas with the given name).</p>
 <h1><a class="anchor" id="cSettings"></a>
 Settings for Canvasses</h1>
 <p>The following options are available for Canvasses:</p>
@@ -96,19 +96,19 @@ Settings for Canvasses</h1>
 <p>Settings marked with * are static and will be used for all following canvasses (in your macro) as well until they are manually changed.</p>
 <h1><a class="anchor" id="hSettings"></a>
 Settings for Histograms</h1>
-<p>You can choose the style and colors of the plotted objects by either calling the Set&lt;Object&gt;Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed). You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot.</p>
+<p>You can choose the style and colors of the plotted objects by either calling the Set&lt;Object&gt;Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed) by calling SetStyle. You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot. In the case that some of your style arrays are empty or don't contain enough elements, default settings for the markers and lines will be used: marker size and line width 2., line style 1 (straight line), marker style kFullCircle and marker color kBlack. It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC", using SetOptions.</p>
 <h1><a class="anchor" id="legends"></a>
 Legends</h1>
-<p>The <a class="el" href="classLegend.html">Legend</a> class can be used to automatically create a legend from data or text. You have the following options</p>
+<p>The <a class="el" href="classLegend.html" title="Class for additional legend functionality, mainly additional constructors. ">Legend</a> class can be used to automatically create a legend from data or text. You have the following options</p>
 <ul>
-<li>Generate <a class="el" href="classLegend.html">Legend</a> from<ul>
+<li>Generate <a class="el" href="classLegend.html" title="Class for additional legend functionality, mainly additional constructors. ">Legend</a> from<ul>
 <li>a TObjArray with your plottable objects</li>
 <li>a string containing the entry names like "entry number 1\n entry number 2\n"</li>
 <li>and a string containing the display options like "lp lp"</li>
 </ul>
 </li>
-<li>Create an informative <a class="el" href="classLegend.html">Legend</a> containing just text without symbols from<ul>
-<li>a string containing the information to be displayed (entires) like "entry number 1\n entry number 2\n"</li>
+<li>Create an informative <a class="el" href="classLegend.html" title="Class for additional legend functionality, mainly additional constructors. ">Legend</a> containing just text without symbols from<ul>
+<li>a string containing the information to be displayed (entries) like "entry number 1\n entry number 2\n"</li>
 <li>the number of entries</li>
 </ul>
 </li>
@@ -119,6 +119,7 @@ Legends</h1>
 <li>the number of entries</li>
 </ul>
 </li>
+<li>Copy an already existing legend</li>
 </ul>
 <dl class="section remark"><dt>Remarks</dt><dd>Unfortunately it is not possible for the second option to use the corresponding enumerators like kBlack for the colors and such, but the actual number has to be used. It is however possible to use functions like Format to print the value of kBlack into a string and then use this string.</dd></dl>
 <h1><a class="anchor" id="example"></a>
@@ -179,6 +180,25 @@ Square Plot</div></div>
 <img src="Ratio.png" alt="Ratio.png"/>
 <div class="caption">
 Ratio Plot</div></div>
+<h1><a class="anchor" id="Additional"></a>
+Functionality</h1>
+<p>The following additional functionalities are currently available (in the file <a class="el" href="functionality_8h.html">functionality.h</a>):</p>
+<ul>
+<li>GetXfirstFilledBin: Finds the first bin from the left with content &gt; 0, if all bins (except last) are empty 0 is returned</li>
+<li>GetXlastFilledBin: Finds the first bin from the right with content &gt; 0, if all bins (except first) are empty last bin is returned</li>
+<li>CleanUpHistogram: Sets bin contents of bins with too large uncertainties to zero, for specifics please see documentation.</li>
+</ul>
+<h1><a class="anchor" id="Colors"></a>
+Colors</h1>
+<p>Every seperately usable color (namely when you aren't using the palette option) is collected in the <a href="https://root.cern/doc/master/classTColorWheel.html">TColorWheel</a>. Since the colors are grouped by hue and each segment vary only in their brightness and intensity, I feel that you are supposed to (or at least try) to only use colors with the same modifier in one plot. I therefore rearranged the colors in a way, that you can see all the colors with the same modifier in a palette like way.</p>
+<div class="image">
+<img src="mix.png" alt="mix.png"/>
+<div class="caption">
+Mixed Colors</div></div>
+ <div class="image">
+<img src="bas.png" alt="bas.png"/>
+<div class="caption">
+Base Colors</div></div>
  </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
