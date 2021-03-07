@@ -51,9 +51,9 @@ public:
   void SetMode(Mode m);
   void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz = {}, std::vector<Style_t> lstyl = {}, std::vector<Size_t> lwid = {});
   void SetPalette(Int_t pal, Bool_t invert = kFALSE);
-  void SetOptions(TString opt);
-  void SetOptions(std::vector<std::string> optns);
-  void SetOptions(std::string optns, std::string postns, Int_t off = 0);
+  virtual void SetOptions(TString opt);
+  virtual void SetOptions(std::vector<std::string> optns);
+  virtual void SetOptions(std::string optns, std::string postns, Int_t off = 0);
   void SetOption(std::string opt, Int_t pos);
 
 protected:

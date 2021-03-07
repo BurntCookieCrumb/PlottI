@@ -212,7 +212,7 @@ public:
   void SetPadFraction(Double_t frac);
   void SetOffset(Int_t off, Int_t roff);
   virtual void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp);
-  void SetOptions(std::string optns, std::string postns);
+  virtual void SetOptions(std::string optns, std::string postns);
 
 private:
 
@@ -232,7 +232,7 @@ private:
 
 // ---- Static Member Variables -----------------------------------------------
 
-Float_t SingleRatioPlot::padFrac {0.3}; //0.25
+Float_t SingleRatioPlot::padFrac {.35}; //0.25
 Int_t   SingleRatioPlot::rOffset  {1};
 
 // ---- Cunstructor -----------------------------------------------------------

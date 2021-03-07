@@ -147,7 +147,7 @@ Legend::Legend(Legend& lgnd, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   if (name  != "") fName = name;
   fPrimitives = new TList();
   TIter prim(lgnd.fPrimitives);
-  while(TLegendEntry* entry = (TLegendEntry*)prim()){
+  while(TObject* entry = prim()){
     fPrimitives->Add(entry);
   }
 }
@@ -159,7 +159,7 @@ Legend::Legend(Legend* lgnd, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   if (name  != "") fName = name;
   fPrimitives = new TList();
   TIter prim(lgnd->fPrimitives);
-  while(TLegendEntry* entry = (TLegendEntry*)prim()){
+  while(TObject* entry = prim()){
     fPrimitives->Add(entry);
   }
 }
