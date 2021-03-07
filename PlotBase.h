@@ -16,24 +16,25 @@
 //
 // ----------------------------------------------------------------------------
 
-//! Base class for all plotting functionality 
+//! Base class for all plotting functionality
 
 class Plot
 {
 
 public:
 
+  //! Enumerator for choice of Mode, determining font size and style
   enum Mode : unsigned int {
-    Presentation,
-    Thesis,
-    Auto
+    Presentation, //!< Plots will be used for a presentation
+    Thesis,       //!< Plots will be used for a thesis
+    Auto          //!< Placeholder
   };
 
   Plot();
   Plot(TString xTitle, TString yTitle);
   virtual ~Plot() {}
 
-  /*virtual*/ void Draw() {}
+  /*virtual*/ void Draw() {} //!< Abstract template for function
 
   template <class PO> static void SetLineProperties(PO* pobj, Color_t color, Style_t lstyle, Size_t lwid = 2.);
   template <class PO> static void SetMarkerProperties(PO* pobj, Color_t color, Style_t mstyle, Size_t msize = 3.);
@@ -65,47 +66,47 @@ protected:
   void SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog);
   void DrawArray(TObjArray* array, Int_t off = 0, Int_t offOpt = 0);
 
-  TPad    *mainPad {nullptr};
-  TCanvas *canvas  {nullptr};
+  TPad    *mainPad {nullptr};             //!< Main pad
+  TCanvas *canvas  {nullptr};             //!< Main canvas
 
-  static Int_t palette;
-  static Bool_t inversion;
-  static Bool_t inverted;
-  static std::vector<Color_t> colors;
-  static std::vector<Style_t> markers;
-  static std::vector<Style_t> lstyles;
-  static std::vector<Size_t>  sizes;
-  static std::vector<Size_t>  lwidths;
-  std::vector<std::string>    options;
+  static Int_t palette;                   //!< Color Palette
+  static Bool_t inversion;                //!< Should palette be inverted?
+  static Bool_t inverted;                 //!< Is palette currently inverted?
+  static std::vector<Color_t> colors;     //!< Object colors
+  static std::vector<Style_t> markers;    //!< Object marker style
+  static std::vector<Style_t> lstyles;    //!< Object line style
+  static std::vector<Size_t>  sizes;      //!< Object marker size
+  static std::vector<Size_t>  lwidths;    //!< Object line width
+  std::vector<std::string>    options;    //!< Drawing options
 
-  TString titleX;
-  TString titleY;
+  TString titleX;                         //!< Title of X-axis
+  TString titleY;                         //!< Title of Y-axis
 
-  Float_t width {0};
-  Float_t height {0};
-  Float_t offsetX {0};
-  Float_t offsetY {0};
-  Float_t rightMargin {0};
-  Float_t leftMargin {0};
-  Float_t topMargin {0};
-  Float_t bottomMargin {0};
-  Bool_t  logX {kFALSE};
-  Bool_t  logY {kFALSE};
+  Float_t width {0};                      //!< Width of canvas
+  Float_t height {0};                     //!< Height of canvas
+  Float_t offsetX {0};                    //!< Offset of X title
+  Float_t offsetY {0};                    //!< Offset of Y title
+  Float_t rightMargin {0};                //!< Right margin of (main) pad
+  Float_t leftMargin {0};                 //!< Left margin of (main) pad
+  Float_t topMargin {0};                  //!< Top margin of (main) pad
+  Float_t bottomMargin {0};               //!< Bottom margin of (main) pad
+  Bool_t  logX {kFALSE};                  //!< Should X-axis be logarithmic?
+  Bool_t  logY {kFALSE};                  //!< Should Y-axis be logarithmic?
 
-  Float_t yRangeLow {0};
-  Float_t yRangeUp {100};
-  Float_t xRangeLow {0};
-  Float_t xRangeUp {100};
+  Float_t yRangeLow {0};                  //!< Lower Y-axis range
+  Float_t yRangeUp {100};                 //!< Upper Y-axis range
+  Float_t xRangeLow {0};                  //!< Lower X-axis range
+  Float_t xRangeUp {100};                 //!< Upper X-axis range
 
-  Bool_t  ranges {kFALSE};
-  Bool_t  broken {kFALSE};
+  Bool_t  ranges {kFALSE};                //!< Were ranges set manually?
+  Bool_t  broken {kFALSE};                //!< Did any fatal error occur?
 
-  static Bool_t  styles;
+  static Bool_t  styles;                  //!< Were styles set manually?
 
-  static Style_t font;
-  static Style_t label;
+  static Style_t font;                    //!< Font style
+  static Style_t label;                   //!< Label size
 
-  static Int_t   mOffset;
+  static Int_t   mOffset;                 //!< Offset for style array index
 
 };
 
@@ -117,6 +118,7 @@ Plot::Plot():
 {
 }
 
+//! Abstract constructor
 Plot::Plot(TString xTitle, TString yTitle):
   titleX(xTitle),
   titleY(yTitle)
@@ -178,7 +180,7 @@ void Plot::SetPadStyle(AO* first, TString xTitle, TString yTitle, Float_t xUp, F
 
 void Plot::SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
 
-  /* Set Style aspects of pad and canvas */
+  /** Set Style aspects of pad and canvas **/
 
   if (first->InheritsFrom("TH1")){
     if (!ranges) SetRangesAuto((TH1*)first);
@@ -497,7 +499,7 @@ void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
 void Plot::EnsureAxes(TObject* first, std::string arrayName){
 
-  /* Ensure that first object in array to be plotted has well defined axes */
+  /** Ensure that first object in array to be plotted has well defined axes **/
 
   if (!first) {
 

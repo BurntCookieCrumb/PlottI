@@ -45,7 +45,7 @@ void CleanUpHistogram(TH1* hist, Double_t factor){
 
   /** Sets bin contents of bins with too large uncertainties to zero. **/
   /** The function finds the first bin (from the left) where the errorbar exceeds
-      more than 100*factor percent of the range that is spanned by the histogram
+      more than 100*\p factor percent of the range that is spanned by the histogram
       values and sets the content of this and all following bins to zero**/
 
   if (!hist){

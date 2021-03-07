@@ -64,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -94,9 +94,22 @@ Settings for Canvasses</h1>
 <li>Setting the Ranges of the different axis</li>
 </ul>
 <p>Settings marked with * are static and will be used for all following canvasses (in your macro) as well until they are manually changed.</p>
+<h2><a class="anchor" id="opt"></a>
+Draw Options</h2>
+<p>The draw options for your plottable objects can be set in various ways via the SetOptions function:</p>
+<ul>
+<li>using only one single option (provided as a std::string) that will be used for all objects</li>
+<li>using a std::vector of std::strings to provide a different option for every object, similar to colors and markers (cf. section <a class="el" href="index.html#hSettings">Settings for Histograms</a>)</li>
+<li>using one std::strings containing options (divided by spaces) and one std::strings containing the positions for which the options will be applied (also divided by spaces). Optionally you can also provide an offset that will be added to each given position.</li>
+</ul>
+<p>If you only want to manipulate one option at a time, you can do so via the SetOption function:</p>
+<ul>
+<li>using one std::string containing one option and one std::string containing the position where this option should be applied.</li>
+</ul>
+<p>If you don't manually set any options the default option "SAME" will be used.</p>
 <h1><a class="anchor" id="hSettings"></a>
 Settings for Histograms</h1>
-<p>You can choose the style and colors of the plotted objects by either calling the Set&lt;Object&gt;Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed) by calling SetStyle. You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot. In the case that some of your style arrays are empty or don't contain enough elements, default settings for the markers and lines will be used: marker size and line width 2., line style 1 (straight line), marker style kFullCircle and marker color kBlack. It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC", using SetOptions.</p>
+<p>You can choose the style and colors of the plotted objects by either calling the Set&lt;Object&gt;Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed) by calling SetStyle. You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot. In the case that some of your style arrays are empty or don't contain enough elements, default settings for the markers and lines will be used: marker size and line width 2., line style 1 (straight line), marker style kFullCircle and marker color kBlack. It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC".</p>
 <h1><a class="anchor" id="legends"></a>
 Legends</h1>
 <p>The <a class="el" href="classLegend.html" title="Class for additional legend functionality, mainly additional constructors. ">Legend</a> class can be used to automatically create a legend from data or text. You have the following options</p>
@@ -188,7 +201,7 @@ Functionality</h1>
 <li>GetXlastFilledBin: Finds the first bin from the right with content &gt; 0, if all bins (except first) are empty last bin is returned</li>
 <li>CleanUpHistogram: Sets bin contents of bins with too large uncertainties to zero, for specifics please see documentation.</li>
 </ul>
-<h1><a class="anchor" id="Colors"></a>
+<h1><a class="anchor" id="colors"></a>
 Colors</h1>
 <p>Every seperately usable color (namely when you aren't using the palette option) is collected in the <a href="https://root.cern/doc/master/classTColorWheel.html">TColorWheel</a>. Since the colors are grouped by hue and each segment vary only in their brightness and intensity, I feel that you are supposed to (or at least try) to only use colors with the same modifier in one plot. I therefore rearranged the colors in a way, that you can see all the colors with the same modifier in a palette like way.</p>
 <div class="image">

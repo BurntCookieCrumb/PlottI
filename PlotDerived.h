@@ -23,7 +23,7 @@
 //                              SQUARE PLOT CLASS
 // ----------------------------------------------------------------------------
 
-//! Class for a simple square-format plot 
+//! Class for a simple square-format plot
 
 class SquarePlot : public Plot
 {
@@ -37,12 +37,13 @@ public:
 
 private:
 
-  TObjArray* plotArray;
+  TObjArray* plotArray;       //!< Array containing all objects to be plotted
 
 };
 
 // ---- Constructor -----------------------------------------------------------
 
+//! Constructor
 SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(xTitle, yTitle),
   plotArray(array)
 {
@@ -112,15 +113,16 @@ public:
 
 protected:
 
-  TObjArray* plotArray;
+  TObjArray* plotArray;      //!< Array containing all objects to be plotted
 
-  TLine*   one {nullptr};
-  Double_t oneUp {0};
+  TLine*   one {nullptr};    //!< Horizontal TLine which will be included to every ratio at height 1
+  Double_t oneUp {0};        //!< Upper bound on x-Range for TLine one
 
 };
 
 // ---- Constructor -----------------------------------------------------------
 
+//! Constructor
 RatioPlot::RatioPlot(TObjArray* rArray, TString xTitle, TString yTitle) : Plot(xTitle, yTitle),
   plotArray(rArray)
 {
@@ -185,7 +187,7 @@ void RatioPlot::DrawRatioArray(TObjArray* array, Int_t off, Int_t offOpt){
 
 void RatioPlot::SetUpperOneLimit(Double_t up){
 
-  /* Sets upper limit on line in ratio at value one */
+  /** Sets upper limit on line in ratio at value one **/
 
   oneUp = up;
 
@@ -214,17 +216,17 @@ public:
 
 private:
 
-  static Float_t padFrac;
+  static Float_t padFrac;        //!< Fraction of the Canvas used for the ratio pad
 
-  TPad* ratioPad {nullptr};
-  TString ratioTitle;
+  TPad* ratioPad {nullptr};      //!< Pad containing the ratio plot
+  TString ratioTitle;            //!< Title for Y-axis of Ratios
 
-  TObjArray* ratioArray;
+  TObjArray* ratioArray;         //!< Array containing all ratios to be plotted
 
-  Float_t rRangeUp {1.2};
-  Float_t rRangeLow {0.8};
+  Float_t rRangeUp {1.2};        //!< Upper Y-axis range of the ratio
+  Float_t rRangeLow {0.8};       //!< Lower Y-axis range of the ratio
 
-  static Int_t rOffset;
+  static Int_t rOffset;          //!< Offset for index of ratio objects in style arrays
 
 };
 
@@ -235,6 +237,7 @@ Int_t   SingleRatioPlot::rOffset  {1};
 
 // ---- Cunstructor -----------------------------------------------------------
 
+//! Constructor
 SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TString xTitle, TString yTitle, TString rTitle) : RatioPlot(mainArray, xTitle, yTitle),
   ratioTitle(rTitle),
   ratioArray(rArray)
@@ -379,20 +382,21 @@ private:
   void SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog = kFALSE);
 
 
-  TString titleZ {"count"};
+  TString titleZ {"count"};       //!< Title of Z-axis
 
-  Float_t offsetZ {0};
-  Bool_t  logZ {kFALSE};
-  Float_t zRangeUp {0};
-  Float_t zRangeLow {0};
+  Float_t offsetZ {0};            //!< Offset of Z title
+  Bool_t  logZ {kFALSE};          //!< Should Z-axis be logarithmic?
+  Float_t zRangeUp {0};           //!< Upper Z-axis range
+  Float_t zRangeLow {0};          //!< Lower Z-axis range
 
-  TH2 *heatmap {nullptr};
-  TLegend *legend {nullptr};
+  TH2 *heatmap {nullptr};         //!< TH2 from which the heatmap is drawn
+  TLegend *legend {nullptr};      //!< Legend corresponding to the heatmap
 
 };
 
 // ---- Cunstructor -----------------------------------------------------------
 
+//! Constructor
 HeatMapPlot::HeatMapPlot(TH2* map, TLegend* l, TString xTitle, TString yTitle, TString zTitle) : Plot(xTitle, yTitle),
 titleZ(zTitle),
 heatmap(map),
@@ -489,7 +493,6 @@ void HeatMapPlot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog){
 
   Plot::SetUpPad(pad, xLog, yLog);
 
-  // pad->SetTickz(1);
   if (zLog){
     if (zRangeLow > 0) pad->SetLogz(1);
     else std::cout << "\033[1;31mERROR in SetLog:\033[0m Z-Ranges must be above zero! Logarithm not set!!" << std::endl;

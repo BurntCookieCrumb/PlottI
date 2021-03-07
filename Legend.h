@@ -28,23 +28,25 @@ public:
   Legend(Legend* lgnd, std::string name="");
   ~Legend() {}
 
-        Legend* GetLegendPointer()       {return this;}
-  const Legend* GetLegendPointer() const {return this;}
+        Legend* GetLegendPointer()       {return this;}  //!< Return pointer to class object
+  const Legend* GetLegendPointer() const {return this;}  //!< Return pointer to class object
   static void SetPosition(TLegend* l, Float_t x1, Float_t x2, Float_t y1, Float_t y2);
   void SetPosition(Float_t x1, Float_t x2, Float_t y1, Float_t y2);
   void SetPositionAuto();
 
-  std::vector<TH1*> dummy;
+  std::vector<TH1*> dummy;   //!< Vector for holding dummy markers
 
 };
 
 // ---- Constructors ----------------------------------------------------------
 
+//! Default constructor
 Legend::Legend(): TLegend(),
   dummy(0)
 {
 }
 
+//! Generate legend from array
 Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string title, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   dummy(0)
 {
@@ -78,6 +80,7 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string 
 
 }
 
+//! Generate legend with dummy markers
 Legend::Legend(std::string obj, std::string entr, std::string opt, Int_t nEntries, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
 dummy(nEntries)
 {
@@ -117,6 +120,7 @@ dummy(nEntries)
 
 }
 
+//! Generate informative legend from string
 Legend::Legend(std::string entr, Int_t nEntries, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
 dummy(nEntries)
 {
@@ -136,6 +140,7 @@ dummy(nEntries)
 
 }
 
+//! Copy constructor using objects
 Legend::Legend(Legend& lgnd, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   dummy(0)
 {
@@ -147,6 +152,7 @@ Legend::Legend(Legend& lgnd, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   }
 }
 
+//! Copy constructor using pointers
 Legend::Legend(Legend* lgnd, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   dummy(0)
 {

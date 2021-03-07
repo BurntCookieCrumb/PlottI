@@ -22,6 +22,10 @@ var searchData=
   ['setrangesauto',['SetRangesAuto',['../classPlot.html#abbe7e9d4ed7fa717d174344517774501',1,'Plot']]],
   ['setstyle',['SetStyle',['../classPlot.html#a412b32fcbf4b34941a4149d40a2c20e2',1,'Plot']]],
   ['setuppad',['SetUpPad',['../classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0',1,'Plot']]],
-  ['singleratioplot',['SingleRatioPlot',['../classSingleRatioPlot.html',1,'']]],
-  ['squareplot',['SquarePlot',['../classSquarePlot.html',1,'']]]
+  ['setupperonelimit',['SetUpperOneLimit',['../classRatioPlot.html#a8b6a2f02718f5bf72b04e7950bc513a4',1,'RatioPlot']]],
+  ['setupstyle',['SetUpStyle',['../classPlot.html#a4ed44ad2dca0b5c1b959d7bdf02d2d05',1,'Plot']]],
+  ['singleratioplot',['SingleRatioPlot',['../classSingleRatioPlot.html',1,'SingleRatioPlot'],['../classSingleRatioPlot.html#a9dd7b323c474214027d3e72786061c15',1,'SingleRatioPlot::SingleRatioPlot()']]],
+  ['sizes',['sizes',['../classPlot.html#aee876a7fd4b7011c7eba63f8eec0e317',1,'Plot']]],
+  ['squareplot',['SquarePlot',['../classSquarePlot.html',1,'SquarePlot'],['../classSquarePlot.html#aeabb30885267fb0f0ff650835ae897f5',1,'SquarePlot::SquarePlot()']]],
+  ['styles',['styles',['../classPlot.html#ac22fdb638b612617f525ebb5d95ef39f',1,'Plot']]]
 ];

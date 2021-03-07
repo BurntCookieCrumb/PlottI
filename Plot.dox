@@ -1,5 +1,4 @@
 
-
  /*! \mainpage
 
  PlottI - Plotting Interface for easy plotting of your data.
@@ -23,12 +22,24 @@
 
  Settings marked with * are static and will be used for all following canvasses (in your macro) as well until they are manually changed.
 
+ \subsection opt Draw Options
+
+ The draw options for your plottable objects can be set in various ways via the SetOptions function:
+ - using only one single option (provided as a std::string) that will be used for all objects
+ - using a std::vector of std::strings to provide a different option for every object, similar to colors and markers (cf. section \ref hSettings)
+ - using one std::strings containing options (divided by spaces) and one std::strings containing the positions for which the options will be applied (also divided by spaces). Optionally you can also provide an offset that will be added to each given position.
+
+ If you only want to manipulate one option at a time, you can do so via the SetOption function:
+ - using one std::string containing one option and one std::string containing the position where this option should be applied.
+
+ If you don't manually set any options the default option "SAME" will be used.
+
  \section hSettings Settings for Histograms
 
  You can choose the style and colors of the plotted objects by either calling the Set<Object>Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed) by calling SetStyle.
  You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot.
  In the case that some of your style arrays are empty or don't contain enough elements, default settings for the markers and lines will be used: marker size and line width 2., line style 1 (straight line), marker style kFullCircle and marker color kBlack.
- It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC", using SetOptions.
+ It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC".
 
  \section legends Legends
 
@@ -125,7 +136,7 @@ Results:
   - GetXlastFilledBin: Finds the first bin from the right with content > 0, if all bins (except first) are empty last bin is returned
   - CleanUpHistogram: Sets bin contents of bins with too large uncertainties to zero, for specifics please see documentation.
 
-  \section Colors
+  \section colors Colors
 
   Every seperately usable color (namely when you aren't using the palette option) is collected in the
   <a href="https://root.cern/doc/master/classTColorWheel.html">TColorWheel</a>. Since the colors are grouped

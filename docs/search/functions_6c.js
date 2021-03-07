@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['legend',['Legend',['../classLegend.html#a700ae8f9a889d6faa77588b1e158dbf6',1,'Legend::Legend(Legend &amp;lgnd)'],['../classLegend.html#a56ee795e5a4a23b66e495315cfaad41d',1,'Legend::Legend(TLegend *lgnd)']]]
+  ['legend',['Legend',['../classLegend.html#a4e12dfafbdb4eaf9a00cd91bec043c56',1,'Legend::Legend()'],['../classLegend.html#ad04037ba6241d047da95f1fbc887a77d',1,'Legend::Legend(TObjArray *array, std::string entries, std::string opt, std::string title=&quot;&quot;, std::string name=&quot;&quot;)'],['../classLegend.html#ace6479035545a29347aa9875dc4f031a',1,'Legend::Legend(std::string obj, std::string entries, std::string opt, Int_t nEntries, std::string name=&quot;&quot;)'],['../classLegend.html#ac2c739ddbd298ea31d12b58fbc06be61',1,'Legend::Legend(std::string entries, Int_t nEntries, std::string name=&quot;&quot;)'],['../classLegend.html#aade1d31c89b8198eeba45e613fbf3a74',1,'Legend::Legend(Legend &amp;lgnd, std::string name=&quot;&quot;)'],['../classLegend.html#a3a8f3b92662e183ccb462bef75a35939',1,'Legend::Legend(Legend *lgnd, std::string name=&quot;&quot;)']]]
 ];
