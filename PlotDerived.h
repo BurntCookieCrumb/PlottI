@@ -364,7 +364,7 @@ class HeatMapPlot : public Plot
 {
 
 public:
-  HeatMapPlot(TH2* map, TLegend* l, TString xTitle, TString yTitle, TString zTitle = "count");
+  HeatMapPlot(TH2* map, TPave* l, TString xTitle, TString yTitle, TString zTitle = "count");
   ~HeatMapPlot() {};
 
   void Draw(TString outname);
@@ -390,14 +390,14 @@ private:
   Float_t zRangeLow {0};          //!< Lower Z-axis range
 
   TH2 *heatmap {nullptr};         //!< TH2 from which the heatmap is drawn
-  TLegend *legend {nullptr};      //!< Legend corresponding to the heatmap
+  TPave *legend {nullptr};      //!< Legend corresponding to the heatmap
 
 };
 
 // ---- Cunstructor -----------------------------------------------------------
 
 //! Constructor
-HeatMapPlot::HeatMapPlot(TH2* map, TLegend* l, TString xTitle, TString yTitle, TString zTitle) : Plot(xTitle, yTitle),
+HeatMapPlot::HeatMapPlot(TH2* map, TPave* l, TString xTitle, TString yTitle, TString zTitle) : Plot(xTitle, yTitle),
 titleZ(zTitle),
 heatmap(map),
 legend(l)

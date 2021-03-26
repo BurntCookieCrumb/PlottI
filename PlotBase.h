@@ -226,7 +226,7 @@ void Plot::SetPlottjectProperties(PO* pobj, Color_t color, Style_t mstyle, Size_
 
   /** Set style properties of plottable objects **/
 
-  pobj->SetTitle(title.data());
+  if (!title.empty()) pobj->SetTitle(title.data());
   SetMarkerProperties(pobj, color, mstyle, msize);
   SetLineProperties(pobj, color, lstyle, lwid);
 
@@ -274,6 +274,9 @@ void Plot::SetProperties(TObject* obj, Int_t index){
   }
   else if (obj->InheritsFrom("TLine")){
     SetLineProperties((TLine*)obj, color, lstyle, lwidth);
+  }
+  else if (obj->InheritsFrom("TMarker")){
+    SetMarkerProperties((TMarker*)obj, color, marker, size);
   }
   else{
     std::cout << "\033[1;34mMissing Class \033[0m" << obj->ClassName() << std::endl;
@@ -367,7 +370,7 @@ void Plot::SetMode(Mode m){
 
     case Presentation:
       font = 43; //43
-      label = 40;//37;
+      label = 37;//40;
       break;
 
     case Thesis:
@@ -472,6 +475,7 @@ void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
 
   /** Sets up a Pad for Plotting **/
 
+  gStyle->SetOptTitle(0);
   gStyle->SetPalette(palette);
   if ((inversion && !inverted) || (!inversion && inverted)){
      TColor::InvertPalette();

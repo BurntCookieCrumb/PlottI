@@ -151,11 +151,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a412b32fcbf4b34941a4149d40a2c20e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96ebdce4b8f30ae6f52474753c6f2955"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a96ebdce4b8f30ae6f52474753c6f2955">SetPalette</a> (Int_t pal, Bool_t invert=kFALSE)</td></tr>
 <tr class="separator:a96ebdce4b8f30ae6f52474753c6f2955"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
+<tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
 <tr class="separator:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
+<tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
 <tr class="separator:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0497d3867a17e84aec2450f27c84bdb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0497d3867a17e84aec2450f27c84bdb0">SetOptions</a> (std::string optns, std::string postns, Int_t off=0)</td></tr>
+<tr class="memitem:a0497d3867a17e84aec2450f27c84bdb0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0497d3867a17e84aec2450f27c84bdb0">SetOptions</a> (std::string optns, std::string postns, Int_t off=0)</td></tr>
 <tr class="separator:a0497d3867a17e84aec2450f27c84bdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ee45f899bf0cdb8aabd50b5603ceb50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a3ee45f899bf0cdb8aabd50b5603ceb50">SetOption</a> (std::string opt, Int_t pos)</td></tr>
 <tr class="separator:a3ee45f899bf0cdb8aabd50b5603ceb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -744,6 +744,9 @@ template&lt;class PO &gt; </div>
 <a class="anchor" id="a8b7719901b0d78ce0d853f2ac6cad6c1"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Plot::SetOptions </td>
@@ -753,6 +756,11 @@ template&lt;class PO &gt; </div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Set one plot option for all plottjects </p>
 
@@ -761,6 +769,9 @@ template&lt;class PO &gt; </div>
 <a class="anchor" id="a77f94e7ca514c4b63c0ca91ef1321948"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Plot::SetOptions </td>
@@ -770,6 +781,11 @@ template&lt;class PO &gt; </div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Set the plot options for the plottjects, mind that any legend or pave object must also be included </p>
 
@@ -778,6 +794,9 @@ template&lt;class PO &gt; </div>
 <a class="anchor" id="a0497d3867a17e84aec2450f27c84bdb0"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Plot::SetOptions </td>
@@ -803,6 +822,11 @@ template&lt;class PO &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Set the plot options <code>optns</code> for a few specific plottjects at positions <code>postns</code>, <code>off</code> will be an offset added to all individual positions; mind that any legend or pave object is also included in the options </p>
 
