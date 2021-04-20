@@ -21,7 +21,7 @@ class Legend : public TLegend
 public:
 
   Legend();
-  Legend(TObjArray* array, std::string entries, std::string opt, std::string title="", std::string name="");
+  Legend(TObjArray* array, std::string entries, std::string opt, std::string title="", Int_t nEntries = 0, std::string name="");
   Legend(std::string obj, std::string entries, std::string opt, Int_t nEntries, std::string name="");
   Legend(std::string entries, Int_t nEntries, std::string name="");
   Legend(Legend& lgnd, std::string name="");
@@ -47,7 +47,7 @@ Legend::Legend(): TLegend(),
 }
 
 //! Generate legend from array
-Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string title, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
+Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string title, Int_t nEntries, std::string name): TLegend(0.1, 0.7, 0.3, 0.9),
   dummy(0)
 {
 
@@ -74,6 +74,9 @@ Legend::Legend(TObjArray* array, std::string entr, std::string opt, std::string 
     entryName->ReadLine(entries);
 
     AddEntry(obj, entryName->Data(), option->Data());
+
+    if (array->IndexOf(obj) ==  nEntries-1) break;
+
   }
 
   array->Add(this);

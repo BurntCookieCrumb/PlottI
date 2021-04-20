@@ -41,7 +41,7 @@ void exPlottI(){
 
   // --- Legends ---------------------------------------------------------------
 
-  Legend* l = new Legend(main, "Black Histo\n White Histo\n", "lp lp", "", "l");
+  Legend* l = new Legend(main, "Black Histo\n White Histo\n", "lp lp", "", 2,"l");
   Legend* ll = new Legend(l, "ll"); // copy first legend so that we can place it seperately
 
   TString info = TString("Black and White Histogram\n");
