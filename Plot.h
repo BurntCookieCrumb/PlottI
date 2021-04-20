@@ -24,6 +24,7 @@
 #include "TStyle.h"
 #include "TH2.h"
 #include "TF1.h"
+#include "TMarker.h"
 #include "TRandom.h"
 #include "TImage.h"
 #include "TTimeStamp.h"
