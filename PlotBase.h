@@ -538,7 +538,8 @@ void Plot::DrawArray(TObjArray* array, Int_t off, Int_t offOpt){
       continue;
     }
 
-    if (array->At(plot)->InheritsFrom("TGraph") || array->At(plot)->InheritsFrom("TF1")) opt = TString(options[plot+offOpt]).ReplaceAll("SAME","").Data();
+    if ((plot == 0) && array->At(plot)->InheritsFrom("TF1")) opt = TString(options[plot+offOpt]).ReplaceAll("SAME","").Data();
+    else if (array->At(plot)->InheritsFrom("TGraph")) opt = TString(options[plot+offOpt]).ReplaceAll("SAME","").Data();
     else opt = options[plot+offOpt].data();
 
     std::cout << " -> Draw " << array->At(plot)->ClassName() << ": "
