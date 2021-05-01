@@ -37,9 +37,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="example.html"><span>Examples</span></a></li>
+      <li><a href="colorpage.html"><span>Colors</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="todo.html"><span>TODO</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -111,7 +113,10 @@ Inheritance diagram for Plot:</div>
 <area href="classSingleRatioPlot.html" title="Class for a rectangle plot with the distributions in the upper pad and the ratios in the lower pad..." alt="SingleRatioPlot" shape="rect" coords="106,112,202,136"/>
 </map>
  </div></div>
-<table class="memberdecls">
+<a name="details" id="details"></a><h2 class="groupheader">Specifications</h2>
+<div class="textblock"><p>Base class for all plotting functionality. </p>
+<p>This class contains all functions necessary for basic plotting functionality. This way very little additional programming is necessary for derived classes. This class is meant to be purely a base for implementing the derived classes and should not be instanced itself. </p>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:aa59a3e9e356ecc72403f4df1f480ce24"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#aa59a3e9e356ecc72403f4df1f480ce24">Mode</a> : unsigned int { <a class="el" href="classPlot.html#aa59a3e9e356ecc72403f4df1f480ce24a22e1582409f94cc99f55a34ab7e321ad">Presentation</a>, 
@@ -151,9 +156,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a412b32fcbf4b34941a4149d40a2c20e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96ebdce4b8f30ae6f52474753c6f2955"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a96ebdce4b8f30ae6f52474753c6f2955">SetPalette</a> (Int_t pal, Bool_t invert=kFALSE)</td></tr>
 <tr class="separator:a96ebdce4b8f30ae6f52474753c6f2955"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
+<tr class="memitem:a84fa9e376c9b6227cd4d2e920ace0d98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a84fa9e376c9b6227cd4d2e920ace0d98">SetPalette</a> (<a class="el" href="classColorGradient.html">ColorGradient</a> &amp;pal, Bool_t invert=kFALSE)</td></tr>
+<tr class="separator:a84fa9e376c9b6227cd4d2e920ace0d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
 <tr class="separator:a8b7719901b0d78ce0d853f2ac6cad6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
+<tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
 <tr class="separator:a77f94e7ca514c4b63c0ca91ef1321948"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0497d3867a17e84aec2450f27c84bdb0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0497d3867a17e84aec2450f27c84bdb0">SetOptions</a> (std::string optns, std::string postns, Int_t off=0)</td></tr>
 <tr class="separator:a0497d3867a17e84aec2450f27c84bdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,13 +170,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac257dabd63abbb370968b42dd1210c05"><td class="memTemplParams" colspan="2">template&lt;class PO &gt; </td></tr>
-<tr class="memitem:ac257dabd63abbb370968b42dd1210c05"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#ac257dabd63abbb370968b42dd1210c05">SetLineProperties</a> (PO *pobj, Color_t color, Style_t lstyle, Size_t lwid=2.)</td></tr>
+<tr class="memitem:ac257dabd63abbb370968b42dd1210c05"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#ac257dabd63abbb370968b42dd1210c05">SetLineProperties</a> (PO *pobj, Color_t <a class="el" href="structcolor.html">color</a>, Style_t lstyle, Size_t lwid=2.)</td></tr>
 <tr class="separator:ac257dabd63abbb370968b42dd1210c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af026672521d2083282a15e2992008e08"><td class="memTemplParams" colspan="2">template&lt;class PO &gt; </td></tr>
-<tr class="memitem:af026672521d2083282a15e2992008e08"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#af026672521d2083282a15e2992008e08">SetMarkerProperties</a> (PO *pobj, Color_t color, Style_t mstyle, Size_t msize=3.)</td></tr>
+<tr class="memitem:af026672521d2083282a15e2992008e08"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#af026672521d2083282a15e2992008e08">SetMarkerProperties</a> (PO *pobj, Color_t <a class="el" href="structcolor.html">color</a>, Style_t mstyle, Size_t msize=3.)</td></tr>
 <tr class="separator:af026672521d2083282a15e2992008e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9"><td class="memTemplParams" colspan="2">template&lt;class PO &gt; </td></tr>
-<tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#a5dd32ef2d7586ef1155db055df9632d9">SetPlottjectProperties</a> (PO *pobj, Color_t color, Style_t mstyle, Size_t msize=3., Style_t lstyle=1, Size_t lwid=2., std::string title=&quot;&quot;)</td></tr>
+<tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#a5dd32ef2d7586ef1155db055df9632d9">SetPlottjectProperties</a> (PO *pobj, Color_t <a class="el" href="structcolor.html">color</a>, Style_t mstyle, Size_t msize=3., Style_t lstyle=1, Size_t lwid=2., std::string title=&quot;&quot;)</td></tr>
 <tr class="separator:a5dd32ef2d7586ef1155db055df9632d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
@@ -293,6 +300,10 @@ static Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 static Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0fb7a83504c406261cd01218070ec6c6">inverted</a> {kFALSE}</td></tr>
 <tr class="memdesc:a0fb7a83504c406261cd01218070ec6c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is palette currently inverted? <br/></td></tr>
 <tr class="separator:a0fb7a83504c406261cd01218070ec6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14932287c8c64eef2f105126f31536d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14932287c8c64eef2f105126f31536d2"></a>
+static std::vector&lt; Int_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a14932287c8c64eef2f105126f31536d2">palColors</a></td></tr>
+<tr class="memdesc:a14932287c8c64eef2f105126f31536d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color vector of personalised palette. <br/></td></tr>
+<tr class="separator:a14932287c8c64eef2f105126f31536d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e446a562f18d4cd1eb3c601bc7d392"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5e446a562f18d4cd1eb3c601bc7d392"></a>
 static std::vector&lt; Color_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#aa5e446a562f18d4cd1eb3c601bc7d392">colors</a></td></tr>
 <tr class="memdesc:aa5e446a562f18d4cd1eb3c601bc7d392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object colors. <br/></td></tr>
@@ -330,9 +341,7 @@ static Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:a2cbc79867ba1630b0615c1cfb7b97b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset for style array index. <br/></td></tr>
 <tr class="separator:a2cbc79867ba1630b0615c1cfb7b97b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Base class for all plotting functionality. </p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="aa59a3e9e356ecc72403f4df1f480ce24"></a>
 <div class="memitem">
 <div class="memproto">
@@ -744,9 +753,6 @@ template&lt;class PO &gt; </div>
 <a class="anchor" id="a8b7719901b0d78ce0d853f2ac6cad6c1"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Plot::SetOptions </td>
@@ -756,11 +762,6 @@ template&lt;class PO &gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Set one plot option for all plottjects </p>
 
@@ -769,9 +770,6 @@ template&lt;class PO &gt; </div>
 <a class="anchor" id="a77f94e7ca514c4b63c0ca91ef1321948"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Plot::SetOptions </td>
@@ -781,11 +779,6 @@ template&lt;class PO &gt; </div>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Set the plot options for the plottjects, mind that any legend or pave object must also be included </p>
 
@@ -907,6 +900,33 @@ template&lt;class AO &gt; </div>
           <td class="memname">void Plot::SetPalette </td>
           <td>(</td>
           <td class="paramtype">Int_t&#160;</td>
+          <td class="paramname"><em>pal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Bool_t&#160;</td>
+          <td class="paramname"><em>invert</em> = <code>kFALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the palette that will be used for the plots </p>
+
+</div>
+</div>
+<a class="anchor" id="a84fa9e376c9b6227cd4d2e920ace0d98"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Plot::SetPalette </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classColorGradient.html">ColorGradient</a> &amp;&#160;</td>
           <td class="paramname"><em>pal</em>, </td>
         </tr>
         <tr>
@@ -1083,7 +1103,7 @@ template&lt;class AO &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Automatically determine good ranges</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>{Test for TF1 and TGraph} </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Test for TF1 and TGraph </dd></dl>
 
 </div>
 </div>

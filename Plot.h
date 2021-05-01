@@ -1,8 +1,8 @@
-// ~~ PlotTING CLASS ~~
+// ~~ PlotTING  ~~
 
 // ----------------------------------------------------------------------------
 //
-// Class for basic Plotting functionality
+// Header including all functional and plotting headers
 //
 // ----------------------------------------------------------------------------
 
@@ -35,6 +35,10 @@
 #include <iostream>
 #include <vector>
 #include <typeinfo>
+
+#ifndef COLOR_H
+  #include "Color.h"
+#endif
 
 #ifndef FUNC_H
   #include "functionality.h"

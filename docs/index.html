@@ -37,9 +37,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="example.html"><span>Examples</span></a></li>
+      <li><a href="colorpage.html"><span>Colors</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="todo.html"><span>TODO</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -78,6 +80,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">PlottI Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#Canvasses">Canvasses</a></li>
+<li class="level1"><a href="#cSettings">Settings for Canvasses</a><ul><li class="level2"><a href="#opt">Draw Options</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#hSettings">Settings for Histograms</a></li>
+<li class="level1"><a href="#draw">The Draw() Function</a></li>
+<li class="level1"><a href="#legends">Legends</a></li>
+<li class="level1"><a href="#cols">Colors</a></li>
+<li class="level1"><a href="#Additional">Functionality</a></li>
+</ul>
+</div>
 <div class="textblock"><p>PlottI - Plotting Interface for easy plotting of your data.</p>
 <h1><a class="anchor" id="Canvasses"></a>
 Canvasses</h1>
@@ -110,6 +124,10 @@ Draw Options</h2>
 <h1><a class="anchor" id="hSettings"></a>
 Settings for Histograms</h1>
 <p>You can choose the style and colors of the plotted objects by either calling the Set&lt;Object&gt;Properties method on each histogram beforehand or set arrays containing these settings that will be used for all plots (until they are changed) by calling SetStyle. You can set an offset for the ratio markers, meaning for offset = 2 the first ratio marker will have the properties defined by the third array entry. The default offset is one, assuming that the ratio is to the first histogram in the array then the colors will correspond to those used in the main plot. In the case that some of your style arrays are empty or don't contain enough elements, default settings for the markers and lines will be used: marker size and line width 2., line style 1 (straight line), marker style kFullCircle and marker color kBlack. It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC".</p>
+<h1><a class="anchor" id="draw"></a>
+The Draw() Function</h1>
+<p>Once the canvas is created with the corresponding constructor and you applied all your settings you can finalise your plot by calling the Draw() function of the class you are using. <br/>
+ This function will save the final plot, but it will also delete the canvas from the program so it is not possible to access it after the Draw() option has been called.</p>
 <h1><a class="anchor" id="legends"></a>
 Legends</h1>
 <p>The <a class="el" href="classLegend.html" title="Class for additional legend functionality, mainly additional constructors. ">Legend</a> class can be used to automatically create a legend from data or text. You have the following options</p>
@@ -132,87 +150,27 @@ Legends</h1>
 <li>the number of entries</li>
 </ul>
 </li>
-<li>Copy an already existing legend</li>
-</ul>
+<li><p class="startli">Copy an already existing legend</p>
 <dl class="section remark"><dt>Remarks</dt><dd>Unfortunately it is not possible for the second option to use the corresponding enumerators like kBlack for the colors and such, but the actual number has to be used. It is however possible to use functions like Format to print the value of kBlack into a string and then use this string.</dd></dl>
-<h1><a class="anchor" id="example"></a>
-Example Code</h1>
-<p>The following example will demonstrate the basic syntax of the interface. Assume you have two histograms called black and white and a ratio called grey. </p>
-<pre class="fragment">    TH1D* black = new TH1D("black", "", 100, -3, 3);
-    black-&gt;Sumw2();
-    black-&gt;FillRandom("gaus", 10000);
-
-    TH1D* white = new TH1D("white", "", 100, -3, 3);
-    white-&gt;Sumw2();
-    white-&gt;FillRandom("gaus", 10000);
-
-    TH1D* grey = (TH1D*)black-&gt;Clone("grey");
-    grey-&gt;Divide(white);
-</pre><p>First create two object arrays for the main plot and the ratio. </p>
-<pre class="fragment">     TObjArray* main = new TObjArray();
-     main-&gt;Add(black);
-     main-&gt;Add(white);
-
-     TObjArray* ratio = new TObjArray();
-     ratio-&gt;Add(grey);
-</pre><p>Now we generate legends for this plot: </p>
-<pre class="fragment">     Legend* l = new Legend(main, "Black Histo\n White Histo\n", "lp lp", "", "l");
-     Legend* ll = new Legend(l, "ll"); //Copy first legend so that we can place it seperately
-
-     TString info = TString("Black and White Histogram\n");
-     info.Append("Example\n");
-     TLegend* lInfo =  new Legend(info.Data(), 2);
-     main-&gt;Add(lInfo);
-</pre><p>Then we define marker colors and styles. The ones for the ratios will be added after the ones for the main pad. </p>
-<pre class="fragment">     vector&lt;Color_t&gt; colors = {kBlack, kBlack, kBlack+3};
-     vector&lt;Style_t&gt; markers = {kFullCircle, kOpenCircle, kFullCircle};
-     vector&lt;Size_t&gt;  sizes = {2., 2., 2.};
-</pre><p>Adjusting the legend position: </p>
-<pre class="fragment">     Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75); // static function
-     Legend::SetPosition(l, 0.43, 0.6, 0.2, 0.32);
-     ll-&gt;SetPosition(0.43, 0.6, 0.05, 0.22); // non-static function
-</pre><p>And finally create the Canvasses: </p>
-<pre class="fragment">     SquarePlot square = SquarePlot(main, "x", "count");
-     square.SetStyle(colors, markers, sizes);
-     square.SetMode(Plot::Presentation);
-     square.SetRanges(3, -3, 400, 0);
-     square.Draw(TString("Square.pdf"));
-
-     main-&gt;AddBefore(lInfo, ll); // replace l in main with ll
-
-     SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
-     rat.SetOffset(2); // determines where the ratio entries start in the style arrays
-     rat.SetRanges(3, -3, 400, -10, 3.2, 0.5);
-     rat.Draw(TString("Ratio.pdf"));
-</pre><p>Results:</p>
-<div class="image">
-<img src="Square.png" alt="Square.png"/>
-<div class="caption">
-Square Plot</div></div>
- <div class="image">
-<img src="Ratio.png" alt="Ratio.png"/>
-<div class="caption">
-Ratio Plot</div></div>
+</li>
+</ul>
+<h1><a class="anchor" id="cols"></a>
+Colors</h1>
+<p>This interface provides two functionalities for using personalised colors in your plots:</p>
+<ol type="1">
+<li>The structure <a class="el" href="structcolor.html">color</a> can be used to define colors from RGB values. It includes an automatically generated ROOT color index.</li>
+<li>The class <a class="el" href="classColorGradient.html">ColorGradient</a> can be used to generate a palette (color gradient) from <a class="el" href="structcolor.html">color</a> endpoints, defined using the above mentioned structure.</li>
+</ol>
+<p>For more information on colors and predefined colors and palettes see page <a class="el" href="colorpage.html">Colors</a>.</p>
 <h1><a class="anchor" id="Additional"></a>
 Functionality</h1>
 <p>The following additional functionalities are currently available (in the file <a class="el" href="functionality_8h.html">functionality.h</a>):</p>
 <ul>
 <li>GetXfirstFilledBin: Finds the first bin from the left with content &gt; 0, if all bins (except last) are empty 0 is returned</li>
 <li>GetXlastFilledBin: Finds the first bin from the right with content &gt; 0, if all bins (except first) are empty last bin is returned</li>
-<li>CleanUpHistogram: Sets bin contents of bins with too large uncertainties to zero, for specifics please see documentation.</li>
+<li>CleanUpHistogram: Sets bin contents of bins with too large uncertainties to zero, for specifics please see documentation. </li>
 </ul>
-<h1><a class="anchor" id="colors"></a>
-Colors</h1>
-<p>Every seperately usable color (namely when you aren't using the palette option) is collected in the <a href="https://root.cern/doc/master/classTColorWheel.html">TColorWheel</a>. Since the colors are grouped by hue and each segment vary only in their brightness and intensity, I feel that you are supposed to (or at least try) to only use colors with the same modifier in one plot. I therefore rearranged the colors in a way, that you can see all the colors with the same modifier in a palette like way.</p>
-<div class="image">
-<img src="mix.png" alt="mix.png"/>
-<div class="caption">
-Mixed Colors</div></div>
- <div class="image">
-<img src="bas.png" alt="bas.png"/>
-<div class="caption">
-Base Colors</div></div>
- </div></div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

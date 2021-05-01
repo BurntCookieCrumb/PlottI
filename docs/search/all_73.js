@@ -13,7 +13,7 @@ var searchData=
   ['setoptions',['SetOptions',['../classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1',1,'Plot::SetOptions(TString opt)'],['../classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948',1,'Plot::SetOptions(std::vector&lt; std::string &gt; optns)'],['../classPlot.html#a0497d3867a17e84aec2450f27c84bdb0',1,'Plot::SetOptions(std::string optns, std::string postns, Int_t off=0)'],['../classSingleRatioPlot.html#aa9e543c5323cbd0960b769853e2f98bf',1,'SingleRatioPlot::SetOptions()']]],
   ['setpadfraction',['SetPadFraction',['../classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0',1,'SingleRatioPlot']]],
   ['setpadstyle',['SetPadStyle',['../classPlot.html#abac8312f106162b6a6d042810476151d',1,'Plot']]],
-  ['setpalette',['SetPalette',['../classPlot.html#a96ebdce4b8f30ae6f52474753c6f2955',1,'Plot']]],
+  ['setpalette',['SetPalette',['../classPlot.html#a96ebdce4b8f30ae6f52474753c6f2955',1,'Plot::SetPalette(Int_t pal, Bool_t invert=kFALSE)'],['../classPlot.html#a84fa9e376c9b6227cd4d2e920ace0d98',1,'Plot::SetPalette(ColorGradient &amp;pal, Bool_t invert=kFALSE)']]],
   ['setplottjectproperties',['SetPlottjectProperties',['../classPlot.html#a5dd32ef2d7586ef1155db055df9632d9',1,'Plot']]],
   ['setposition',['SetPosition',['../classLegend.html#aafea9fa7a8b2f0c511ad9be46d38fed1',1,'Legend::SetPosition(TLegend *l, Float_t x1, Float_t x2, Float_t y1, Float_t y2)'],['../classLegend.html#a11170691d743bfd43ee43d218311786c',1,'Legend::SetPosition(Float_t x1, Float_t x2, Float_t y1, Float_t y2)']]],
   ['setpositionauto',['SetPositionAuto',['../classLegend.html#a648638d18d5190c2b24e73c0f78f70c7',1,'Legend']]],

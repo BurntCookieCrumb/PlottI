@@ -195,7 +195,7 @@ void Legend::SetPositionAuto(){
 
   /** Determine automatic placement of Legend based on position strings **/
 
-  /** \todo{Get it to work}**/
+  /** \todo Get it to work**/
 
 
 }

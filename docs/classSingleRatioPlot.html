@@ -37,9 +37,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="example.html"><span>Examples</span></a></li>
+      <li><a href="colorpage.html"><span>Colors</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="todo.html"><span>TODO</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -104,7 +106,19 @@ Inheritance diagram for SingleRatioPlot:</div>
 <area href="classPlot.html" title="Base class for all plotting functionality. " alt="Plot" shape="rect" coords="0,0,96,24"/>
 </map>
  </div></div>
-<table class="memberdecls">
+<a name="details" id="details"></a><h2 class="groupheader">Specifications</h2>
+<div class="textblock"><p>Class for a rectangle plot with the distributions in the upper pad and the ratios in the lower pad. </p>
+<div class="image">
+<img src="Ratio.png" alt="Ratio.png"/>
+<div class="caption">
+Example of a SingleRatioPlot</div></div>
+<p>Default measures:</p>
+<ul>
+<li>Canvas <code>dimensions:</code> <b>width</b> = 1000, <b>height</b> = 1200</li>
+<li>Canvas <code>margins:</code> <b>right</b> = 0.07, <b>left</b> = 0.15, <b>top</b> = 0.07, <b>bottom</b> = 0.4</li>
+<li>Canvas <code>offsets:</code> <b>x-Axis</b> = 4.5, <b>y-Axis</b> = 1.7 </li>
+</ul>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9dd7b323c474214027d3e72786061c15"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dd7b323c474214027d3e72786061c15"></a>
@@ -161,9 +175,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a412b32fcbf4b34941a4149d40a2c20e2 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96ebdce4b8f30ae6f52474753c6f2955 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a96ebdce4b8f30ae6f52474753c6f2955">SetPalette</a> (Int_t pal, Bool_t invert=kFALSE)</td></tr>
 <tr class="separator:a96ebdce4b8f30ae6f52474753c6f2955 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
+<tr class="memitem:a84fa9e376c9b6227cd4d2e920ace0d98 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a84fa9e376c9b6227cd4d2e920ace0d98">SetPalette</a> (<a class="el" href="classColorGradient.html">ColorGradient</a> &amp;pal, Bool_t invert=kFALSE)</td></tr>
+<tr class="separator:a84fa9e376c9b6227cd4d2e920ace0d98 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b7719901b0d78ce0d853f2ac6cad6c1 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">SetOptions</a> (TString opt)</td></tr>
 <tr class="separator:a8b7719901b0d78ce0d853f2ac6cad6c1 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
+<tr class="memitem:a77f94e7ca514c4b63c0ca91ef1321948 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a77f94e7ca514c4b63c0ca91ef1321948">SetOptions</a> (std::vector&lt; std::string &gt; optns)</td></tr>
 <tr class="separator:a77f94e7ca514c4b63c0ca91ef1321948 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0497d3867a17e84aec2450f27c84bdb0 inherit pub_methods_classPlot"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0497d3867a17e84aec2450f27c84bdb0">SetOptions</a> (std::string optns, std::string postns, Int_t off=0)</td></tr>
 <tr class="separator:a0497d3867a17e84aec2450f27c84bdb0 inherit pub_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,13 +197,13 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:aa59a3e9e356ecc72403f4df1f480ce24 inherit pub_types_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classPlot"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classPlot')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classPlot.html">Plot</a></td></tr>
 <tr class="memitem:ac257dabd63abbb370968b42dd1210c05 inherit pub_static_methods_classPlot"><td class="memTemplParams" colspan="2">template&lt;class PO &gt; </td></tr>
-<tr class="memitem:ac257dabd63abbb370968b42dd1210c05 inherit pub_static_methods_classPlot"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#ac257dabd63abbb370968b42dd1210c05">SetLineProperties</a> (PO *pobj, Color_t color, Style_t lstyle, Size_t lwid=2.)</td></tr>
+<tr class="memitem:ac257dabd63abbb370968b42dd1210c05 inherit pub_static_methods_classPlot"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#ac257dabd63abbb370968b42dd1210c05">SetLineProperties</a> (PO *pobj, Color_t <a class="el" href="structcolor.html">color</a>, Style_t lstyle, Size_t lwid=2.)</td></tr>
 <tr class="separator:ac257dabd63abbb370968b42dd1210c05 inherit pub_static_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af026672521d2083282a15e2992008e08 inherit pub_static_methods_classPlot"><td class="memTemplParams" colspan="2">template&lt;class PO &gt; </td></tr>
-<tr class="memitem:af026672521d2083282a15e2992008e08 inherit pub_static_methods_classPlot"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#af026672521d2083282a15e2992008e08">SetMarkerProperties</a> (PO *pobj, Color_t color, Style_t mstyle, Size_t msize=3.)</td></tr>
+<tr class="memitem:af026672521d2083282a15e2992008e08 inherit pub_static_methods_classPlot"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#af026672521d2083282a15e2992008e08">SetMarkerProperties</a> (PO *pobj, Color_t <a class="el" href="structcolor.html">color</a>, Style_t mstyle, Size_t msize=3.)</td></tr>
 <tr class="separator:af026672521d2083282a15e2992008e08 inherit pub_static_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9 inherit pub_static_methods_classPlot"><td class="memTemplParams" colspan="2">template&lt;class PO &gt; </td></tr>
-<tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9 inherit pub_static_methods_classPlot"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#a5dd32ef2d7586ef1155db055df9632d9">SetPlottjectProperties</a> (PO *pobj, Color_t color, Style_t mstyle, Size_t msize=3., Style_t lstyle=1, Size_t lwid=2., std::string title=&quot;&quot;)</td></tr>
+<tr class="memitem:a5dd32ef2d7586ef1155db055df9632d9 inherit pub_static_methods_classPlot"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classPlot.html#a5dd32ef2d7586ef1155db055df9632d9">SetPlottjectProperties</a> (PO *pobj, Color_t <a class="el" href="structcolor.html">color</a>, Style_t mstyle, Size_t msize=3., Style_t lstyle=1, Size_t lwid=2., std::string title=&quot;&quot;)</td></tr>
 <tr class="separator:a5dd32ef2d7586ef1155db055df9632d9 inherit pub_static_methods_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classPlot"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classPlot')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classPlot.html">Plot</a></td></tr>
 <tr class="memitem:a0277029b00ab5067172b03a5bb18c2c3 inherit pro_methods_classPlot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0277029b00ab5067172b03a5bb18c2c3">EnsureAxes</a> (TObject *first, std::string arrayName=&quot;&quot;)</td></tr>
@@ -318,6 +334,10 @@ static Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 static Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a0fb7a83504c406261cd01218070ec6c6">inverted</a> {kFALSE}</td></tr>
 <tr class="memdesc:a0fb7a83504c406261cd01218070ec6c6 inherit pro_static_attribs_classPlot"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is palette currently inverted? <br/></td></tr>
 <tr class="separator:a0fb7a83504c406261cd01218070ec6c6 inherit pro_static_attribs_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14932287c8c64eef2f105126f31536d2 inherit pro_static_attribs_classPlot"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14932287c8c64eef2f105126f31536d2"></a>
+static std::vector&lt; Int_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#a14932287c8c64eef2f105126f31536d2">palColors</a></td></tr>
+<tr class="memdesc:a14932287c8c64eef2f105126f31536d2 inherit pro_static_attribs_classPlot"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color vector of personalised palette. <br/></td></tr>
+<tr class="separator:a14932287c8c64eef2f105126f31536d2 inherit pro_static_attribs_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e446a562f18d4cd1eb3c601bc7d392 inherit pro_static_attribs_classPlot"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5e446a562f18d4cd1eb3c601bc7d392"></a>
 static std::vector&lt; Color_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlot.html#aa5e446a562f18d4cd1eb3c601bc7d392">colors</a></td></tr>
 <tr class="memdesc:aa5e446a562f18d4cd1eb3c601bc7d392 inherit pro_static_attribs_classPlot"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object colors. <br/></td></tr>
@@ -355,9 +375,7 @@ static Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:a2cbc79867ba1630b0615c1cfb7b97b59 inherit pro_static_attribs_classPlot"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset for style array index. <br/></td></tr>
 <tr class="separator:a2cbc79867ba1630b0615c1cfb7b97b59 inherit pro_static_attribs_classPlot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class for a rectangle plot with the distributions in the upper pad and the ratios in the lower pad. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a73b0248222d3db08097a01d86abcc56f"></a>
 <div class="memitem">
 <div class="memproto">

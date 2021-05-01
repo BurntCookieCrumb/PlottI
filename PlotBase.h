@@ -51,8 +51,9 @@ public:
   void SetMode(Mode m);
   void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz = {}, std::vector<Style_t> lstyl = {}, std::vector<Size_t> lwid = {});
   void SetPalette(Int_t pal, Bool_t invert = kFALSE);
-  virtual void SetOptions(TString opt);
-  virtual void SetOptions(std::vector<std::string> optns);
+  void SetPalette(ColorGradient &pal, Bool_t invert = kFALSE);
+  /*virtual*/ void SetOptions(TString opt);
+  /*virtual*/ void SetOptions(std::vector<std::string> optns);
   virtual void SetOptions(std::string optns, std::string postns, Int_t off = 0);
   void SetOption(std::string opt, Int_t pos);
 
@@ -72,6 +73,7 @@ protected:
   static Int_t palette;                   //!< Color Palette
   static Bool_t inversion;                //!< Should palette be inverted?
   static Bool_t inverted;                 //!< Is palette currently inverted?
+  static std::vector<Int_t>   palColors;  //!< Color vector of personalised palette
   static std::vector<Color_t> colors;     //!< Object colors
   static std::vector<Style_t> markers;    //!< Object marker style
   static std::vector<Style_t> lstyles;    //!< Object line style
@@ -131,6 +133,7 @@ Int_t  Plot::palette {109};
 Bool_t Plot::inversion {kFALSE};
 Bool_t Plot::inverted  {kFALSE};
 
+std::vector<Int_t>    Plot::palColors;
 std::vector<Color_t>  Plot::colors;
 std::vector<Style_t>  Plot::markers;
 std::vector<Style_t>  Plot::lstyles;
@@ -347,7 +350,7 @@ template <class AO>
 void Plot::SetRangesAuto(AO* first){
 
   /** Automatically determine good ranges **/
-  /** \todo{Test for TF1 and TGraph} **/
+  /** \todo Test for TF1 and TGraph **/
 
   yRangeUp  = first->GetMaximum();
   yRangeUp  = (yRangeUp < 0) ? 0.8*yRangeUp : 1.2*yRangeUp;
@@ -410,7 +413,20 @@ void Plot::SetPalette(Int_t pal, Bool_t invert){
   /** Set the palette that will be used for the plots **/
 
   palette = pal;
+  palColors.clear();
   inversion = invert;
+
+}
+
+void Plot::SetPalette(ColorGradient &pal, Bool_t invert){
+
+  /** Set the palette that will be used for the plots **/
+
+  palette = pal.GetNpoints();
+  palColors = pal.GetPalette();
+  inversion = invert;
+
+  if (palColors.empty()) std::cout << "\033[1;31mERROR:\033 Gradient is empty!" << std::endl;
 
 }
 
@@ -476,7 +492,7 @@ void Plot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog){
   /** Sets up a Pad for Plotting **/
 
   gStyle->SetOptTitle(0);
-  gStyle->SetPalette(palette);
+  gStyle->SetPalette(palette, palColors.empty() ? 0 : palColors.data());
   if ((inversion && !inverted) || (!inversion && inverted)){
      TColor::InvertPalette();
      inverted = !inverted;

@@ -24,7 +24,6 @@
 // ----------------------------------------------------------------------------
 
 //! Class for a simple square-format plot
-
 class SquarePlot : public Plot
 {
 
@@ -153,7 +152,7 @@ void RatioPlot::Draw(TString outname){
     return;
   }
 
-  canvas  = new TCanvas("canvas", "RATIO", 10, 10, width+10, height+10);
+  canvas  = new TCanvas("canvas", "RATIO", /*10*/0, /*10*/0, width/*+10*/, height/*+10*/);
   canvas->cd();
 
   mainPad = new TPad("mainPad", "Ratio", 0, 0, 1, 1);
@@ -261,7 +260,7 @@ void SingleRatioPlot::Draw(TString outname){
   /** Main function for Drawing **/
 
   std::cout << "-----------------------------" << std::endl;
-  std::cout << "  Plot Single Ratio Canvas: " << std::endl;
+  std::cout << "  Plot Single Ratio Canvas:  " << std::endl;
   std::cout << "-----------------------------" << std::endl;
 
   if (broken){

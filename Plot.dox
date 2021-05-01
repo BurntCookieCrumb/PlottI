@@ -1,6 +1,8 @@
 
  /*! \mainpage
 
+ \tableofcontents
+
  PlottI - Plotting Interface for easy plotting of your data.
 
  \section Canvasses Canvasses
@@ -41,6 +43,13 @@
  In the case that some of your style arrays are empty or don't contain enough elements, default settings for the markers and lines will be used: marker size and line width 2., line style 1 (straight line), marker style kFullCircle and marker color kBlack.
  It is also possible to automatically pick colors from a color palette. To do this, use the SetPalette function to choose a palette and draw then set the histogram draw options to "PMC PLC PFC".
 
+ \section draw The Draw() Function
+
+ Once the canvas is created with the corresponding constructor and you applied all your settings
+ you can finalise your plot by calling the Draw() function of the class you are using. \n
+ This function will save the final plot, but it will also delete the canvas from the program
+ so it is not possible to access it after the Draw() option has been called.
+
  \section legends Legends
 
  The Legend class can be used to automatically create a legend from data or text.
@@ -59,75 +68,19 @@
     + the number of entries
 - Copy an already existing legend
 
-\remark Unfortunately it is not possible for the second option to use the corresponding enumerators like kBlack for the colors and such, but the actual number has to be used. It is however possible to use functions like Format to print the value of kBlack into a string and then use this string.
+  \remark Unfortunately it is not possible for the second option to use the corresponding enumerators like kBlack for the colors and such, but the actual number has to be used. It is however possible to use functions like Format to print the value of kBlack into a string and then use this string.
 
- \section example Example Code
+  \section cols Colors
 
- The following example will demonstrate the basic syntax of the interface. Assume you have two histograms called black and white and a ratio called grey.
+  This interface provides two functionalities for using personalised colors in your plots:
 
-         TH1D* black = new TH1D("black", "", 100, -3, 3);
-         black->Sumw2();
-         black->FillRandom("gaus", 10000);
+  -# The structure \ref color can be used to define colors from RGB values. It includes
+  an automatically generated ROOT color index.
 
-         TH1D* white = new TH1D("white", "", 100, -3, 3);
-         white->Sumw2();
-         white->FillRandom("gaus", 10000);
+  -# The class \ref ColorGradient can be used to generate a palette (color gradient) from
+  \ref color endpoints, defined using the above mentioned structure.
 
-         TH1D* grey = (TH1D*)black->Clone("grey");
-         grey->Divide(white);
-
-First create two object arrays for the main plot and the ratio.
-
-         TObjArray* main = new TObjArray();
-         main->Add(black);
-         main->Add(white);
-
-         TObjArray* ratio = new TObjArray();
-         ratio->Add(grey);
-
-Now we generate legends for this plot:
-
-         Legend* l = new Legend(main, "Black Histo\n White Histo\n", "lp lp", "", "l");
-         Legend* ll = new Legend(l, "ll"); //Copy first legend so that we can place it seperately
-
-         TString info = TString("Black and White Histogram\n");
-         info.Append("Example\n");
-         TLegend* lInfo =  new Legend(info.Data(), 2);
-         main->Add(lInfo);
-
-Then we define marker colors and styles.
-The ones for the ratios will be added after the ones for the main pad.
-
-         vector<Color_t> colors = {kBlack, kBlack, kBlack+3};
-         vector<Style_t> markers = {kFullCircle, kOpenCircle, kFullCircle};
-         vector<Size_t>  sizes = {2., 2., 2.};
-
-Adjusting the legend position:
-
-         Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75); // static function
-         Legend::SetPosition(l, 0.43, 0.6, 0.2, 0.32);
-         ll->SetPosition(0.43, 0.6, 0.05, 0.22); // non-static function
-
-And finally create the Canvasses:
-
-         SquarePlot square = SquarePlot(main, "x", "count");
-         square.SetStyle(colors, markers, sizes);
-         square.SetMode(Plot::Presentation);
-         square.SetRanges(3, -3, 400, 0);
-         square.Draw(TString("Square.pdf"));
-
-         main->AddBefore(lInfo, ll); // replace l in main with ll
-
-         SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
-         rat.SetOffset(2); // determines where the ratio entries start in the style arrays
-         rat.SetRanges(3, -3, 400, -10, 3.2, 0.5);
-         rat.Draw(TString("Ratio.pdf"));
-
-
-Results:
-
-\image html Square.png "Square Plot" width=5cm
-\image html Ratio.png "Ratio Plot" width=5cm
+  For more information on colors and predefined colors and palettes see page \ref colorpage.
 
   \section Additional Functionality
 
@@ -136,15 +89,436 @@ Results:
   - GetXlastFilledBin: Finds the first bin from the right with content > 0, if all bins (except first) are empty last bin is returned
   - CleanUpHistogram: Sets bin contents of bins with too large uncertainties to zero, for specifics please see documentation.
 
-  \section colors Colors
+ */
 
-  Every seperately usable color (namely when you aren't using the palette option) is collected in the
-  <a href="https://root.cern/doc/master/classTColorWheel.html">TColorWheel</a>. Since the colors are grouped
-  by hue and each segment vary only in their brightness and intensity, I feel that you are supposed to (or at least try)
-  to only use colors with the same modifier in one plot. I therefore rearranged the colors in a way, that you can
-  see all the colors with the same modifier in a palette like way.
+ -----------------------------------------------------------------------------
 
-  \image html mix.png "Mixed Colors" width=5cm
-  \image html bas.png "Base Colors" width=5cm
+ /**
+
+ \image html Square.png "Example of a SquarePlot" width=5cm
+
+ Default measures:
+ - Canvas \c dimensions: \b width = 1000, \b height = 1000
+ - Canvas \c margins:    \b right = 0.07, \b left =  0.15, \b top = 0.07, \b bottom = 0.15
+ - Canvas \c offsets:    \b x-Axis = 1.3, \b y-Axis = 1.5
+
+ \class SquarePlot PlotDerived.h
+ */
+
+ /**
+
+ \image html just_ratio.png "Example of a RatioPlot" width=5cm
+
+ Default measures:
+ - Canvas \c dimensions: \b width = 1000, \b height = 600
+ - Canvas \c margins:    \b right = 0.07, \b left =  0.15, \b top = 0.07, \b bottom = 0.25
+ - Canvas \c offsets:    \b x-Axis = 1.0, \b y-Axis = 0.8
+
+ \class RatioPlot PlotDerived.h
+ */
+
+ /**
+
+ \image html Ratio.png "Example of a SingleRatioPlot" width=5cm
+
+ Default measures:
+ - Canvas \c dimensions: \b width = 1000, \b height = 1200
+ - Canvas \c margins:    \b right = 0.07, \b left =  0.15, \b top = 0.07, \b bottom = 0.4
+ - Canvas \c offsets:    \b x-Axis = 4.5, \b y-Axis = 1.7
+
+ \class SingleRatioPlot PlotDerived.h
+ */
+
+ /**
+
+ \image html heat.png "Example of a HeatMapPlot" width=5cm
+
+ Default measures:
+ - Canvas \c dimensions: \b width = 1000, \b height = 850
+ - Canvas \c margins:    \b right = 0.2,  \b left =  0.15, \b top = 0.07, \b bottom = 0.15
+ - Canvas \c offsets:    \b x-Axis = 1.3, \b y-Axis = 1.5, \b z-Axis = 1.5
+
+ \class HeatMapPlot PlotDerived.h
+ */
+
+ /**
+
+ This class contains all functions necessary for basic plotting functionality. This way
+ very little additional programming is necessary for derived classes.
+ This class is meant to be purely a base for implementing the derived classes and
+ should not be instanced itself.
+
+ \class Plot PlotBase.h
+ */
+
+ /**
+ The constructor takes two mandatory arguments:
+ + One Int_t that specifies the number of colors the color gradient will have and
+ + a vector of RGB colors defined using the \ref color structure.
+
+ Optionally you can specify:
+ + A vector containing the spacing of the colors and
+ + the transparency of the colors
+
+ The color gradient can be accessed by calling the methods GetPalette() or GetGradient()
+ that will return a vector of type Int_t or Color_t respectively. If you are using the
+ SetPalette() option that PlottI provides you can use the ColorGradient instance directly.
+
+ For a full list and preview of PlottI color gradients see \ref prePal
+
+ \class ColorGradient Color.h
+ */
+
+ /**
+
+ The Constructor takes 3 Float_t numbers between 0. and 1. corresponding to RGB values.
+ The values are given in relation to the maximum value of 255. E.g a blue value of 51
+ would correspond to a relative value of 51/255 = 0.2.\n
+ The structure \ref color will automatically add the new color to the ROOT colors using
+ <a href="https://root.cern/doc/master/classTColor.html#a3c5219ffdafddfcd4b020fb9365533af">TColor::GetColor(r, g, b)</a>.
+ The corresponding ROOT color index can then be accessed via the index parameter of the
+ structure. \n
+
+ For a full list and preview of the PlottI colors see \ref preCols.
+
+ \class color Color.h
+ */
+
+-----------------------------------------------------------------------
+
+ /**
+ * \page example Examples
+   \brief Collection of examples for different features of the interface.
+
+   \tableofcontents
+
+   \section base Basic Layout of Plotting Code
+
+   The following example will demonstrate the basic syntax of the interface.
+   Assume you have two histograms called black and white and a ratio called grey.
+
+   ~~~~~~~~~~~~~~~{.c}
+   TH1D* black = new TH1D("black", "", 100, -3, 3);
+   black->Sumw2();
+   black->FillRandom("gaus", 10000);
+
+   TH1D* white = new TH1D("white", "", 100, -3, 3);
+   white->Sumw2();
+   white->FillRandom("gaus", 10000);
+
+   TH1D* grey = (TH1D*)black->Clone("grey");
+   grey->Divide(white);
+   ~~~~~~~~~~~~~~~
+
+  First create two object arrays for the main plot and the ratio.
+
+  ~~~~~~~~~~~~~~~{.c}
+  TObjArray* main = new TObjArray();
+  main->Add(black);
+  main->Add(white);
+
+  TObjArray* ratio = new TObjArray();
+  ratio->Add(grey);
+  ~~~~~~~~~~~~~~~
+
+  Now we generate legends for this plot:
+
+  ~~~~~~~~~~~~~~~{.c}
+  Legend* l = new Legend(main, "Black Histo\n White Histo\n", "lp lp", "", "l");
+  Legend* ll = new Legend(l, "ll"); //Copy first legend so that we can place it seperately
+
+  TString info = TString("Black and White Histogram\n");
+  info.Append("Example\n");
+  TLegend* lInfo =  new Legend(info.Data(), 2);
+  main->Add(lInfo);
+  ~~~~~~~~~~~~~~~
+
+  Then we define marker colors and styles.
+  The ones for the ratios will be added after the ones for the main pad.
+
+  ~~~~~~~~~~~~~~~{.c}
+  vector<Color_t> colors = {kBlack, kBlack, kBlack+3};
+  vector<Style_t> markers = {kFullCircle, kOpenCircle, kFullCircle};
+  vector<Size_t>  sizes = {2., 2., 2.};
+  ~~~~~~~~~~~~~~~
+
+  Adjusting the legend position:
+
+  ~~~~~~~~~~~~~~~{.c}
+  Legend::SetPosition(lInfo, 0.2, 0.3, 0.85, 0.75); // static function
+  Legend::SetPosition(l, 0.43, 0.6, 0.2, 0.32);
+  ll->SetPosition(0.43, 0.6, 0.05, 0.22); // non-static function
+  ~~~~~~~~~~~~~~~
+
+  And finally create the Canvasses:
+
+  ~~~~~~~~~~~~~~~{.c}
+  SquarePlot square = SquarePlot(main, "x", "count");
+  square.SetStyle(colors, markers, sizes);
+  square.SetMode(Plot::Presentation);
+  square.SetRanges(3, -3, 400, 0);
+  square.Draw(TString("Square.pdf"));
+
+  main->AddBefore(lInfo, ll); // replace l in main with ll
+
+  SingleRatioPlot rat = SingleRatioPlot(main, ratio, "x", "count", "ratio");
+  rat.SetOffset(2); // determines where the ratio entries start in the style arrays
+  rat.SetRanges(3, -3, 400, -10, 3.2, 0.5);
+  rat.Draw(TString("Ratio.pdf"));
+  ~~~~~~~~~~~~~~~
+
+
+  Results:
+
+  \image html Square.png "Square Plot" width=5cm
+  \image html Ratio.png "Ratio Plot" width=5cm
+
+  \subsection ratioExample RatioPlot
+
+  The syntax for a \ref RatioPlot is very similar to that of a SquarePlot:
+
+  ~~~~~~~~~~~~~~~{.c}
+  RatioPlot just_the_ratio = RatioPlot(ratio, "x", "ratio");
+  just_the_ratio.SetOffset(2);
+  just_the_ratio.SetRanges(-3, 3, 0.5, 3.2);
+  just_the_ratio.Draw("just_ratio.png");
+  ~~~~~~~~~~~~~~~
+
+  \image html just_ratio.png "Example of Ratio Plot using the grey array from above" width=5cm
+
+  \subsection heat HeatMapPlot
+
+  The syntax for a HeatMapPlot is also quite similar to that of a SquarePlot, the
+  difference is that instead of a whole TObjArray the constructor takes exactly one
+  TH2 and one corresponding legend:
+
+  ~~~~~~~~~~~~~~~{.c}
+  TH2I* heat = new TH2I("heat", "", 20, 1, 20, 20, 1, 20);
+
+  for (Int_t binx = 1; binx < 20; binx++){
+    for (Int_t biny = 1; biny < 20; biny++){
+      heat->SetBinContent(binx, biny, binx + biny + binx*biny);
+    }
+  }
+
+  Legend* legend = new Legend("This is a heatmap!\n", 1);
+  legend->SetPosition(0.2, 0.75, 0.8, 0.87);
+
+  HeatMapPlot heatMap = HeatMapPlot(heat, legend, "X", "Y", "Z");
+  heatMap.SetRanges(0, 20, 0, 20, 1, 1E3);
+  heatMap.SetPalette(kPastel, kTRUE);
+  heatMap.SetLog(kFALSE, kFALSE, kTRUE);
+  heatMap.Draw("heat.png");
+  ~~~~~~~~~~~~~~~
+
+  \image html heat.png "Example of a HeatMapPlot" width=5cm
+
+  \section colorExample Defining Colors and Color Gradients
+
+  Before defining the colors, we define some histograms we can use for testing:
+
+  ~~~~~~~~~~~~~~~{.c}
+  TObjArray* pal = new TObjArray();
+  TObjArray* indices = new TObjArray();
+
+  palette[0] = new TH1I("palette", "", 20, 1, 20);
+  pal->Add(palette[0]);
+
+  for (Int_t bin = 1; bin < palette[0]->GetNbinsX(); bin++){
+    palette[0]->SetBinContent(bin, 1);
+    palette[0]->SetBinError(bin, 0.00001);
+  }
+
+  for (Int_t hist = 1; hist < 20; hist++){
+    palette[hist] = (TH1I*)palette[0]->Clone(Form("palette_%d", hist));
+    palette[hist]->Scale(hist+1);
+    pal->Add(palette[hist]);
+  }
+
+  indices->Add(palette[0]);
+  indices->Add(palette[1]);
+  indices->Add(palette[2]);
+  ~~~~~~~~~~~~~~~
+
+  Colors can then be defined as follows:
+
+  ~~~~~~~~~~~~~~~{.c}
+  color blue    {0.00, 0.00, 1.00};
+  color green   {0.00, 1.00, 0.00};
+  color red     {1.00, 0.00, 0.00};
+  ~~~~~~~~~~~~~~~
+
+  The ROOT color index of these colors can then be accessed by the index attribute of color:
+
+  ~~~~~~~~~~~~~~~{.c}
+  Color_t index_of_color_blue  = blue.index;
+  Color_t index_of_color_red   = red.index;
+  Color_t index_of_color_green = green.index;
+  ~~~~~~~~~~~~~~~
+
+  This color index can then be used like any other ROOT color index:
+
+  ~~~~~~~~~~~~~~~{.c}
+  vector<Style_t> markersPal (20, kFullCircle);
+  vector<Size_t>  sizesPal   (20, 3.);
+
+  TMarker* marker = new TMarker();
+  Plot::SetMarkerProperties(marker, blue.index, kFullSquare, 3.);
+
+  std::vector<Color_t> RGB_Colors = {blue.index, red.index, green.index};
+
+  SquarePlot indices_usage = SquarePlot(indices, "", "");
+  indices_usage.SetStyle(RGB_Colors, markersPal, sizesPal);
+  indices_usage.SetRanges(0, 20, 0, 4);
+  indices_usage.Draw("indices.png");
+  ~~~~~~~~~~~~~~~
+
+  \image html indices.png "Example: Usage of user defined colors with color indices" width=5cm
+
+  Color gradients can be defined from \ref color points via the ColorGradient class as follows:
+
+  ~~~~~~~~~~~~~~~{.c}
+  vector<color> rgbRainbow = {blue, green, red};
+  ColorGradient rainbow = ColorGradient(20, rgbRainbow);
+
+  vector<Double_t> spacing = {0., 0.8, 1.};
+  ColorGradient blue_green_somered = ColorGradient(20, rgbRainbow, spacing);
+  ~~~~~~~~~~~~~~~
+
+  They can be used either directly as the color array or set as the current palette:
+
+  ~~~~~~~~~~~~~~~{.c}
+  vector<Color_t> colors_rainbow = rgb_rainbow.GetGradient();
+
+  SquarePlot direct_usage = SquarePlot(pal, "", "");
+  direct_usage.SetMode(Plot::Presentation);
+  direct_usage.SetStyle(colors_rainbow, markersPal, sizesPal);
+  direct_usage.SetRanges(0, 20, 0, 21);
+  direct_usage.SetOptions("SAME");
+  direct_usage.Draw("direct.png");
+
+  SquarePlot palette_usage = SquarePlot(pal, "", "");
+  palette_usage.SetRanges(0, 20, 0, 21);
+  palette_usage.SetPalette(blue_green_somered, kFALSE);
+  palette_usage.SetOptions("SAME PMC PLC PFC");
+  palette_usage.Draw("palette.png");
+  ~~~~~~~~~~~~~~~
+
+   \image html direct.png "Example: Usage of user defined palette \c colors_rainbow via color vector" width=5cm
+   \image html palette.png "Example: Usage of user defined palette \c blue_green_somered via ColorGradient" width=5cm
+
+   \section legendExample Legend Usage
+
+   Generate a legend from a TObjArray:
+
+   ~~~~~~~~~~~~~~~{.c}
+   TLegend* lIndices = new Legend(indices, "First Histogram\n Second\n and Third", "lp lp lp", "", 3,"indices");
+   indices->Add(lIndices);
+   ~~~~~~~~~~~~~~~
+
+   Or with dummy markers from a string with marker specifications:
+
+   ~~~~~~~~~~~~~~~{.c}
+   std::string marker_information = Form("%d %d %f \n %d %d %f \n %d %d %f", kBlack, kFullCircle, 3., kBlue+2, kFullSquare, 3., kMagenta+2, kFullDiamond, 4.);
+   TLegend* lDummyMarkers = new Legend(marker_information.data(), "Black Full Circle\n Blue Full Square\n Magenta Full Diamond", "lp p lp", 3, "lDummyMarkers");
+   indices->Add(lDummyMarkers);
+   ~~~~~~~~~~~~~~~
+
+    Or a legend containing information about your plot:
+
+    ~~~~~~~~~~~~~~~{.c}
+    TLegend* lInformation = new Legend("Some information \n about your histograms \n or your data", 3, "lInformation");
+    indices->Add(lInformation);
+    ~~~~~~~~~~~~~~~
+
+    Each legend can be placed individually:
+
+    ~~~~~~~~~~~~~~~{.c}
+    Legend::SetPosition(lIndices, 0.45, 0.8, 0.4, 0.55);
+    Legend::SetPosition(lDummyMarkers, 0.45, 0.8, 0.6, 0.75);
+    Legend::SetPosition(lInformation, 0.2, 0.21, 0.77, 0.87);
+    ~~~~~~~~~~~~~~~
+
+    And plotted by adding them to the array:
+
+    ~~~~~~~~~~~~~~~{.c}
+    SquarePlot legends = SquarePlot(indices, "", "");
+    legends.SetRanges(0, 20, 0, 21);
+    legends.SetPalette(kAvocado);
+    legends.SetOptions("SAME PMC PLC PFC");
+    legends.Draw("legends.png");
+    ~~~~~~~~~~~~~~~
+
+    \image html legends.png "Example: Different Methods for defining a legend" width=5cm
+
+ */
+
+ /**
+ * \page colorpage Colors
+   \brief Predefined colors and palettes included in PlottI.
+
+   \tableofcontents
+
+   \section colsinroot Predefined Colors in ROOT
+
+   In ROOT every seperately usable color (namely when you aren't using the palette option) is collected in the
+   <a href="https://root.cern/doc/master/classTColorWheel.html">TColorWheel</a>. Since the colors are grouped
+   by hue and each segment vary only in their brightness and intensity, I feel that you are supposed to (or at least try)
+   to only use colors with the same modifier in one plot. I therefore rearranged the colors in a way, that you can
+   see all the colors with the same modifier in a palette like way.
+
+   \image html mix.png "Mixed Colors" width=5cm
+   \image html bas.png "Base Colors" width=5cm
+
+   There are also a number of predefined Palettes in ROOT listed in the
+   <a href="https://root.cern/doc/master/classTColor.html#C06">TColor class documentation</a>.
+   The <a href="https://root.cern/doc/master/classTHistPainter.html#HP061">THistPainter class documentation</a>
+   explains in detail how to automatically pick colors from a palette. It also lists all
+   the different draw options that can be used for Histograms and functions.
+
+   \section preCols Colors in PlottI
+
+   Personalised colors can be defined using the \ref color structure. The Constructor takes
+   3 Float_t numbers between 0. and 1. corresponding to RGB values. The values are given
+   in relation to the maximum value of 255. E.g a blue value of 51 would correspond to a
+   relative value of 51/255 = 0.2.\n
+   The structure \ref color will automatically add the new color to the ROOT colors using
+   <a href="https://root.cern/doc/master/classTColor.html#a3c5219ffdafddfcd4b020fb9365533af">TColor::GetColor(r, g, b)</a>.
+   The corresponding ROOT color index can then be accessed via the index parameter of the
+   structure. \n
+
+   \subsection preColsList Predefined Colors
+
+   The following colors are already defined in PlottI and can be used individually or in
+   the definition of a color gradient:
+
+   \image html basic_colors.png "Some basic colors." width=15cm
+   \n
+   \image html alice_logo_colors.png "Colors extracted from the ALICE logo" width=15cm
+
+
+   \section prePal Color Gradients in PlottI
+
+   Personalised color gradients can be defined using the \ref ColorGradient class. The
+   constructor takes two mandatory arguments:
+   + One Int_t that specifies the number of colors the color gradient will have and
+   + a vector of RGB colors defined using the \ref color structure.
+
+   Optionally you can specify:
+   + A vector containing the spacing of the colors and
+   + the transparency of the colors
+
+   The color gradient can be accessed by calling the methods GetPalette() or GetGradient()
+   that will return a vector of type Int_t or Color_t respectively. If you are using the
+   SetPalette() option that PlottI provides you can use the ColorGradient instance directly.
+
+   \subsection prePalList Predefined Color Gradients
+
+   The following color gradients are already included in PlottI:
+
+   \image html alice_logo.png       "Palette: alice_logo -- Modeled after the colors used in the ALICE logo -- 100 colors" width=15cm
+   \image html rainbow.png          "Palette: rainbow -- Simple rainbow palette -- 20 colors" width=15cm
+   \image html purple_to_yellow.png "Palette: purple_to_yellow -- Color gradient from purple to yellow -- 100 colors" width=15cm
+
 
  */
