@@ -288,9 +288,9 @@
 
   \subsection heat HeatMapPlot
 
-  The syntax for a HeatMapPlot is also quite similar to that of a SquarePlot, the
-  difference is that instead of a whole TObjArray the constructor takes exactly one
-  TH2 and one corresponding legend:
+  The syntax for a HeatMapPlot is also quite similar to that of a SquarePlot. The
+  main difference to a SquarePlot is that the first entry of the array that is to
+  be plotted must be a TH2.
 
   ~~~~~~~~~~~~~~~{.c}
   TH2I* heat = new TH2I("heat", "", 20, 1, 20, 20, 1, 20);
@@ -304,7 +304,11 @@
   Legend* legend = new Legend("This is a heatmap!\n", 1);
   legend->SetPosition(0.2, 0.75, 0.8, 0.87);
 
-  HeatMapPlot heatMap = HeatMapPlot(heat, legend, "X", "Y", "Z");
+  TObjArray* heatArray = new TObjArray();
+  heatArray->Add(heat);
+  heatArray->Add(legend);
+
+  HeatMapPlot heatMap = HeatMapPlot(heatArray, "X", "Y", "Z");
   heatMap.SetRanges(0, 20, 0, 20, 1, 1E3);
   heatMap.SetPalette(kPastel, kTRUE);
   heatMap.SetLog(kFALSE, kFALSE, kTRUE);

@@ -100,7 +100,11 @@ void exPlottI(){
   Legend* legend = new Legend("This is a heatmap!\n", 1);
   legend->SetPosition(0.2, 0.75, 0.8, 0.87);
 
-  HeatMapPlot heatMap = HeatMapPlot(heat, legend, "X", "Y", "Z");
+  TObjArray* heatArray = new TObjArray();
+  heatArray->Add(heat);
+  heatArray->Add(legend);
+
+  HeatMapPlot heatMap = HeatMapPlot(heatArray, "X", "Y", "Z");
   heatMap.SetRanges(0, 20, 0, 20, 1, 1E3);
   heatMap.SetPalette(kPastel, kTRUE);
   heatMap.SetLog(kFALSE, kFALSE, kTRUE);

@@ -363,7 +363,7 @@ class HeatMapPlot : public Plot
 {
 
 public:
-  HeatMapPlot(TH2* map, TPave* l, TString xTitle, TString yTitle, TString zTitle = "count");
+  HeatMapPlot(TObjArray* plotArray, TString xTitle, TString yTitle, TString zTitle = "count");
   ~HeatMapPlot() {};
 
   void Draw(TString outname);
@@ -375,6 +375,8 @@ public:
 
 
 private:
+
+  void EnsureTH2(TObject* first, std::string arrayName);
 
   void SetCanvasStyle(TH2* first);
   void SetPadStyle(TH2* first, TString xTitle, TString yTitle, TString zTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t zUp, Float_t zLow);
@@ -388,23 +390,26 @@ private:
   Float_t zRangeUp {0};           //!< Upper Z-axis range
   Float_t zRangeLow {0};          //!< Lower Z-axis range
 
-  TH2 *heatmap {nullptr};         //!< TH2 from which the heatmap is drawn
-  TPave *legend {nullptr};      //!< Legend corresponding to the heatmap
+  TObjArray *plotArray {nullptr};      //!< Legend corresponding to the heatmap
 
 };
 
 // ---- Cunstructor -----------------------------------------------------------
 
 //! Constructor
-HeatMapPlot::HeatMapPlot(TH2* map, TPave* l, TString xTitle, TString yTitle, TString zTitle) : Plot(xTitle, yTitle),
+HeatMapPlot::HeatMapPlot(TObjArray* array, TString xTitle, TString yTitle, TString zTitle) : Plot(xTitle, yTitle),
 titleZ(zTitle),
-heatmap(map),
-legend(l)
+plotArray(array)
 {
+
+  EnsureTH2(array->At(0), "Heatmap Array");
 
   SetCanvasDimensions(1000, 850);
   SetCanvasMargins(0.2, .15, 0.07, .15);
   SetCanvasOffsets(1.3, 1.5, 1.5);
+
+  options = std::vector<std::string>(array->GetEntries(), "SAME");
+  options[0] = "SAME COLZ";
 
 }
 
@@ -429,17 +434,12 @@ void HeatMapPlot::Draw(TString outname){
 
   mainPad = new TPad("mainPad", "Distribution", 0, 0, 1, 1);
   SetUpPad(mainPad, logX, logY, logZ);
-  SetCanvasStyle(heatmap);
-  SetPadStyle(heatmap, titleX, titleY, titleZ, xRangeUp, xRangeLow, yRangeUp, yRangeLow, zRangeUp, zRangeLow);
+  SetCanvasStyle((TH2*)plotArray->At(0));
+  SetPadStyle((TH2*)plotArray->At(0), titleX, titleY, titleZ, xRangeUp, xRangeLow, yRangeUp, yRangeLow, zRangeUp, zRangeLow);
   mainPad->Draw();
   mainPad->cd();
 
-  std::cout << " -> Draw Map: " << heatmap->GetName() << std::endl;
-  SetProperties(heatmap);
-  heatmap->Draw("SAME COLZ");
-  std::cout << " -> Draw Legend: " << legend->GetName() << std::endl;
-  Plot::SetProperties(legend, 0);
-  legend->Draw("SAME");
+  DrawArray(plotArray, 0);
 
   canvas->Update();
   canvas->SaveAs(outname.Data());
@@ -447,6 +447,27 @@ void HeatMapPlot::Draw(TString outname){
 
   std::cout << "-----------------------------" << std::endl << std::endl;
 
+}
+
+void HeatMapPlot::EnsureTH2(TObject* first, std::string arrayName){
+
+  if (!first) {
+
+    std::cout << "\033[1;33mFATAL ERROR:\033[0m First entry in array doesn't exist!!" << std::endl;
+    broken = kTRUE;
+    return;
+
+  }
+
+  if (!first->InheritsFrom("TH2")){
+
+    std::cout << "\033[1;33mFATAL ERROR:\033[0m First entry in array must be a TH2 "
+    << "\033[1;36m(" << arrayName << ")\033[0m" << std::endl;
+    std::cout << "             In case you don't want to draw a TH2, please use SquarePlot." << std::endl;
+    broken = kTRUE;
+    return;
+
+  }
 
 }
 

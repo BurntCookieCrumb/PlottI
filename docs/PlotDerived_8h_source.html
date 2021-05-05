@@ -423,7 +423,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;{</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <a class="code" href="classHeatMapPlot.html#ae79659e9fdc6fbc6c9081ec69b5323e6">HeatMapPlot</a>(TH2* map, TPave* l, TString xTitle, TString yTitle, TString zTitle = <span class="stringliteral">&quot;count&quot;</span>);</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <a class="code" href="classHeatMapPlot.html#a75211255ab393d2b550f9ed1974d2cd5">HeatMapPlot</a>(TObjArray* plotArray, TString xTitle, TString yTitle, TString zTitle = <span class="stringliteral">&quot;count&quot;</span>);</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;  ~<a class="code" href="classHeatMapPlot.html">HeatMapPlot</a>() {};</div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classPlot.html#a06c92135ad4df08abf14a73a8c78dc9b">Draw</a>(TString outname);</div>
@@ -436,67 +436,67 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  <span class="keywordtype">void</span> SetCanvasStyle(TH2* first);</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  <span class="keywordtype">void</span> SetPadStyle(TH2* first, TString xTitle, TString yTitle, TString zTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t zUp, Float_t zLow);</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="keywordtype">void</span> SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog = kFALSE);</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;  TString titleZ {<span class="stringliteral">&quot;count&quot;</span>};       </div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  <span class="keywordtype">void</span> EnsureTH2(TObject* first, std::string arrayName);</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="keywordtype">void</span> SetCanvasStyle(TH2* first);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keywordtype">void</span> SetPadStyle(TH2* first, TString xTitle, TString yTitle, TString zTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t zUp, Float_t zLow);</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  <span class="keywordtype">void</span> SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog = kFALSE);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  Float_t offsetZ {0};            </div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;  Bool_t  logZ {kFALSE};          </div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;  Float_t zRangeUp {0};           </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;  Float_t zRangeLow {0};          </div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  TH2 *heatmap {<span class="keyword">nullptr</span>};         </div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;  TPave *legend {<span class="keyword">nullptr</span>};      </div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;};</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">// ---- Cunstructor -----------------------------------------------------------</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;</div>
-<div class="line"><a name="l00399"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#ae79659e9fdc6fbc6c9081ec69b5323e6">  399</a></span>&#160;<a class="code" href="classHeatMapPlot.html#ae79659e9fdc6fbc6c9081ec69b5323e6">HeatMapPlot::HeatMapPlot</a>(TH2* map, TPave* l, TString xTitle, TString yTitle, TString zTitle) : <a class="code" href="classPlot.html">Plot</a>(xTitle, yTitle),</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;titleZ(zTitle),</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;heatmap(map),</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;legend(l)</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  TString titleZ {<span class="stringliteral">&quot;count&quot;</span>};       </div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;  Float_t offsetZ {0};            </div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;  Bool_t  logZ {kFALSE};          </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;  Float_t zRangeUp {0};           </div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  Float_t zRangeLow {0};          </div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;  TObjArray *plotArray {<span class="keyword">nullptr</span>};      </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;};</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment">// ---- Cunstructor -----------------------------------------------------------</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
+<div class="line"><a name="l00400"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#a75211255ab393d2b550f9ed1974d2cd5">  400</a></span>&#160;<a class="code" href="classHeatMapPlot.html#a75211255ab393d2b550f9ed1974d2cd5">HeatMapPlot::HeatMapPlot</a>(TObjArray* array, TString xTitle, TString yTitle, TString zTitle) : <a class="code" href="classPlot.html">Plot</a>(xTitle, yTitle),</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;titleZ(zTitle),</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;plotArray(array)</div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;{</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  <a class="code" href="classPlot.html#a70c20090376d80e22d10e1e470616226">SetCanvasDimensions</a>(1000, 850);</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;  <a class="code" href="classPlot.html#ac1a93b80a21da2eda97223f51c595266">SetCanvasMargins</a>(0.2, .15, 0.07, .15);</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;  <a class="code" href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">SetCanvasOffsets</a>(1.3, 1.5, 1.5);</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;}</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  EnsureTH2(array-&gt;At(0), <span class="stringliteral">&quot;Heatmap Array&quot;</span>);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;  <a class="code" href="classPlot.html#a70c20090376d80e22d10e1e470616226">SetCanvasDimensions</a>(1000, 850);</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;  <a class="code" href="classPlot.html#ac1a93b80a21da2eda97223f51c595266">SetCanvasMargins</a>(0.2, .15, 0.07, .15);</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;  <a class="code" href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">SetCanvasOffsets</a>(1.3, 1.5, 1.5);</div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="comment">// ---- Member Functions ------------------------------------------------------</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
-<div class="line"><a name="l00413"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#ace21970674251d0aa215b5c7c8443c7d">  413</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classPlot.html#a06c92135ad4df08abf14a73a8c78dc9b">HeatMapPlot::Draw</a>(TString outname){</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;     Plot Heat Map:&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="classPlot.html#aae2b48eca12960ceb697c3f84fae9cb0">broken</a>){</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;  }</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;  <a class="code" href="classPlot.html#af72102b197728726a30caf274368418e">canvas</a>  = <span class="keyword">new</span> TCanvas(<span class="stringliteral">&quot;canvas&quot;</span>, <span class="stringliteral">&quot;HEATMAP&quot;</span>, 10, 10, <a class="code" href="classPlot.html#a4e56d6cf45d80ee8a2ea24ebf7b74cb1">width</a>+10, <a class="code" href="classPlot.html#ac4d90a617384a63a5e7d3b2069ea9bd5">height</a>+10);</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;  <a class="code" href="classPlot.html#af72102b197728726a30caf274368418e">canvas</a>-&gt;cd();</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;  <a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a> = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;mainPad&quot;</span>, <span class="stringliteral">&quot;Distribution&quot;</span>, 0, 0, 1, 1);</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;  SetUpPad(<a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a>, <a class="code" href="classPlot.html#a4e5e4c755ad976c94bbde535958b9013">logX</a>, <a class="code" href="classPlot.html#ace9a18900da74392fb6e3387b9c3ac6c">logY</a>, logZ);</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;  SetCanvasStyle(heatmap);</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;  SetPadStyle(heatmap, <a class="code" href="classPlot.html#ac3875c7a46d9f5ef7617f650db1e2ab2">titleX</a>, <a class="code" href="classPlot.html#a3232c6d7f75089dea605fd0454ad96af">titleY</a>, titleZ, <a class="code" href="classPlot.html#a1ff63c1f4da627d996187dc801a89c6a">xRangeUp</a>, <a class="code" href="classPlot.html#aa0db1e626bbff9bdce00dc06a2c18ac4">xRangeLow</a>, <a class="code" href="classPlot.html#a5fa07b9614456f608aaad692953dda97">yRangeUp</a>, <a class="code" href="classPlot.html#a08ff9da0018e21439f0abff03e29f773">yRangeLow</a>, zRangeUp, zRangeLow);</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;  <a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a>-&gt;Draw();</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;  <a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a>-&gt;cd();</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot; -&gt; Draw Map: &quot;</span> &lt;&lt; heatmap-&gt;GetName() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  <a class="code" href="classHeatMapPlot.html#ab182477ba1e24863c421b729489ba377">SetProperties</a>(heatmap);</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;  heatmap-&gt;Draw(<span class="stringliteral">&quot;SAME COLZ&quot;</span>);</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot; -&gt; Draw Legend: &quot;</span> &lt;&lt; legend-&gt;GetName() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;  <a class="code" href="classPlot.html#a52db33876ca1dc43ef39f4322b80d9c7">Plot::SetProperties</a>(legend, 0);</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;  legend-&gt;Draw(<span class="stringliteral">&quot;SAME&quot;</span>);</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;  <a class="code" href="classPlot.html#a620a7cfb340f3c35bea98b0acdf694cd">options</a> = std::vector&lt;std::string&gt;(array-&gt;GetEntries(), <span class="stringliteral">&quot;SAME&quot;</span>);</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;  <a class="code" href="classPlot.html#a620a7cfb340f3c35bea98b0acdf694cd">options</a>[0] = <span class="stringliteral">&quot;SAME COLZ&quot;</span>;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;}</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="comment">// ---- Member Functions ------------------------------------------------------</span></div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;</div>
+<div class="line"><a name="l00418"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#ace21970674251d0aa215b5c7c8443c7d">  418</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classPlot.html#a06c92135ad4df08abf14a73a8c78dc9b">HeatMapPlot::Draw</a>(TString outname){</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;     Plot Heat Map:&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="classPlot.html#aae2b48eca12960ceb697c3f84fae9cb0">broken</a>){</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Due to one or more \033[1;33mFATAL ERRORS\033[0m your Plot will not be drawn&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;  }</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;  <a class="code" href="classPlot.html#af72102b197728726a30caf274368418e">canvas</a>  = <span class="keyword">new</span> TCanvas(<span class="stringliteral">&quot;canvas&quot;</span>, <span class="stringliteral">&quot;HEATMAP&quot;</span>, 10, 10, <a class="code" href="classPlot.html#a4e56d6cf45d80ee8a2ea24ebf7b74cb1">width</a>+10, <a class="code" href="classPlot.html#ac4d90a617384a63a5e7d3b2069ea9bd5">height</a>+10);</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;  <a class="code" href="classPlot.html#af72102b197728726a30caf274368418e">canvas</a>-&gt;cd();</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;  <a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a> = <span class="keyword">new</span> TPad(<span class="stringliteral">&quot;mainPad&quot;</span>, <span class="stringliteral">&quot;Distribution&quot;</span>, 0, 0, 1, 1);</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;  SetUpPad(<a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a>, <a class="code" href="classPlot.html#a4e5e4c755ad976c94bbde535958b9013">logX</a>, <a class="code" href="classPlot.html#ace9a18900da74392fb6e3387b9c3ac6c">logY</a>, logZ);</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;  SetCanvasStyle((TH2*)plotArray-&gt;At(0));</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  SetPadStyle((TH2*)plotArray-&gt;At(0), <a class="code" href="classPlot.html#ac3875c7a46d9f5ef7617f650db1e2ab2">titleX</a>, <a class="code" href="classPlot.html#a3232c6d7f75089dea605fd0454ad96af">titleY</a>, titleZ, <a class="code" href="classPlot.html#a1ff63c1f4da627d996187dc801a89c6a">xRangeUp</a>, <a class="code" href="classPlot.html#aa0db1e626bbff9bdce00dc06a2c18ac4">xRangeLow</a>, <a class="code" href="classPlot.html#a5fa07b9614456f608aaad692953dda97">yRangeUp</a>, <a class="code" href="classPlot.html#a08ff9da0018e21439f0abff03e29f773">yRangeLow</a>, zRangeUp, zRangeLow);</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;  <a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a>-&gt;Draw();</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;  <a class="code" href="classPlot.html#a9b874974584d2f616b773d9a1a52a842">mainPad</a>-&gt;cd();</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;  <a class="code" href="classPlot.html#a22244e01902db40f4ab9a45e80b76e30">DrawArray</a>(plotArray, 0);</div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  <a class="code" href="classPlot.html#af72102b197728726a30caf274368418e">canvas</a>-&gt;Update();</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;  <a class="code" href="classPlot.html#af72102b197728726a30caf274368418e">canvas</a>-&gt;SaveAs(outname.Data());</div>
@@ -504,86 +504,108 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;-----------------------------&quot;</span> &lt;&lt; std::endl &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;}</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
-<div class="line"><a name="l00453"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#ab182477ba1e24863c421b729489ba377">  453</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#ab182477ba1e24863c421b729489ba377">HeatMapPlot::SetProperties</a>(TH2* map, std::string title){</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;  map-&gt;SetContour(100);</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;  map-&gt;SetStats(kFALSE);</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  map-&gt;SetTitle(title.data());</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;}</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="keywordtype">void</span> HeatMapPlot::SetCanvasStyle(TH2* first){</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;  <a class="code" href="classPlot.html#a45c8cc5247160d952d820ca239f962f0">Plot::SetCanvasStyle</a>(first);</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitleOffset(offsetZ);</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;  first-&gt;GetZaxis()-&gt;SetTickSize(0.03);</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitleSize(<a class="code" href="classPlot.html#a676f7600c2d58b6d88b5b717d6f8c845">label</a>);</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitleFont(<a class="code" href="classPlot.html#a9a7f1f355166f8e92ee520b0017f435f">font</a>);</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;  first-&gt;GetZaxis()-&gt;SetLabelFont(<a class="code" href="classPlot.html#a9a7f1f355166f8e92ee520b0017f435f">font</a>);</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;  first-&gt;GetZaxis()-&gt;SetLabelSize(<a class="code" href="classPlot.html#a676f7600c2d58b6d88b5b717d6f8c845">label</a>);</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;}</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;<span class="keywordtype">void</span> HeatMapPlot::EnsureTH2(TObject* first, std::string arrayName){</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;  <span class="keywordflow">if</span> (!first) {</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;\033[1;33mFATAL ERROR:\033[0m First entry in array doesn&#39;t exist!!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <a class="code" href="classPlot.html#aae2b48eca12960ceb697c3f84fae9cb0">broken</a> = kTRUE;</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  }</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;  <span class="keywordflow">if</span> (!first-&gt;InheritsFrom(<span class="stringliteral">&quot;TH2&quot;</span>)){</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;\033[1;33mFATAL ERROR:\033[0m First entry in array must be a TH2 &quot;</span></div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    &lt;&lt; <span class="stringliteral">&quot;\033[1;36m(&quot;</span> &lt;&lt; arrayName &lt;&lt; <span class="stringliteral">&quot;)\033[0m&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;             In case you don&#39;t want to draw a TH2, please use SquarePlot.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <a class="code" href="classPlot.html#aae2b48eca12960ceb697c3f84fae9cb0">broken</a> = kTRUE;</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;  }</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;}</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
+<div class="line"><a name="l00474"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#ab182477ba1e24863c421b729489ba377">  474</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#ab182477ba1e24863c421b729489ba377">HeatMapPlot::SetProperties</a>(TH2* map, std::string title){</div>
 <div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;}</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="keywordtype">void</span> HeatMapPlot::SetPadStyle(TH2* first, TString xTitle, TString yTitle, TString zTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t zUp, Float_t zLow){</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;  <a class="code" href="classPlot.html#abac8312f106162b6a6d042810476151d">Plot::SetPadStyle</a>(first, xTitle, yTitle, xUp, xLow, yUp, yLow);</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;  map-&gt;SetContour(100);</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;  map-&gt;SetStats(kFALSE);</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;  map-&gt;SetTitle(title.data());</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;}</div>
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;  first-&gt;GetZaxis()-&gt;SetRangeUser(zLow, zUp);</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitle(zTitle);</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;}</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="keywordtype">void</span> HeatMapPlot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog){</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;  <a class="code" href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">Plot::SetUpPad</a>(pad, xLog, yLog);</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;  <span class="keywordflow">if</span> (zLog){</div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    <span class="keywordflow">if</span> (zRangeLow &gt; 0) pad-&gt;SetLogz(1);</div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    <span class="keywordflow">else</span> std::cout &lt;&lt; <span class="stringliteral">&quot;\033[1;31mERROR in SetLog:\033[0m Z-Ranges must be above zero! Logarithm not set!!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;  }</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;}</div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;</div>
-<div class="line"><a name="l00502"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">  502</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">HeatMapPlot::SetCanvasOffsets</a>(Float_t xOffset, Float_t yOffset, Float_t zOffset){</div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;  <a class="code" href="classPlot.html#aa6d4442e79ec0760e03f4c9d32d12089">offsetX</a> = xOffset;</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;  <a class="code" href="classPlot.html#a4a4394cee260fdf68dd5e12441ad7164">offsetY</a> = yOffset;</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;  offsetZ = zOffset;</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="keywordtype">void</span> HeatMapPlot::SetCanvasStyle(TH2* first){</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;  <a class="code" href="classPlot.html#a45c8cc5247160d952d820ca239f962f0">Plot::SetCanvasStyle</a>(first);</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitleOffset(offsetZ);</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;  first-&gt;GetZaxis()-&gt;SetTickSize(0.03);</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitleSize(<a class="code" href="classPlot.html#a676f7600c2d58b6d88b5b717d6f8c845">label</a>);</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitleFont(<a class="code" href="classPlot.html#a9a7f1f355166f8e92ee520b0017f435f">font</a>);</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;  first-&gt;GetZaxis()-&gt;SetLabelFont(<a class="code" href="classPlot.html#a9a7f1f355166f8e92ee520b0017f435f">font</a>);</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;  first-&gt;GetZaxis()-&gt;SetLabelSize(<a class="code" href="classPlot.html#a676f7600c2d58b6d88b5b717d6f8c845">label</a>);</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;}</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;<span class="keywordtype">void</span> HeatMapPlot::SetPadStyle(TH2* first, TString xTitle, TString yTitle, TString zTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t zUp, Float_t zLow){</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;  <a class="code" href="classPlot.html#abac8312f106162b6a6d042810476151d">Plot::SetPadStyle</a>(first, xTitle, yTitle, xUp, xLow, yUp, yLow);</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;  first-&gt;GetZaxis()-&gt;SetRangeUser(zLow, zUp);</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;  first-&gt;GetZaxis()-&gt;SetTitle(zTitle);</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;}</div>
 <div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;}</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;<span class="keywordtype">void</span> HeatMapPlot::SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog, Bool_t zLog){</div>
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;</div>
-<div class="line"><a name="l00512"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390">  512</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390">HeatMapPlot::SetLog</a>(Bool_t xLog, Bool_t yLog, Bool_t zLog){</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;  <a class="code" href="classPlot.html#a4e5e4c755ad976c94bbde535958b9013">logX</a> = xLog;</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;  <a class="code" href="classPlot.html#ace9a18900da74392fb6e3387b9c3ac6c">logY</a> = yLog;</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;  logZ = zLog;</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;}</div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;</div>
-<div class="line"><a name="l00522"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#aa051d0e81db1d7030016a90e2887e633">  522</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#aa051d0e81db1d7030016a90e2887e633">HeatMapPlot::SetRanges</a>(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t zLow, Float_t zUp){</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;</div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;  <a class="code" href="classPlot.html#a1ff63c1f4da627d996187dc801a89c6a">xRangeUp</a>  = xUp;</div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;  <a class="code" href="classPlot.html#aa0db1e626bbff9bdce00dc06a2c18ac4">xRangeLow</a> = xLow;</div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;  <a class="code" href="classPlot.html#a5fa07b9614456f608aaad692953dda97">yRangeUp</a>  = yUp;</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;  <a class="code" href="classPlot.html#a08ff9da0018e21439f0abff03e29f773">yRangeLow</a> = yLow;</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;  zRangeUp  = zUp;</div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;  zRangeLow = zLow;</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;  <a class="code" href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">Plot::SetUpPad</a>(pad, xLog, yLog);</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;  <span class="keywordflow">if</span> (zLog){</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    <span class="keywordflow">if</span> (zRangeLow &gt; 0) pad-&gt;SetLogz(1);</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordflow">else</span> std::cout &lt;&lt; <span class="stringliteral">&quot;\033[1;31mERROR in SetLog:\033[0m Z-Ranges must be above zero! Logarithm not set!!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;  }</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;}</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;</div>
+<div class="line"><a name="l00523"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">  523</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">HeatMapPlot::SetCanvasOffsets</a>(Float_t xOffset, Float_t yOffset, Float_t zOffset){</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;  <a class="code" href="classPlot.html#aa6d4442e79ec0760e03f4c9d32d12089">offsetX</a> = xOffset;</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;  <a class="code" href="classPlot.html#a4a4394cee260fdf68dd5e12441ad7164">offsetY</a> = yOffset;</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;  offsetZ = zOffset;</div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;}</div>
 <div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;  <a class="code" href="classPlot.html#acd56385941046fb7347296862e4d0e87">ranges</a> = kTRUE;</div>
+<div class="line"><a name="l00533"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390">  533</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390">HeatMapPlot::SetLog</a>(Bool_t xLog, Bool_t yLog, Bool_t zLog){</div>
 <div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;}</div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;</div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;  <a class="code" href="classPlot.html#a4e5e4c755ad976c94bbde535958b9013">logX</a> = xLog;</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;  <a class="code" href="classPlot.html#ace9a18900da74392fb6e3387b9c3ac6c">logY</a> = yLog;</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;  logZ = zLog;</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;}</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;</div>
+<div class="line"><a name="l00543"></a><span class="lineno"><a class="line" href="classHeatMapPlot.html#aa051d0e81db1d7030016a90e2887e633">  543</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classHeatMapPlot.html#aa051d0e81db1d7030016a90e2887e633">HeatMapPlot::SetRanges</a>(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t zLow, Float_t zUp){</div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;  <a class="code" href="classPlot.html#a1ff63c1f4da627d996187dc801a89c6a">xRangeUp</a>  = xUp;</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;  <a class="code" href="classPlot.html#aa0db1e626bbff9bdce00dc06a2c18ac4">xRangeLow</a> = xLow;</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;  <a class="code" href="classPlot.html#a5fa07b9614456f608aaad692953dda97">yRangeUp</a>  = yUp;</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;  <a class="code" href="classPlot.html#a08ff9da0018e21439f0abff03e29f773">yRangeLow</a> = yLow;</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;  zRangeUp  = zUp;</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;  zRangeLow = zLow;</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;  <a class="code" href="classPlot.html#acd56385941046fb7347296862e4d0e87">ranges</a> = kTRUE;</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;}</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;</div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;<span class="comment">//</span></div>
 <div class="ttc" id="classSquarePlot_html_aeabb30885267fb0f0ff650835ae897f5"><div class="ttname"><a href="classSquarePlot.html#aeabb30885267fb0f0ff650835ae897f5">SquarePlot::SquarePlot</a></div><div class="ttdeci">SquarePlot(TObjArray *array, TString xTitle, TString yTitle)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:46</div></div>
 <div class="ttc" id="classRatioPlot_html_a2a7f2806e4213dd312bc77e671fb503f"><div class="ttname"><a href="classRatioPlot.html#a2a7f2806e4213dd312bc77e671fb503f">RatioPlot::one</a></div><div class="ttdeci">TLine * one</div><div class="ttdoc">Horizontal TLine which will be included to every ratio at height 1. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:117</div></div>
-<div class="ttc" id="classHeatMapPlot_html_a2d328602212ca0492a192f634b0ae390"><div class="ttname"><a href="classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390">HeatMapPlot::SetLog</a></div><div class="ttdeci">void SetLog(Bool_t xLog=kFALSE, Bool_t yLog=kTRUE, Bool_t zLog=kFALSE)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:512</div></div>
+<div class="ttc" id="classHeatMapPlot_html_a2d328602212ca0492a192f634b0ae390"><div class="ttname"><a href="classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390">HeatMapPlot::SetLog</a></div><div class="ttdeci">void SetLog(Bool_t xLog=kFALSE, Bool_t yLog=kTRUE, Bool_t zLog=kFALSE)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:533</div></div>
 <div class="ttc" id="classHeatMapPlot_html"><div class="ttname"><a href="classHeatMapPlot.html">HeatMapPlot</a></div><div class="ttdoc">Class for plotting a single TH2 (heatmap) and one corresponding legend. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:362</div></div>
 <div class="ttc" id="classPlot_html_a45c8cc5247160d952d820ca239f962f0"><div class="ttname"><a href="classPlot.html#a45c8cc5247160d952d820ca239f962f0">Plot::SetCanvasStyle</a></div><div class="ttdeci">void SetCanvasStyle(AO *first)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:152</div></div>
+<div class="ttc" id="classHeatMapPlot_html_a75211255ab393d2b550f9ed1974d2cd5"><div class="ttname"><a href="classHeatMapPlot.html#a75211255ab393d2b550f9ed1974d2cd5">HeatMapPlot::HeatMapPlot</a></div><div class="ttdeci">HeatMapPlot(TObjArray *plotArray, TString xTitle, TString yTitle, TString zTitle=&quot;count&quot;)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:400</div></div>
 <div class="ttc" id="classPlot_html_a8ff9111551a971da6871561732ed33f2"><div class="ttname"><a href="classPlot.html#a8ff9111551a971da6871561732ed33f2">Plot::SetCanvasOffsets</a></div><div class="ttdeci">void SetCanvasOffsets(Float_t xOffset, Float_t yOffset)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:310</div></div>
 <div class="ttc" id="classPlot_html_a08ff9da0018e21439f0abff03e29f773"><div class="ttname"><a href="classPlot.html#a08ff9da0018e21439f0abff03e29f773">Plot::yRangeLow</a></div><div class="ttdeci">Float_t yRangeLow</div><div class="ttdoc">Lower Y-axis range. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:98</div></div>
 <div class="ttc" id="classPlot_html_ac257dabd63abbb370968b42dd1210c05"><div class="ttname"><a href="classPlot.html#ac257dabd63abbb370968b42dd1210c05">Plot::SetLineProperties</a></div><div class="ttdeci">static void SetLineProperties(PO *pobj, Color_t color, Style_t lstyle, Size_t lwid=2.)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:206</div></div>
@@ -594,7 +616,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classPlot_html"><div class="ttname"><a href="classPlot.html">Plot</a></div><div class="ttdoc">Base class for all plotting functionality. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:21</div></div>
 <div class="ttc" id="classPlot_html_a8b7719901b0d78ce0d853f2ac6cad6c1"><div class="ttname"><a href="classPlot.html#a8b7719901b0d78ce0d853f2ac6cad6c1">Plot::SetOptions</a></div><div class="ttdeci">void SetOptions(TString opt)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:434</div></div>
 <div class="ttc" id="classSingleRatioPlot_html_a6f613843c99027a42646533eacdfd72c"><div class="ttname"><a href="classSingleRatioPlot.html#a6f613843c99027a42646533eacdfd72c">SingleRatioPlot::SetRanges</a></div><div class="ttdeci">virtual void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:318</div></div>
-<div class="ttc" id="classHeatMapPlot_html_aaad37583a348a438f2491537cd5d5baa"><div class="ttname"><a href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">HeatMapPlot::SetCanvasOffsets</a></div><div class="ttdeci">void SetCanvasOffsets(Float_t xOffset, Float_t yOffset, Float_t zOffset)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:502</div></div>
+<div class="ttc" id="classHeatMapPlot_html_aaad37583a348a438f2491537cd5d5baa"><div class="ttname"><a href="classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa">HeatMapPlot::SetCanvasOffsets</a></div><div class="ttdeci">void SetCanvasOffsets(Float_t xOffset, Float_t yOffset, Float_t zOffset)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:523</div></div>
 <div class="ttc" id="classSingleRatioPlot_html_a9dd7b323c474214027d3e72786061c15"><div class="ttname"><a href="classSingleRatioPlot.html#a9dd7b323c474214027d3e72786061c15">SingleRatioPlot::SingleRatioPlot</a></div><div class="ttdeci">SingleRatioPlot(TObjArray *mainArray, TObjArray *ratioArray, TString xTitle, TString yTitle, TString ratioTitle)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:240</div></div>
 <div class="ttc" id="classPlot_html_a4e5e4c755ad976c94bbde535958b9013"><div class="ttname"><a href="classPlot.html#a4e5e4c755ad976c94bbde535958b9013">Plot::logX</a></div><div class="ttdeci">Bool_t logX</div><div class="ttdoc">Should X-axis be logarithmic? </div><div class="ttdef"><b>Definition:</b> PlotBase.h:95</div></div>
 <div class="ttc" id="classSquarePlot_html"><div class="ttname"><a href="classSquarePlot.html">SquarePlot</a></div><div class="ttdoc">Class for a simple square-format plot. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:27</div></div>
@@ -606,11 +628,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classPlot_html_ac4d90a617384a63a5e7d3b2069ea9bd5"><div class="ttname"><a href="classPlot.html#ac4d90a617384a63a5e7d3b2069ea9bd5">Plot::height</a></div><div class="ttdeci">Float_t height</div><div class="ttdoc">Height of canvas. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:88</div></div>
 <div class="ttc" id="classRatioPlot_html"><div class="ttname"><a href="classRatioPlot.html">RatioPlot</a></div><div class="ttdoc">Class for a rectangle plot displaying ratios. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:101</div></div>
 <div class="ttc" id="classPlot_html_a22244e01902db40f4ab9a45e80b76e30"><div class="ttname"><a href="classPlot.html#a22244e01902db40f4ab9a45e80b76e30">Plot::DrawArray</a></div><div class="ttdeci">void DrawArray(TObjArray *array, Int_t off=0, Int_t offOpt=0)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:543</div></div>
-<div class="ttc" id="classHeatMapPlot_html_ae79659e9fdc6fbc6c9081ec69b5323e6"><div class="ttname"><a href="classHeatMapPlot.html#ae79659e9fdc6fbc6c9081ec69b5323e6">HeatMapPlot::HeatMapPlot</a></div><div class="ttdeci">HeatMapPlot(TH2 *map, TPave *l, TString xTitle, TString yTitle, TString zTitle=&quot;count&quot;)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> PlotDerived.h:399</div></div>
 <div class="ttc" id="classPlot_html_ace9a18900da74392fb6e3387b9c3ac6c"><div class="ttname"><a href="classPlot.html#ace9a18900da74392fb6e3387b9c3ac6c">Plot::logY</a></div><div class="ttdeci">Bool_t logY</div><div class="ttdoc">Should Y-axis be logarithmic? </div><div class="ttdef"><b>Definition:</b> PlotBase.h:96</div></div>
 <div class="ttc" id="classPlot_html_ac1a93b80a21da2eda97223f51c595266"><div class="ttname"><a href="classPlot.html#ac1a93b80a21da2eda97223f51c595266">Plot::SetCanvasMargins</a></div><div class="ttdeci">void SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:299</div></div>
 <div class="ttc" id="classPlot_html_a0277029b00ab5067172b03a5bb18c2c3"><div class="ttname"><a href="classPlot.html#a0277029b00ab5067172b03a5bb18c2c3">Plot::EnsureAxes</a></div><div class="ttdeci">void EnsureAxes(TObject *first, std::string arrayName=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:520</div></div>
-<div class="ttc" id="classHeatMapPlot_html_aa051d0e81db1d7030016a90e2887e633"><div class="ttname"><a href="classHeatMapPlot.html#aa051d0e81db1d7030016a90e2887e633">HeatMapPlot::SetRanges</a></div><div class="ttdeci">virtual void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t zLow, Float_t zUp)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:522</div></div>
+<div class="ttc" id="classHeatMapPlot_html_aa051d0e81db1d7030016a90e2887e633"><div class="ttname"><a href="classHeatMapPlot.html#aa051d0e81db1d7030016a90e2887e633">HeatMapPlot::SetRanges</a></div><div class="ttdeci">virtual void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t zLow, Float_t zUp)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:543</div></div>
 <div class="ttc" id="classPlot_html_abac8312f106162b6a6d042810476151d"><div class="ttname"><a href="classPlot.html#abac8312f106162b6a6d042810476151d">Plot::SetPadStyle</a></div><div class="ttdeci">void SetPadStyle(AO *first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:172</div></div>
 <div class="ttc" id="classPlot_html_a620a7cfb340f3c35bea98b0acdf694cd"><div class="ttname"><a href="classPlot.html#a620a7cfb340f3c35bea98b0acdf694cd">Plot::options</a></div><div class="ttdeci">std::vector&lt; std::string &gt; options</div><div class="ttdoc">Drawing options. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:82</div></div>
 <div class="ttc" id="classPlot_html_a3232c6d7f75089dea605fd0454ad96af"><div class="ttname"><a href="classPlot.html#a3232c6d7f75089dea605fd0454ad96af">Plot::titleY</a></div><div class="ttdeci">TString titleY</div><div class="ttdoc">Title of Y-axis. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:85</div></div>
@@ -627,9 +648,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classPlot_html_a5fa07b9614456f608aaad692953dda97"><div class="ttname"><a href="classPlot.html#a5fa07b9614456f608aaad692953dda97">Plot::yRangeUp</a></div><div class="ttdeci">Float_t yRangeUp</div><div class="ttdoc">Upper Y-axis range. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:99</div></div>
 <div class="ttc" id="classPlot_html_af72102b197728726a30caf274368418e"><div class="ttname"><a href="classPlot.html#af72102b197728726a30caf274368418e">Plot::canvas</a></div><div class="ttdeci">TCanvas * canvas</div><div class="ttdoc">Main canvas. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:71</div></div>
 <div class="ttc" id="classPlot_html_a4e56d6cf45d80ee8a2ea24ebf7b74cb1"><div class="ttname"><a href="classPlot.html#a4e56d6cf45d80ee8a2ea24ebf7b74cb1">Plot::width</a></div><div class="ttdeci">Float_t width</div><div class="ttdoc">Width of canvas. </div><div class="ttdef"><b>Definition:</b> PlotBase.h:87</div></div>
-<div class="ttc" id="classPlot_html_a52db33876ca1dc43ef39f4322b80d9c7"><div class="ttname"><a href="classPlot.html#a52db33876ca1dc43ef39f4322b80d9c7">Plot::SetProperties</a></div><div class="ttdeci">void SetProperties(TObject *obj, Int_t index)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:238</div></div>
 <div class="ttc" id="classPlot_html_aae2b48eca12960ceb697c3f84fae9cb0"><div class="ttname"><a href="classPlot.html#aae2b48eca12960ceb697c3f84fae9cb0">Plot::broken</a></div><div class="ttdeci">Bool_t broken</div><div class="ttdoc">Did any fatal error occur? </div><div class="ttdef"><b>Definition:</b> PlotBase.h:104</div></div>
-<div class="ttc" id="classHeatMapPlot_html_ab182477ba1e24863c421b729489ba377"><div class="ttname"><a href="classHeatMapPlot.html#ab182477ba1e24863c421b729489ba377">HeatMapPlot::SetProperties</a></div><div class="ttdeci">void SetProperties(TH2 *map, std::string title=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:453</div></div>
+<div class="ttc" id="classHeatMapPlot_html_ab182477ba1e24863c421b729489ba377"><div class="ttname"><a href="classHeatMapPlot.html#ab182477ba1e24863c421b729489ba377">HeatMapPlot::SetProperties</a></div><div class="ttdeci">void SetProperties(TH2 *map, std::string title=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:474</div></div>
 <div class="ttc" id="classPlot_html_a27aecf9c62f17a2a15ac6985d6cb49c0"><div class="ttname"><a href="classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0">Plot::SetUpPad</a></div><div class="ttdeci">void SetUpPad(TPad *pad, Bool_t xLog, Bool_t yLog)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:490</div></div>
 <div class="ttc" id="classSingleRatioPlot_html_aa6420963f2615a5129c1daa8ca2ff9c0"><div class="ttname"><a href="classSingleRatioPlot.html#aa6420963f2615a5129c1daa8ca2ff9c0">SingleRatioPlot::SetPadFraction</a></div><div class="ttdeci">void SetPadFraction(Double_t frac)</div><div class="ttdef"><b>Definition:</b> PlotDerived.h:300</div></div>
 <div class="ttc" id="classPlot_html_a70c20090376d80e22d10e1e470616226"><div class="ttname"><a href="classPlot.html#a70c20090376d80e22d10e1e470616226">Plot::SetCanvasDimensions</a></div><div class="ttdeci">void SetCanvasDimensions(Float_t cWidth, Float_t cHeight)</div><div class="ttdef"><b>Definition:</b> PlotBase.h:290</div></div>

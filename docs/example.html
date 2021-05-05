@@ -161,7 +161,7 @@ RatioPlot</h2>
 Example of Ratio Plot using the grey array from above</div></div>
 <h2><a class="anchor" id="heat"></a>
 HeatMapPlot</h2>
-<p>The syntax for a <a class="el" href="classHeatMapPlot.html" title="Class for plotting a single TH2 (heatmap) and one corresponding legend. ">HeatMapPlot</a> is also quite similar to that of a <a class="el" href="classSquarePlot.html" title="Class for a simple square-format plot. ">SquarePlot</a>, the difference is that instead of a whole TObjArray the constructor takes exactly one TH2 and one corresponding legend:</p>
+<p>The syntax for a <a class="el" href="classHeatMapPlot.html" title="Class for plotting a single TH2 (heatmap) and one corresponding legend. ">HeatMapPlot</a> is also quite similar to that of a <a class="el" href="classSquarePlot.html" title="Class for a simple square-format plot. ">SquarePlot</a>. The main difference to a <a class="el" href="classSquarePlot.html" title="Class for a simple square-format plot. ">SquarePlot</a> is that the first entry of the array that is to be plotted must be a TH2.</p>
 <div class="fragment"><div class="line">TH2I* heat = <span class="keyword">new</span> TH2I(<span class="stringliteral">&quot;heat&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 20, 1, 20, 20, 1, 20);</div>
 <div class="line"></div>
 <div class="line"><span class="keywordflow">for</span> (Int_t binx = 1; binx &lt; 20; binx++){</div>
@@ -173,7 +173,11 @@ HeatMapPlot</h2>
 <div class="line"><a class="code" href="classLegend.html">Legend</a>* legend = <span class="keyword">new</span> <a class="code" href="classLegend.html">Legend</a>(<span class="stringliteral">&quot;This is a heatmap!\n&quot;</span>, 1);</div>
 <div class="line">legend-&gt;<a class="code" href="classLegend.html#aafea9fa7a8b2f0c511ad9be46d38fed1">SetPosition</a>(0.2, 0.75, 0.8, 0.87);</div>
 <div class="line"></div>
-<div class="line"><a class="code" href="classHeatMapPlot.html">HeatMapPlot</a> heatMap = <a class="code" href="classHeatMapPlot.html">HeatMapPlot</a>(heat, legend, <span class="stringliteral">&quot;X&quot;</span>, <span class="stringliteral">&quot;Y&quot;</span>, <span class="stringliteral">&quot;Z&quot;</span>);</div>
+<div class="line">TObjArray* heatArray = <span class="keyword">new</span> TObjArray();</div>
+<div class="line">heatArray-&gt;Add(heat);</div>
+<div class="line">heatArray-&gt;Add(legend);</div>
+<div class="line"></div>
+<div class="line"><a class="code" href="classHeatMapPlot.html">HeatMapPlot</a> heatMap = <a class="code" href="classHeatMapPlot.html">HeatMapPlot</a>(heatArray, <span class="stringliteral">&quot;X&quot;</span>, <span class="stringliteral">&quot;Y&quot;</span>, <span class="stringliteral">&quot;Z&quot;</span>);</div>
 <div class="line">heatMap.<a class="code" href="classHeatMapPlot.html#aa051d0e81db1d7030016a90e2887e633">SetRanges</a>(0, 20, 0, 20, 1, 1E3);</div>
 <div class="line">heatMap.<a class="code" href="classPlot.html#a96ebdce4b8f30ae6f52474753c6f2955">SetPalette</a>(kPastel, kTRUE);</div>
 <div class="line">heatMap.<a class="code" href="classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390">SetLog</a>(kFALSE, kFALSE, kTRUE);</div>
