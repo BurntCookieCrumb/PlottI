@@ -53,7 +53,7 @@ private:
 };
 
 //! Constructor
-ColorGradient::ColorGradient(Int_t nPoints, const vector<color> &rgbEndpoints, const vector<Double_t> &stops = {}, Float_t alpha = 1):
+ColorGradient::ColorGradient(Int_t nPoints, const vector<color> &rgbEndpoints, const vector<Double_t> &stops, Float_t alpha):
   nColorPoints(nPoints)
 {
 
