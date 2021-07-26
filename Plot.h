@@ -33,6 +33,7 @@
 #include "TString.h"
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <typeinfo>
 

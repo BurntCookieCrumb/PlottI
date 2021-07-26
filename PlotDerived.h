@@ -50,7 +50,7 @@ SquarePlot::SquarePlot(TObjArray* array, TString xTitle, TString yTitle): Plot(x
   EnsureAxes(array->At(0), "Main Array");
 
   SetCanvasDimensions(1000, 1000);
-  SetCanvasMargins(0.07, .15, 0.07, .15);
+  SetCanvasMargins(0.13, 0.03, 0.05, 0.13);
   SetCanvasOffsets(1.3, 1.5);
 
   options = std::vector<std::string> (array->GetEntries(), "SAME");
@@ -109,6 +109,7 @@ public:
   /*virtual*/ void Draw(TString outname);
   /*virtual*/ void DrawRatioArray(TObjArray* array, Int_t off, Int_t offOpt = 0);
   void SetUpperOneLimit(Double_t up);
+  void ToggleOne() {drawone = !drawone;};
 
 protected:
 
@@ -116,6 +117,8 @@ protected:
 
   TLine*   one {nullptr};    //!< Horizontal TLine which will be included to every ratio at height 1
   Double_t oneUp {0};        //!< Upper bound on x-Range for TLine one
+
+  Bool_t drawone {kTRUE};
 
 };
 
@@ -129,8 +132,8 @@ RatioPlot::RatioPlot(TObjArray* rArray, TString xTitle, TString yTitle) : Plot(x
   EnsureAxes(rArray->At(0), "Main Array");
 
   SetCanvasDimensions(1000, 600);
-  SetCanvasMargins(0.07, .15, 0.07, .25);
-  SetCanvasOffsets(1., .8);
+  SetCanvasMargins(0.15, 0.03, 0.05, 0.2);
+  SetCanvasOffsets(1.1, 1.);
 
   options = std::vector<std::string>(rArray->GetEntries(), "SAME");
 
@@ -175,12 +178,15 @@ void RatioPlot::DrawRatioArray(TObjArray* array, Int_t off, Int_t offOpt){
 
   /** Draws a single Ratio TObjArray in the chosen Pad **/
 
-  one = new TLine(xRangeLow, 1., (oneUp ? oneUp : xRangeUp), 1.);
-  array->Add(one);
-  options.push_back("SAME");
+  if (drawone){
+    one = new TLine(xRangeLow, 1., (oneUp ? oneUp : xRangeUp), 1.);
+    array->Add(one);
+    options.push_back("SAME");
+    SetLineProperties(one, kBlack, 9, 3.);
+  }
 
   DrawArray(array, off, offOpt);
-  SetLineProperties(one, kBlack, 9, 3.);
+
 
 }
 
@@ -209,6 +215,7 @@ public:
   /*virtual*/ void Draw(TString outname);
 
   void SetPadFraction(Double_t frac);
+  void SetCanvasOffsets(Float_t xOffset, Float_t yOffset, Float_t rOffset = 0);
   void SetOffset(Int_t off, Int_t roff);
   virtual void SetRanges(Float_t xLow, Float_t xUp, Float_t yLow, Float_t yUp, Float_t rLow, Float_t rUp);
   virtual void SetOptions(std::string optns, std::string postns);
@@ -222,6 +229,7 @@ private:
 
   TObjArray* ratioArray;         //!< Array containing all ratios to be plotted
 
+  Float_t offsetR {0.};          //!< Offset for Y-Title of the ratio
   Float_t rRangeUp {1.2};        //!< Upper Y-axis range of the ratio
   Float_t rRangeLow {0.8};       //!< Lower Y-axis range of the ratio
 
@@ -231,7 +239,7 @@ private:
 
 // ---- Static Member Variables -----------------------------------------------
 
-Float_t SingleRatioPlot::padFrac {.35}; //0.25
+Float_t SingleRatioPlot::padFrac {.3}; //0.35
 Int_t   SingleRatioPlot::rOffset  {1};
 
 // ---- Cunstructor -----------------------------------------------------------
@@ -246,8 +254,8 @@ SingleRatioPlot::SingleRatioPlot(TObjArray* mainArray, TObjArray* rArray, TStrin
   EnsureAxes(rArray->At(0), "Ratio Array");
 
   SetCanvasDimensions(1000, 1200);
-  SetCanvasMargins(0.07, .15, 0.07, .4);
-  SetCanvasOffsets(4.5, 1.7);
+  SetCanvasMargins(0.13, 0.03, 0.05, 0.3);
+  SetCanvasOffsets(4., 2., 2.);
 
   options = std::vector<std::string>(mainArray->GetEntries()+rArray->GetEntries(), "SAME");
 
@@ -275,6 +283,8 @@ void SingleRatioPlot::Draw(TString outname){
   mainPad = new TPad("mainPad", "Distribution", 0, padFrac, 1, 1);
   SetUpPad(mainPad, logX, logY);
   SetUpStyle(plotArray->At(0), "", titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
+  ((TH1*)plotArray->At(0))->GetXaxis()->SetLabelSize(0);
+  ((TH1*)plotArray->At(0))->GetXaxis()->SetLabelColor(kWhite);
   mainPad->SetBottomMargin(0.);
   mainPad->Draw();
 
@@ -282,6 +292,7 @@ void SingleRatioPlot::Draw(TString outname){
   SetUpPad(ratioPad, logX, kFALSE);
   ratioPad->SetTopMargin(0.);
   SetUpStyle(ratioArray->At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow);
+  ((TH1*)ratioArray->At(0))->GetYaxis()->SetTitleOffset(offsetR);
   ratioPad->Draw();
 
   mainPad->cd();
@@ -294,6 +305,16 @@ void SingleRatioPlot::Draw(TString outname){
   delete canvas;
 
   std::cout << "-----------------------------" << std::endl << std::endl;
+
+}
+
+void SingleRatioPlot::SetCanvasOffsets(Float_t xOffset, Float_t yOffset, Float_t rOffset){
+
+  /** Set the Title Offsets **/
+
+  offsetX = xOffset;
+  offsetY = yOffset;
+  offsetR = rOffset ? rOffset : yOffset;
 
 }
 
@@ -364,6 +385,7 @@ class HeatMapPlot : public Plot
 
 public:
   HeatMapPlot(TObjArray* plotArray, TString xTitle, TString yTitle, TString zTitle = "count");
+  HeatMapPlot(TH2* map, TLegend* l, TString xTitle, TString yTitle, TString zTitle = "count");
   ~HeatMapPlot() {};
 
   void Draw(TString outname);
@@ -405,11 +427,29 @@ plotArray(array)
   EnsureTH2(array->At(0), "Heatmap Array");
 
   SetCanvasDimensions(1000, 850);
-  SetCanvasMargins(0.2, .15, 0.07, .15);
-  SetCanvasOffsets(1.3, 1.5, 1.5);
+  SetCanvasMargins(0.13, 0.2, 0.05, .13);
+  SetCanvasOffsets(1.3, 1.4, 1.4);
 
   options = std::vector<std::string>(array->GetEntries(), "SAME");
   options[0] = "SAME COLZ";
+
+}
+
+//! Constructor
+HeatMapPlot::HeatMapPlot(TH2* map, TLegend* l, TString xTitle, TString yTitle, TString zTitle) : Plot(xTitle, yTitle),
+titleZ(zTitle)
+{
+
+  // EnsureTH2(array->At(0), "Heatmap Array");
+  plotArray = new TObjArray();
+  plotArray->Add(map);
+  plotArray->Add(l);
+
+  SetCanvasDimensions(1000, 850);
+  SetCanvasMargins(0.13, 0.2, 0.05, .13);
+  SetCanvasOffsets(1.3, 1.5, 1.5);
+
+  options = {"SAME COLZ", "SAME"};
 
 }
 

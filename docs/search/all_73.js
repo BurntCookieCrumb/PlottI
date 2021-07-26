@@ -2,7 +2,7 @@ var searchData=
 [
   ['setcanvasdimensions',['SetCanvasDimensions',['../classPlot.html#a70c20090376d80e22d10e1e470616226',1,'Plot']]],
   ['setcanvasmargins',['SetCanvasMargins',['../classPlot.html#ac1a93b80a21da2eda97223f51c595266',1,'Plot']]],
-  ['setcanvasoffsets',['SetCanvasOffsets',['../classPlot.html#a8ff9111551a971da6871561732ed33f2',1,'Plot::SetCanvasOffsets()'],['../classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa',1,'HeatMapPlot::SetCanvasOffsets()']]],
+  ['setcanvasoffsets',['SetCanvasOffsets',['../classPlot.html#a8ff9111551a971da6871561732ed33f2',1,'Plot::SetCanvasOffsets()'],['../classSingleRatioPlot.html#a8fa05507dbc44da4efd071ed1a54b30d',1,'SingleRatioPlot::SetCanvasOffsets()'],['../classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa',1,'HeatMapPlot::SetCanvasOffsets()']]],
   ['setcanvasstyle',['SetCanvasStyle',['../classPlot.html#a45c8cc5247160d952d820ca239f962f0',1,'Plot']]],
   ['setlineproperties',['SetLineProperties',['../classPlot.html#ac257dabd63abbb370968b42dd1210c05',1,'Plot']]],
   ['setlog',['SetLog',['../classPlot.html#a4d881697ea376886903925f89131ffb2',1,'Plot::SetLog()'],['../classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390',1,'HeatMapPlot::SetLog()']]],

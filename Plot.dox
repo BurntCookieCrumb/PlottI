@@ -99,7 +99,7 @@
 
  Default measures:
  - Canvas \c dimensions: \b width = 1000, \b height = 1000
- - Canvas \c margins:    \b right = 0.07, \b left =  0.15, \b top = 0.07, \b bottom = 0.15
+ - Canvas \c margins:    \b left =  0.15, \b right = 0.07, \b top = 0.07, \b bottom = 0.15
  - Canvas \c offsets:    \b x-Axis = 1.3, \b y-Axis = 1.5
 
  \class SquarePlot PlotDerived.h
@@ -111,7 +111,7 @@
 
  Default measures:
  - Canvas \c dimensions: \b width = 1000, \b height = 600
- - Canvas \c margins:    \b right = 0.07, \b left =  0.15, \b top = 0.07, \b bottom = 0.25
+ - Canvas \c margins:    \b left =  0.15, \b right = 0.07, \b top = 0.07, \b bottom = 0.25
  - Canvas \c offsets:    \b x-Axis = 1.0, \b y-Axis = 0.8
 
  \class RatioPlot PlotDerived.h
@@ -123,7 +123,7 @@
 
  Default measures:
  - Canvas \c dimensions: \b width = 1000, \b height = 1200
- - Canvas \c margins:    \b right = 0.07, \b left =  0.15, \b top = 0.07, \b bottom = 0.4
+ - Canvas \c margins:    \b left =  0.15, \b right = 0.07,  \b top = 0.07, \b bottom = 0.4
  - Canvas \c offsets:    \b x-Axis = 4.5, \b y-Axis = 1.7
 
  \class SingleRatioPlot PlotDerived.h
@@ -134,8 +134,8 @@
  \image html heat.png "Example of a HeatMapPlot" width=5cm
 
  Default measures:
- - Canvas \c dimensions: \b width = 1000, \b height = 850
- - Canvas \c margins:    \b right = 0.2,  \b left =  0.15, \b top = 0.07, \b bottom = 0.15
+ - Canvas \c dimensions: \b width  = 1000, \b height = 850
+ - Canvas \c margins:    \b left   =  0.15, \b right  = 0.2,  \b top = 0.07, \b bottom = 0.15
  - Canvas \c offsets:    \b x-Axis = 1.3, \b y-Axis = 1.5, \b z-Axis = 1.5
 
  \class HeatMapPlot PlotDerived.h
@@ -499,6 +499,10 @@
    \image html basic_colors.png "Some basic colors." width=15cm
    \n
    \image html alice_logo_colors.png "Colors extracted from the ALICE logo" width=15cm
+   \n
+   \image html citrus_colors.png "Colors close to citrus fruit" width = 15cm
+   \n
+   \image html ocean_colors.png "Colors resembling different oceans" width = 15cm
 
 
    \section prePal Color Gradients in PlottI
@@ -523,6 +527,8 @@
    \image html alice_logo.png       "Palette: alice_logo -- Modeled after the colors used in the ALICE logo -- 100 colors" width=15cm
    \image html rainbow.png          "Palette: rainbow -- Simple rainbow palette -- 20 colors" width=15cm
    \image html purple_to_yellow.png "Palette: purple_to_yellow -- Color gradient from purple to yellow -- 100 colors" width=15cm
+   \image html citrus.png           "Palette: citrus -- Citrus colors -- 100 colors" width = 15cm
+   \image html ocean.png           "Palette: ocean -- Gradient from deep arctic ocean to warm caribbean ocean -- 100 colors" width = 15cm
 
 
  */

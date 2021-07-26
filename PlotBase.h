@@ -296,7 +296,7 @@ void Plot::SetCanvasDimensions(Float_t cWidth, Float_t cHeight){
 
 }
 
-void Plot::SetCanvasMargins(Float_t rMargin, Float_t lMargin, Float_t tMargin, Float_t bMargin){
+void Plot::SetCanvasMargins(Float_t lMargin, Float_t rMargin, Float_t tMargin, Float_t bMargin){
 
   /** Set the Margins of the Canvas **/
 
@@ -378,7 +378,7 @@ void Plot::SetMode(Mode m){
 
     case Thesis:
       font = 43; //43
-      label = 30;//37;
+      label = 40;//37;
       break;
 
     case Auto:
@@ -426,7 +426,7 @@ void Plot::SetPalette(ColorGradient &pal, Bool_t invert){
   palColors = pal.GetPalette();
   inversion = invert;
 
-  if (palColors.empty()) std::cout << "\033[1;31mERROR:\033 Gradient is empty!" << std::endl;
+  if (palColors.empty()) std::cout << "\033[1;31mERROR:\033[0m Gradient is empty!" << std::endl;
 
 }
 
