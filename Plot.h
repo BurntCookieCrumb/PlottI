@@ -36,6 +36,8 @@
 #include <sstream>
 #include <vector>
 #include <typeinfo>
+#include <algorithm>
+#include <numeric>
 
 #ifndef COLOR_H
   #include "Color.h"
