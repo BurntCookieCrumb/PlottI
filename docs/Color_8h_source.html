@@ -231,14 +231,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<a class="code" href="structcolor.html">color</a> sky_cyan       {0x00C5DF};</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<a class="code" href="structcolor.html">color</a> bluish_green   {0x00E7C4};</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<a class="code" href="structcolor.html">color</a> full_orange      {0x993300};</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<a class="code" href="structcolor.html">color</a> towards_pink     {0x990066};</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<a class="code" href="structcolor.html">color</a> away_purple      {0x330099};</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<a class="code" href="structcolor.html">color</a> transverse_green {0x669900};</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<a class="code" href="structcolor.html">color</a> full       {0x83B910}; <span class="comment">//{0xDB7E00}; green</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<a class="code" href="structcolor.html">color</a> towards    {0x10A7C1}; <span class="comment">//{0xAC001E}; cyan</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<a class="code" href="structcolor.html">color</a> away       {0x874BDA}; <span class="comment">//{0x00007F}; purple</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<a class="code" href="structcolor.html">color</a> transverse {0xF36F19}; <span class="comment">//{0x669900}; orange</span></div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">// ----------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">//                              Predefined Palettes</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">// ----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">// ----------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;vector&lt;color&gt; rgbRainbow = {blue, cyan, green, yellow, red, magenta};</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<a class="code" href="classColorGradient.html">ColorGradient</a> rainbow = <a class="code" href="classColorGradient.html">ColorGradient</a>(20, rgbRainbow);</div>
@@ -252,10 +252,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;vector&lt;color&gt; pink_to_yellow = {deep_pink, light_pink, grapefruit, light_orange, egg_yellow, bright_yellow};</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<a class="code" href="classColorGradient.html">ColorGradient</a> citrus = <a class="code" href="classColorGradient.html">ColorGradient</a>(100, pink_to_yellow);</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;vector&lt;color&gt; arctic_blue = {blurple, ocean_blue, dark_sky_blue, light_sky_blue, sky_cyan, bluish_green};</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<a class="code" href="classColorGradient.html">ColorGradient</a> arctic = <a class="code" href="classColorGradient.html">ColorGradient</a>(100, arctic_blue, {0.0, 0.3, 0.6, 0.75, 0.9, 1.0});</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;vector&lt;color&gt; ocean_blues = {blurple, ocean_blue, dark_sky_blue, light_sky_blue, sky_cyan, bluish_green};</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<a class="code" href="classColorGradient.html">ColorGradient</a> ocean = <a class="code" href="classColorGradient.html">ColorGradient</a>(100, ocean_blues, {0.0, 0.3, 0.6, 0.75, 0.9, 1.0});</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<a class="code" href="classColorGradient.html">ColorGradient</a> sunset = <a class="code" href="classColorGradient.html">ColorGradient</a>(100, {0x210156, 0x3900AA, 0x9C0091, 0xCB177A, 0xE3576E, 0xEE8972, 0xF2B68C});</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">//</span></div>
 <div class="ttc" id="classColorGradient_html_a72ee67fd924f929a80e5df6811a29a9e"><div class="ttname"><a href="classColorGradient.html#a72ee67fd924f929a80e5df6811a29a9e">ColorGradient::GetPalette</a></div><div class="ttdeci">vector&lt; Int_t &gt; GetPalette()</div><div class="ttdef"><b>Definition:</b> Color.h:106</div></div>
 <div class="ttc" id="classColorGradient_html_ae863098e6446994614373dc3fb067ab3"><div class="ttname"><a href="classColorGradient.html#ae863098e6446994614373dc3fb067ab3">ColorGradient::GetGradient</a></div><div class="ttdeci">vector&lt; Color_t &gt; GetGradient()</div><div class="ttdef"><b>Definition:</b> Color.h:116</div></div>
 <div class="ttc" id="structcolor_html_aa418e83a0c6c12dff738174e73eb19d3"><div class="ttname"><a href="structcolor.html#aa418e83a0c6c12dff738174e73eb19d3">color::index</a></div><div class="ttdeci">Color_t index</div><div class="ttdoc">ROOT color index of color. </div><div class="ttdef"><b>Definition:</b> Color.h:36</div></div>

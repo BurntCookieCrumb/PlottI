@@ -3,7 +3,7 @@ var searchData=
   ['setcanvasdimensions',['SetCanvasDimensions',['../classPlot.html#a70c20090376d80e22d10e1e470616226',1,'Plot']]],
   ['setcanvasmargins',['SetCanvasMargins',['../classPlot.html#ac1a93b80a21da2eda97223f51c595266',1,'Plot']]],
   ['setcanvasoffsets',['SetCanvasOffsets',['../classPlot.html#a8ff9111551a971da6871561732ed33f2',1,'Plot::SetCanvasOffsets()'],['../classSingleRatioPlot.html#a8fa05507dbc44da4efd071ed1a54b30d',1,'SingleRatioPlot::SetCanvasOffsets()'],['../classHeatMapPlot.html#aaad37583a348a438f2491537cd5d5baa',1,'HeatMapPlot::SetCanvasOffsets()']]],
-  ['setcanvasstyle',['SetCanvasStyle',['../classPlot.html#a45c8cc5247160d952d820ca239f962f0',1,'Plot']]],
+  ['setcanvasstyle',['SetCanvasStyle',['../classPlot.html#a76669d914a64ee7fc08801a8778dee99',1,'Plot']]],
   ['setlineproperties',['SetLineProperties',['../classPlot.html#ac257dabd63abbb370968b42dd1210c05',1,'Plot']]],
   ['setlog',['SetLog',['../classPlot.html#a4d881697ea376886903925f89131ffb2',1,'Plot::SetLog()'],['../classHeatMapPlot.html#a2d328602212ca0492a192f634b0ae390',1,'HeatMapPlot::SetLog()']]],
   ['setmarkerproperties',['SetMarkerProperties',['../classPlot.html#af026672521d2083282a15e2992008e08',1,'Plot']]],
@@ -23,9 +23,11 @@ var searchData=
   ['setstyle',['SetStyle',['../classPlot.html#a412b32fcbf4b34941a4149d40a2c20e2',1,'Plot']]],
   ['setuppad',['SetUpPad',['../classPlot.html#a27aecf9c62f17a2a15ac6985d6cb49c0',1,'Plot']]],
   ['setupperonelimit',['SetUpperOneLimit',['../classRatioPlot.html#a8b6a2f02718f5bf72b04e7950bc513a4',1,'RatioPlot']]],
-  ['setupstyle',['SetUpStyle',['../classPlot.html#a4ed44ad2dca0b5c1b959d7bdf02d2d05',1,'Plot']]],
+  ['setupstyle',['SetUpStyle',['../classPlot.html#a174b1318e1b04ee8088aadbbe200ae05',1,'Plot']]],
   ['singleratioplot',['SingleRatioPlot',['../classSingleRatioPlot.html',1,'SingleRatioPlot'],['../classSingleRatioPlot.html#a9dd7b323c474214027d3e72786061c15',1,'SingleRatioPlot::SingleRatioPlot()']]],
   ['sizes',['sizes',['../classPlot.html#aee876a7fd4b7011c7eba63f8eec0e317',1,'Plot']]],
   ['squareplot',['SquarePlot',['../classSquarePlot.html',1,'SquarePlot'],['../classSquarePlot.html#aeabb30885267fb0f0ff650835ae897f5',1,'SquarePlot::SquarePlot()']]],
-  ['styles',['styles',['../classPlot.html#ac22fdb638b612617f525ebb5d95ef39f',1,'Plot']]]
+  ['styles',['styles',['../classPlot.html#ac22fdb638b612617f525ebb5d95ef39f',1,'Plot']]],
+  ['suppressxaxis',['SuppressXaxis',['../classPlot.html#ad1ca3951d4d1a29c58af69169175343b',1,'Plot']]],
+  ['suppressyaxis',['SuppressYaxis',['../classPlot.html#a40fdf5289d0580024430c4ac1599816a',1,'Plot']]]
 ];

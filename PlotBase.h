@@ -50,6 +50,7 @@ public:
 
   void SetMode(Mode m);
   void SetStyle(std::vector<Color_t> col, std::vector<Style_t> mark, std::vector<Size_t> siz = {}, std::vector<Style_t> lstyl = {}, std::vector<Size_t> lwid = {});
+  void ToggleStyle() { styles = !styles; } //!< Toggle wether style arrays are used. Note that SetStyles will automatically set this to on.
   void SetPalette(Int_t pal, Bool_t invert = kFALSE);
   void SetPalette(ColorGradient &pal, Bool_t invert = kFALSE);
   /*virtual*/ void SetOptions(TString opt);
@@ -60,10 +61,12 @@ public:
 protected:
 
   void EnsureAxes(TObject* first, std::string arrayName = "");
-  template <class AO> void SetCanvasStyle(AO* first);
+  template <class AO> void SetCanvasStyle(AO* first, Float_t xOff, Float_t yOff);
   template <class AO> void SetPadStyle(AO* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
   template <class AO> void SetRangesAuto(AO* first);
-  void SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow);
+  template <class AO> void SuppressXaxis(AO* first);
+  template <class AO> void SuppressYaxis(AO* first);
+  void SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t xOff, Float_t yOff);
   void SetUpPad(TPad* pad, Bool_t xLog, Bool_t yLog);
   void DrawArray(TObjArray* array, Int_t off = 0, Int_t offOpt = 0);
 
@@ -149,12 +152,12 @@ Int_t   Plot::mOffset {0};
 // ---- Member Functions ------------------------------------------------------
 
 template <class AO>
-void Plot::SetCanvasStyle(AO* first){
+void Plot::SetCanvasStyle(AO* first, Float_t xOff, Float_t yOff){
 
   /** Set general style features of the Canvas and Pads **/
 
-  first->GetXaxis()->SetTitleOffset(offsetX);
-  first->GetYaxis()->SetTitleOffset(offsetY);
+  first->GetXaxis()->SetTitleOffset(xOff);
+  first->GetYaxis()->SetTitleOffset(yOff);
   first->GetXaxis()->SetTickSize(0.03);
   first->GetYaxis()->SetTickSize(0.03);
   first->GetXaxis()->SetTitleSize(label);
@@ -181,23 +184,23 @@ void Plot::SetPadStyle(AO* first, TString xTitle, TString yTitle, Float_t xUp, F
 
 }
 
-void Plot::SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow){
+void Plot::SetUpStyle(TObject* first, TString xTitle, TString yTitle, Float_t xUp, Float_t xLow, Float_t yUp, Float_t yLow, Float_t xOff, Float_t yOff){
 
   /** Set Style aspects of pad and canvas **/
 
   if (first->InheritsFrom("TH1")){
     if (!ranges) SetRangesAuto((TH1*)first);
     SetPadStyle((TH1*)first, xTitle, yTitle, xUp, xLow, yUp, yLow);
-    SetCanvasStyle((TH1*)first);
+    SetCanvasStyle((TH1*)first, xOff, yOff);
   }
   else if (first->InheritsFrom("TF1")){
     if (!ranges) SetRangesAuto((TF1*)first);
     SetPadStyle((TF1*)first, xTitle, yTitle, xUp, xLow, yUp, yLow);
-    SetCanvasStyle((TF1*)first);
+    SetCanvasStyle((TF1*)first, xOff, yOff);
   }
   else if (first->InheritsFrom("TMultiGraph")){
     SetPadStyle((TMultiGraph*)first, xTitle, yTitle, xUp, xLow, yUp, yLow);
-    SetCanvasStyle((TMultiGraph*)first);
+    SetCanvasStyle((TMultiGraph*)first, xOff, yOff);
   }
 
 }
@@ -245,6 +248,7 @@ void Plot::SetProperties(TObject* obj, Int_t index){
     ((TLegend*)obj)->SetBorderSize(0);
     return;
   }
+  else if (obj->InheritsFrom("TH1")) ((TH1*)obj)->SetStats(kFALSE);
 
   if (!styles) return; // no arrays were set, properties were set in advance by hand
 
@@ -258,7 +262,6 @@ void Plot::SetProperties(TObject* obj, Int_t index){
 
   if (obj->InheritsFrom("TH1")) {
     SetPlottjectProperties((TH1*)obj, color, marker, size, lstyle, lwidth);
-    ((TH1*)obj)->SetStats(kFALSE);
   }
   else if (obj->InheritsFrom("TF1")){
     SetPlottjectProperties((TF1*)obj, color, marker, size, lstyle, lwidth);
@@ -271,7 +274,8 @@ void Plot::SetProperties(TObject* obj, Int_t index){
     while (TObject* graph = iMultiGraph()){
       if (!graph) continue;
       if (index >= markers.size()) break;
-      SetPlottjectProperties((TGraph*)graph, color, marker, size, lstyle, lwidth);
+      // SetPlottjectProperties((TGraph*)graph, color, marker, size, lstyle, lwidth);
+      SetProperties(graph, index);
       index++;
     }
   }
@@ -362,6 +366,46 @@ void Plot::SetRangesAuto(AO* first){
   Int_t binHigh = GetXlastFilledBin(((TH1*)first));
   xRangeUp   = ((TH1*)first)->GetXaxis()->GetBinCenter(binHigh+2);
   xRangeLow  = ((TH1*)first)->GetXaxis()->GetBinCenter(binLow-1);
+
+}
+
+template <class AO>
+void Plot::SuppressXaxis(AO* first){
+
+  /** Supress x axis for Plots with multiple pads **/
+
+  if (first->InheritsFrom("TH1")){
+    ((TH1*)first)->GetXaxis()->SetLabelSize(0);
+    ((TH1*)first)->GetXaxis()->SetLabelColor(kWhite);
+  }
+  else if (first->InheritsFrom("TF1")){
+    ((TF1*)first)->GetXaxis()->SetLabelSize(0);
+    ((TF1*)first)->GetXaxis()->SetLabelColor(kWhite);
+  }
+  else if (first->InheritsFrom("TMultiGraph")){
+    ((TMultiGraph*)first)->GetXaxis()->SetLabelSize(0);
+    ((TMultiGraph*)first)->GetXaxis()->SetLabelColor(kWhite);
+  }
+
+}
+
+template <class AO>
+void Plot::SuppressYaxis(AO* first){
+
+  /** Supress y axis for Plots with multiple pads **/
+
+  if (first->InheritsFrom("TH1")){
+    ((TH1*)first)->GetYaxis()->SetLabelSize(0);
+    ((TH1*)first)->GetYaxis()->SetLabelColor(kWhite);
+  }
+  else if (first->InheritsFrom("TF1")){
+    ((TF1*)first)->GetYaxis()->SetLabelSize(0);
+    ((TF1*)first)->GetYaxis()->SetLabelColor(kWhite);
+  }
+  else if (first->InheritsFrom("TMultiGraph")){
+    ((TMultiGraph*)first)->GetYaxis()->SetLabelSize(0);
+    ((TMultiGraph*)first)->GetYaxis()->SetLabelColor(kWhite);
+  }
 
 }
 

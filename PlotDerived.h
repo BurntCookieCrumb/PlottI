@@ -78,7 +78,7 @@ void SquarePlot::Draw(TString outname){
 
   mainPad = new TPad("mainPad", "Distribution", 0, 0, 1, 1);
   SetUpPad(mainPad, logX, logY);
-  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
+  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow, offsetX, offsetY);
   mainPad->Draw();
   mainPad->cd();
 
@@ -109,7 +109,7 @@ public:
   /*virtual*/ void Draw(TString outname);
   /*virtual*/ void DrawRatioArray(TObjArray* array, Int_t off, Int_t offOpt = 0);
   void SetUpperOneLimit(Double_t up);
-  void ToggleOne() {drawone = !drawone;};
+  void ToggleOne() {drawone = !drawone;}  //!< Toggle wether TLine indicating ratio = 1, will be drawn
 
 protected:
 
@@ -118,7 +118,7 @@ protected:
   TLine*   one {nullptr};    //!< Horizontal TLine which will be included to every ratio at height 1
   Double_t oneUp {0};        //!< Upper bound on x-Range for TLine one
 
-  Bool_t drawone {kTRUE};
+  Bool_t drawone {kTRUE};    //!< Variable indicating wether TLine one will be drawn
 
 };
 
@@ -160,7 +160,7 @@ void RatioPlot::Draw(TString outname){
 
   mainPad = new TPad("mainPad", "Ratio", 0, 0, 1, 1);
   SetUpPad(mainPad, logX, logY);
-  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
+  SetUpStyle(plotArray->At(0), titleX, titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow, offsetX, offsetY);
   mainPad->Draw();
   mainPad->cd();
 
@@ -282,17 +282,15 @@ void SingleRatioPlot::Draw(TString outname){
 
   mainPad = new TPad("mainPad", "Distribution", 0, padFrac, 1, 1);
   SetUpPad(mainPad, logX, logY);
-  SetUpStyle(plotArray->At(0), "", titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow);
-  ((TH1*)plotArray->At(0))->GetXaxis()->SetLabelSize(0);
-  ((TH1*)plotArray->At(0))->GetXaxis()->SetLabelColor(kWhite);
+  SetUpStyle(plotArray->At(0), "", titleY, xRangeUp, xRangeLow, yRangeUp, yRangeLow, offsetX, offsetY);
+  SuppressXaxis(plotArray->At(0));
   mainPad->SetBottomMargin(0.);
   mainPad->Draw();
 
   ratioPad = new TPad("ratioPad", "Ratio", 0, 0, 1, padFrac);
   SetUpPad(ratioPad, logX, kFALSE);
   ratioPad->SetTopMargin(0.);
-  SetUpStyle(ratioArray->At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow);
-  ((TH1*)ratioArray->At(0))->GetYaxis()->SetTitleOffset(offsetR);
+  SetUpStyle(ratioArray->At(0), titleX, ratioTitle, xRangeUp, xRangeLow, rRangeUp, rRangeLow, offsetX, offsetR);
   ratioPad->Draw();
 
   mainPad->cd();
@@ -525,7 +523,7 @@ void HeatMapPlot::SetCanvasStyle(TH2* first){
 
   /** Set general style features of the Canvas and Pads **/
 
-  Plot::SetCanvasStyle(first);
+  Plot::SetCanvasStyle(first, offsetX, offsetY);
 
   first->GetZaxis()->SetTitleOffset(offsetZ);
   first->GetZaxis()->SetTickSize(0.03);

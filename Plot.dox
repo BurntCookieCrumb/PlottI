@@ -528,7 +528,7 @@
    \image html rainbow.png          "Palette: rainbow -- Simple rainbow palette -- 20 colors" width=15cm
    \image html purple_to_yellow.png "Palette: purple_to_yellow -- Color gradient from purple to yellow -- 100 colors" width=15cm
    \image html citrus.png           "Palette: citrus -- Citrus colors -- 100 colors" width = 15cm
-   \image html ocean.png           "Palette: ocean -- Gradient from deep arctic ocean to warm caribbean ocean -- 100 colors" width = 15cm
+   \image html ocean.png            "Palette: ocean -- Gradient from deep arctic ocean to warm caribbean ocean -- 100 colors" width = 15cm
 
 
  */

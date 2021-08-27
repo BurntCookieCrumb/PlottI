@@ -163,10 +163,10 @@ color light_sky_blue {0x00A0F1};
 color sky_cyan       {0x00C5DF};
 color bluish_green   {0x00E7C4};
 
-color full       {0xDB7E00};
-color towards    {0xAC001E};
-color away       {0x00007F};
-color transverse {0x669900};
+color full       {0x83B910}; //{0xDB7E00}; green
+color towards    {0x10A7C1}; //{0xAC001E}; cyan
+color away       {0x874BDA}; //{0x00007F}; purple
+color transverse {0xF36F19}; //{0x669900}; orange
 
 // ----------------------------------------------------------------------------
 //                              Predefined Palettes
@@ -186,5 +186,7 @@ ColorGradient citrus = ColorGradient(100, pink_to_yellow);
 
 vector<color> ocean_blues = {blurple, ocean_blue, dark_sky_blue, light_sky_blue, sky_cyan, bluish_green};
 ColorGradient ocean = ColorGradient(100, ocean_blues, {0.0, 0.3, 0.6, 0.75, 0.9, 1.0});
+
+ColorGradient sunset = ColorGradient(100, {0x210156, 0x3900AA, 0x9C0091, 0xCB177A, 0xE3576E, 0xEE8972, 0xF2B68C});
 
 //
