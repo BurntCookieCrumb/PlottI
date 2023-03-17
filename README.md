@@ -1,9 +1,9 @@
-# Header
-important headers for various applications
+# PlottingInterface
+Interface for plotting, using ROOT as a basis.
 
 
 ---> See documentation of PlottI:
-https://burntcookiecrumb.github.io/Header/index.html
+https://burntcookiecrumb.github.io/PlottI/index.html
 
 ---> Please find examples in the example folder (:
 
